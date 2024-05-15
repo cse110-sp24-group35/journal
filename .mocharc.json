@@ -1,0 +1,10 @@
+{
+  "require": [
+    "@babel/register",
+    "@istanbuljs/esm-loader-hook"
+  ],
+  "node-option": [
+    "no-warnings",
+    "experimental-specifier-resolution=node"
+  ]
+}

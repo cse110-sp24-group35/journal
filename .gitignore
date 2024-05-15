@@ -1,2 +1,5 @@
 .idea
 journal.iml
+coverage
+node_modules
+.nyc_output

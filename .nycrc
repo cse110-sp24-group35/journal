@@ -1,6 +1,6 @@
 {
     "all": true,
-    "exclude": ["test"],
+    "exclude": ["src/test", "coverage", "eslint.config.mjs"],
     "output": "reports",
     "reporter" : [
         "html",
