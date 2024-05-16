@@ -39,6 +39,12 @@ jobs:
       - name: Remove unneeded files
         run: |
           rm -rf ./src/test
+      - name: Build JS Docs
+        uses: andstor/jsdoc-action@v1
+        with:
+          source_dir: ./src
+          output_dir: ./src/documentation
+          template: minami
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
