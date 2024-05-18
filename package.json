@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "coverage": "nyc pnpm run test:unit",
-    "coverage:ci": "nyc --reporter=lcov pnpm run test:unit \"src/test/unit\"",
+    "coverage:ci": "nyc --reporter=lcov pnpm run test:unit",
     "coverage:codecov": "codecov",
     "test:unit": "mocha \"src/test/unit/*.js\"",
     "test:e2e": "mocha \"src/test/e2e/*.js\"",
