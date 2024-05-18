@@ -35,12 +35,14 @@ jobs:
         run: pnpm install
       - name: Unit Test
         run: pnpm run test:unit
+      - name: Install LCov
+        run: pnpm i -D lcov
       - name: Code Quality & Coverage
         uses: paambaati/codeclimate-action@v6.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: pnpm i -D lcov && pnpm run coverage:ci
+          coverageCommand: pnpm run coverage:ci
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
