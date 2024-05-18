@@ -35,5 +35,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@nanostores/persistent": "^0.10.1",
+    "nanostores": "^0.10.3"
+  }
 }
