@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
       - name: Unit Test & Coverage
-        run: pnpm i -D lcov && pnpm run coverage:ci
+        run: pnpm i -D lcov && pnpm run coverage
         env:
           MOCHA_REPORTER: mocha-reporter-gha
       - name: Upload coverage reports to Codecov
