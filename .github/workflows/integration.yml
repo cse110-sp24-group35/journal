@@ -19,7 +19,7 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: Run Linters
         run: pnpm run lint
   unit-tests:
@@ -32,7 +32,7 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: Unit Test & Coverage
         run: pnpm i -D lcov && pnpm run coverage:ci
         env:
@@ -51,7 +51,7 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: E2E Test
         run: pnpm run test:e2e
         env:
