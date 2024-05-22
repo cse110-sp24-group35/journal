@@ -1,10 +1,11 @@
 {
   "require": [
     "@babel/register",
-    "@istanbuljs/esm-loader-hook"
+    "mock-local-storage"
   ],
   "node-option": [
     "no-warnings",
-    "experimental-specifier-resolution=node"
+    "experimental-specifier-resolution=node",
+    "experimental-default-type=module"
   ]
 }
