@@ -1,9 +1,8 @@
-
 class JournalEditor extends HTMLElement {
     constructor() {
         super(); // Inherit everything from HTMLElement
 
-        const shadow = this.attachShadow({ mode: "open" });
+        //const shadow = this.attachShadow({ mode: "open" });
         //const input = document.createElement("input");
         //input.type = "textarea";
         const style = document.createElement("style");
@@ -13,35 +12,42 @@ class JournalEditor extends HTMLElement {
             flex-direction: column;
         }
         `;
-        
-        shadow.innerHTML = `
-        <nav>
-        <label>
-        Entry Title
-        <input type="text"/>
-        </label>
-        
-        <label>
-        Deadline
-        <input type="datetime"/>
-        </label>
-        
-            <label>
-            Tags
-            <input type="datetime"/>
-            </label>
+
+        this.innerHTML = `
+            <nav>
+                <label>
+                Entry Title
+                <input type="text"/>
+                </label>
+                
+                <label>
+                Deadline
+                <input type="datetime"/>
+                </label>
             
-            <label>
-            <input type="checkbox"/>
-            Side view
-            </label>
+                <label>
+                Tags
+                <input type="datetime"/>
+                </label>
+                
+                <label>
+                <button>Toggle Side View</button>
+                </label>
             </nav>
-            
-            <textarea id="editor"></textarea>
+                
+            <div id="markdown-editor"></div>
             `
 
-            shadow.appendChild(style);
-        }
+        this.appendChild(style);
+        
+        const container = document.getElementById("markdown-editor")
+        // createWysimark is available on window now
+        const wysimark = createWysimark(container, {
+            initialMarkdown: `# Heading 1
+## Heading 2
+hello world`,
+        })
     }
-    
-    customElements.define("journal-editor", JournalEditor);
+}
+
+customElements.define("journal-editor", JournalEditor);
