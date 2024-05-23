@@ -2,9 +2,8 @@ import puppeteer from 'puppeteer';
 import Fastify from 'fastify';
 import staticPlugin from '@fastify/static';
 import path from 'path';
-import { expect } from 'chai';
 
-describe("Sentiment widget", () => {
+describe("Overview Page", () => {
     let browser;
     let page;
     let server;
