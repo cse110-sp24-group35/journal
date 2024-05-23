@@ -6,18 +6,42 @@ class JournalEditor extends HTMLElement {
         const shadow = this.attachShadow({ mode: "open" });
         //const input = document.createElement("input");
         //input.type = "textarea";
-        //const style = document.createElement("style");
-        //style.innerHTML;
-        //shadow.appendChild(style);
-       // shadow.appendChild(input);
-
+        const style = document.createElement("style");
+        style.innerHTML = `
+        nav {
+            display: flex;
+            flex-direction: column;
+        }
+        `;
+        
         shadow.innerHTML = `
+        <nav>
         <label>
-            Journal Editor
-            <textarea rows="10" cols="33">hello</textarea>
+        Entry Title
+        <input type="text"/>
         </label>
-        `
-    }
-}
+        
+        <label>
+        Deadline
+        <input type="datetime"/>
+        </label>
+        
+            <label>
+            Tags
+            <input type="datetime"/>
+            </label>
+            
+            <label>
+            <input type="checkbox"/>
+            Side view
+            </label>
+            </nav>
+            
+            <textarea id="editor"></textarea>
+            `
 
-customElements.define("journal-editor", JournalEditor);
+            shadow.appendChild(style);
+        }
+    }
+    
+    customElements.define("journal-editor", JournalEditor);
