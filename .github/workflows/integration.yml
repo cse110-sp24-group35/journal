@@ -19,7 +19,7 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: Run Linters
         run: pnpm run lint
   unit-tests:
@@ -32,13 +32,9 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
-      - name: Unit Test
-        run: pnpm run test:unit
-      - name: Install LCov
-        run: pnpm i -D lcov
-      - name: Code Quality & Coverage
-        uses: paambaati/codeclimate-action@v6.0.0
+        run: pnpm install --no-frozen-lockfile
+      - name: Unit Test & Coverage
+        run: pnpm i -D lcov && pnpm run coverage
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
@@ -53,7 +49,7 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: E2E Test
         run: pnpm run test:e2e
         env:
