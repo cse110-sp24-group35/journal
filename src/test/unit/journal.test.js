@@ -43,13 +43,13 @@ describe("Journal Stores", () => {
         expect(journal).is.undefined;
     });
 
-    it("Delete non-existing journal", () => {
+    it("Delete existing journal", () => {
         expect(deleteJournal("hello/world")).to.eq(true);
 
         expect(journals.get().length).eq(0);
     });
 
-    it("Delete existing journal", () => {
+    it("Delete non-existing journal", () => {
         expect(deleteJournal("hello/world")).to.eq(false);
     });
 });
