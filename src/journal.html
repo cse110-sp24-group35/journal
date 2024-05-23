@@ -2,9 +2,28 @@
 <html lang="en">
 <head>
     <title>Journal | Overview</title>
+    <link rel="stylesheet" href="styles/journal.css">
 </head>
 
 <body>
-This is a test page
+    <!-- This is a placeholder for the side-menu -->
+    <div id="sidebar">
+        <button>Overview</button>
+        <button>Calendar</button>
+        <button>Tasks</button>
+        <button>Journal</button>
+        <button>Login</button>
+    </div>
+
+    <!-- Tree View -->
+    <div id="resizable-box">
+        <div id="content">
+            <!-- Folders and Files -->
+        </div>
+        <div id="resizer"></div>
+        <button id="collapse-button" class="collapse"><<</button>
+    </div>
+    <button id="expand-button" class="expand">>></button>
+    <script src="scripts/journal_tree.js"></script>
 </body>
 </html>
