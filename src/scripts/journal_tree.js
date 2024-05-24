@@ -1,3 +1,5 @@
+import { journals, createJournal, getJournal, deleteJournal } from '../../scripts/database/stores/journal';
+
 document.addEventListener('DOMContentLoaded', function() {
     const resizer = document.getElementById('resizer');
     const resizableBox = document.getElementById('resizable-box');
@@ -59,12 +61,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Dummy data to test for content overflow
     const scrollableDiv = document.getElementById('content');
+    const insideContent = document.getElementById('inside-content');
     for (let i = 1; i <= 100; i++) {
-        let content = `Line ${i}`;
+        let contenta = `Line ${i}`;
         const contentElement = document.createElement("p");
         contentElement.classList.add("treeElement");
-        contentElement.innerText=content;
+        contentElement.innerText=contenta;
         scrollableDiv.appendChild(contentElement);
     }
 
+    createJournal("Hello World", "hello/world", "Hello World", ["Hello", "World"]);
+    insideContent.innerHTML = journals.get()[0].path;
+    alert("Hee");
 });
