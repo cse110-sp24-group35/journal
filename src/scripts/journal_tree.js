@@ -1,4 +1,4 @@
-import { journals, createJournal, getJournal, deleteJournal } from '../../scripts/database/stores/journal';
+import { journals, createJournal, getJournal, deleteJournal } from '../scripts/database/stores/journal.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const resizer = document.getElementById('resizer');
