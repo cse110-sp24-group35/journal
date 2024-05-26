@@ -37,11 +37,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     //Function called when dragging the resize bar on the tree-view
-    function resize(e) {
+    function resize(e) { // Honestly I have no idea what e is but I'm too scared to remove it
         sidebarWidth = sidebar.offsetWidth; //INEFFICIENT? (Accounts for window-width changing)
         const newWidth = e.clientX - sidebarWidth; // Subtract sidebar width from calculation
         const windowWidth = window.innerWidth; 
-        const newWidthPercentage = (newWidth / windowWidth) * 100;
+        const newWidthPercentage = (newWidth / windowWidth) * 100; //Width of the screen that the tree-view should take up
 
         //Limits the width of the tree-view during resizing
         if (newWidthPercentage >= 5 && newWidthPercentage <= 85) { 
@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         //Makes it so that the bar doesn't get stuck when flicking the cursor beyond a boundary
+        //NOTE: THERE WAS AN ERROR WHERE FLICKING THE MOUSE TO THE TOP RIGHT OF THE SCREEN JUST FLINGS THE BAR INTO OBLIVION
+        // I was unable to recreate it so I don't know if it's fixed or not
         else if (newWidthPercentage < 5) {
             treeViewer.style.width = 5 + '%';
             journalViewer.style.left = 15 + '%';
@@ -61,15 +63,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function stopResize() {
-        document.removeEventListener('mousemove', resize);
+        document.removeEventListener('mousemove', resize); //Calculates where the bar should be everytime the mouse moves while the bar is clicked down
         document.removeEventListener('mouseup', stopResize);
-        //Allow text to be selected again when resizing ends
-        document.body.style.userSelect = '';
+        document.body.style.userSelect = '';   //Allow text to be selected again when resizing ends
     }
 
     
-    const contentContainer = document.getElementById('content');
-    //const insideContent = document.getElementById('inside-content');
+    const contentContainer = document.getElementById('content'); //Container for individual items of the tree
+
+    //createJournal("Hello Second World", "hello/second/world", "Hello Second World", ["Hello", "Second", "World"]);
     //Dummy data to test for content overflow
     /*
     for (let i = 1; i <= 100; i++) {
@@ -81,20 +83,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     */
 
-    //Get an array containing ALL paths
+    //Get an array containing ALL paths to journals
     let allPaths = [];
     for(let i = 0;  i < journals.get().length; i++) {
         allPaths[i] = journals.get()[i].path;
     }
 
-    //createJournal("Hello Second World", "hello/second/world", "Hello Second World", ["Hello", "Second", "World"]);
-
-
-    //GPT Tree Generator (from path array) 
-    function splitPath(path) {
+    function splitPath(path) { //Parses individual path into an array
         return path.split('/');
     }
     
+    //Chat-GPT Tree Generator (from path array) 
     function buildTree(paths) {
         const tree = {};
     
@@ -130,19 +129,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const tree = buildTree(allPaths);
     const treeArray = convertTreeToArray(tree);
-    
-    //insideContent.innerHTML = (JSON.stringify(treeArray, null, 2));
 
-    const TESTButton = document.createElement("button");
-    TESTButton.innerHTML = "YEAH";
 
-    //HIDES the display of all buttons INSIDE the folder
+    //HIDES the display of all files INSIDE the folder
     function closeFolder(folder) {
         for(let i = 1; i < folder.children.length; i++)
             folder.children[i].classList.add("parentFolderClosed");
     }
 
-    //SHOWS the display of all buttons INSIDE the folder
+    //SHOWS the display of all files INSIDE the folder
     function openFolder(folder) {
         for(let i = 1; i < folder.children.length; i++)
             folder.children[i].classList.remove("parentFolderClosed");
@@ -160,18 +155,17 @@ document.addEventListener('DOMContentLoaded', function() {
     contentContainer.appendChild(showAllButton);
     */
 
-    function populateButtons(parentChildren, parentElement, treePath){
-        for(let i = 0;  i < parentChildren.length; i++) {
-            const fileDiv = document.createElement("div");
-            const fileButton = document.createElement("button");
-            fileDiv.classList.add("treeElement");
-            fileButton.id = treePath + "/" + parentChildren[i].name;
-            if(treePath != "tree")
-                fileDiv.classList.add("parentFolderClosed");
+    function populateButtons(parentChildren, parentElement, treePath){ //Recursively loads all files into the HTML
+        for(let i = 0;  i < parentChildren.length; i++) { //For each direct children of the parent path
+            const fileDiv = document.createElement("div"); //Container for the button. Path children are appended to this
+            const fileButton = document.createElement("button"); //Button for the folder/journal
+            fileDiv.classList.add("treeElement"); //treeElement class for CSS
+            fileButton.id = treePath + "/" + parentChildren[i].name; //Makes the ID of each button element match the path in the database
+            if(treePath != "tree") // IF THIS FILE IS NOT AT THE TOPMOST LAYER
+                fileDiv.classList.add("parentFolderClosed"); //Make this element hidden initially
             if(!!parentChildren[i].children){ //If the path has children, it is a folder
-                fileButton.innerHTML = "+ " + parentChildren[i].name;
-                fileDiv.classList.add("folder");
-                    
+                fileButton.innerHTML = "+ " + parentChildren[i].name; // + indicates a closed folder
+                fileDiv.classList.add("folder"); // Folders are put into the folder class for CSS
 
                 //WHEN THIS BUTTON IS CLICKED
                 fileButton.addEventListener("click",function() { 
@@ -186,12 +180,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             else { //If the path has no children, the file is a journal not a folder.
-                fileButton.innerHTML = "JOURNAL - " + parentChildren[i].name;
-                fileButton.classList.add("journalButton");
-                fileButton.addEventListener("click",function(){
-                    journalViewer.innerHTML = "";
-                    const journalToLoad = getJournal(fileButton.id.slice(5))
-                    const journalTitle = document.createElement("h1");
+                fileButton.innerHTML = "JOURNAL - " + parentChildren[i].name; // Distinctly marks journal buttons (Probably will change later)
+                fileButton.classList.add("journalButton"); // Marks journal buttons as journalButton for CSS
+                fileButton.addEventListener("click",function(){ // when a JOURNAL button is clicked
+                    journalViewer.innerHTML = ""; // CLEAR whatever is displayed to the right
+                    const journalToLoad = getJournal(fileButton.id.slice(5)) // Load in the corresponding journal from the database
+
+                    //Temporarly just displays the title as h1
+                    const journalTitle = document.createElement("h1"); 
                     journalTitle.innerHTML = journalToLoad.title;
                     journalViewer.appendChild(journalTitle);
                 });
@@ -210,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     populateButtons(treeArray,contentContainer, "tree"); //1 refers to the layer of the buttons
 
-    //Makes all buttons
+    //Makes all buttons do
     /*
     const allButtons = document.querySelectorAll('button');
     buttons.forEach(button => {
