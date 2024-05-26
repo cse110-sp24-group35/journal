@@ -56,9 +56,6 @@ class UpcomingTaskComponent extends HTMLElement {
                 .popup .task-list li {
                     margin: 10px 0;
                     padding: 10px;
-                    background: #fff;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
                 }
                 .popup .close-btn {
                     display: block;
