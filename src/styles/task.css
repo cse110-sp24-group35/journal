@@ -1,0 +1,32 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    padding-top: 100px;
+}
+
+.container {
+    width: 600px;
+    max-height: 300px;
+    overflow-y: scroll;
+    background-color: #F3E2D5;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    margin: 35px 0;
+    padding: 10px;
+    
+}
+
+.task.completed span {
+    text-decoration: line-through;
+}
