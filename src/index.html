@@ -6,12 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task List</title>
     <link rel="stylesheet" href="styles/task.css">
+
+    <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
+    <script>
+        window.process = { browser: true, env: { NODE_ENV: "production" } };
+    </script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
+                "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
+            }
+        }
+    </script>
+    <!-- Polyfill end -->
 </head>
 <body>
     <div class="container">
         <task-list></task-list>
     </div>
-    <script src="scripts/task-component.js"></script>
+    <script type="module" src="scripts/components/task-component.js"></script>
     <div class="container">
         <upcoming-task-list></upcoming-task-list>
     </div>
