@@ -1,8 +1,7 @@
 class TaskComponent extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
-        
+        this.attachShadow({ mode: 'open' });        
         this.shadowRoot.innerHTML = `
             <style>
                 .task {
@@ -11,7 +10,7 @@ class TaskComponent extends HTMLElement {
                     margin: 20px 0;
                 }
                 .task:first-of-type {
-                    margin-top: 0; /* Remove top margin for the first task */
+                    margin-top: 0;
                 }
                 .task.completed span {
                     text-decoration: line-through;
@@ -26,12 +25,12 @@ class TaskComponent extends HTMLElement {
         this.checkbox = this.shadowRoot.querySelector('input');
         this.taskText = this.shadowRoot.querySelector('span');
         this.taskContainer = this.shadowRoot.querySelector('.task');
-        
+        // for status to change based on check boxes
         this.checkbox.addEventListener('change', () => this.updateTaskStatus());
     }
     
     connectedCallback() {
-        this.renderTask();
+        this.updateTask();
     }
     
     static get observedAttributes() {
@@ -39,13 +38,12 @@ class TaskComponent extends HTMLElement {
     }
     
     attributeChangedCallback() {
-        this.renderTask();
+        this.updateTask();
     }
     
-    renderTask() {
+    updateTask() {
         const taskId = this.getAttribute('data-id');
-        const taskData = this.getTaskFromLocalStorage(taskId);
-        
+        const taskData = this.getTaskFromLocalStorage(taskId);    
         if (taskData) {
             this.taskText.textContent = taskData.text;
             this.checkbox.checked = taskData.completed;
@@ -57,19 +55,17 @@ class TaskComponent extends HTMLElement {
         const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
         return tasks.find(task => task.id === taskId);
     }
-    
     updateTaskStatus() {
         const taskId = this.getAttribute('data-id');
         const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        const taskIndex = tasks.findIndex(task => task.id === taskId);
-        
+        const taskIndex = tasks.findIndex(task => task.id === taskId);   
         if (taskIndex !== -1) {
             tasks[taskIndex].completed = this.checkbox.checked;
             localStorage.setItem('tasks', JSON.stringify(tasks));
             this.updateTaskClass(this.checkbox.checked);
         }
     }
-    
+    // to make sure boxes are checked based on local storage call backs are used
     updateTaskClass(completed) {
         if (completed) {
             this.taskContainer.classList.add('completed');
@@ -86,14 +82,13 @@ class TaskList extends HTMLElement {
     }
     
     connectedCallback() {
-        this.render();
-        window.addEventListener('storage', () => this.render());
+        this.update();
+        window.addEventListener('storage', () => this.update());
     }
     
-    render() {
+    update() {
         this.shadowRoot.innerHTML = '';
-        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];    
         tasks.forEach(task => {
             const taskElement = document.createElement('task-component');
             taskElement.setAttribute('data-id', task.id);
@@ -101,11 +96,10 @@ class TaskList extends HTMLElement {
         });
     }
 }
-
 customElements.define('task-component', TaskComponent);
 customElements.define('task-list', TaskList);
 
-// Example tasks in local storage for testing
+// change this later but for manual testing
 localStorage.setItem('tasks', JSON.stringify([
     { id: '1', text: 'Task 1 dsjbfnaskdnfkljsdafjasndvkl dsfnasd f asf sf ads df asdf  asdfasdf asdf ads', completed: true },
     { id: '2', text: 'Task 2', completed: true },
