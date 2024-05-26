@@ -83,7 +83,10 @@ class TaskList extends HTMLElement {
     
     connectedCallback() {
         this.update();
-        window.addEventListener('storage', () => this.update());
+        window.addEventListener('storage', () => {
+            this.update();
+            location.reload();
+        });
     }
     
     update() {
