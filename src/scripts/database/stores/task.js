@@ -65,7 +65,7 @@ export function deleteTask(id) {
  * @throws {Error} - When there is already a task with the specified ID
  */
 export function createTask(id, title, description, priority, status, dueAt) {
-    if (!!getTask(id)) throw new Error(`Task with ID ${id} already exists!`);
+    if (getTask(id)) throw new Error(`Task with ID ${id} already exists!`);
 
     const task = {
         id,
@@ -81,4 +81,41 @@ export function createTask(id, title, description, priority, status, dueAt) {
         ...tasks.get(),
         task
     ]);
+}
+
+/**
+ * Updates a task by its ID with the given details
+ * @param {string} [modified.title] - The new task title (optional)
+ * @param {string} [modified.description] - The new task description (optional)
+ * @param {string} [modified.priority] - The new task priority (optional)
+ * @param {string} [modified.status] - The new task status (optional)
+ * @param {number} [modified.dueAt] - The new due date timestamp (optional)
+ * @returns {boolean} - Whether the task has been updated successfully or not (true / false)
+ * @param id - The task ID
+ * @param modified - The modified object
+ */
+export function updateTask(id, modified) {
+    const { title, description, priority, status, dueAt } = modified;
+
+    let taskFound = false;
+
+    const updatedTasks = tasks.get().map(task => {
+        if (task.id === id) {
+            taskFound = true;
+            return {
+                ...task,
+                ...(title !== undefined && { title }),
+                ...(description !== undefined && { description }),
+                ...(priority !== undefined && { priority }),
+                ...(status !== undefined && { status }),
+                ...(dueAt !== undefined && { dueAt }),
+            };
+        }
+        return task;
+    });
+
+    if (!taskFound) return false;
+
+    tasks.set(updatedTasks);
+    return true;
 }

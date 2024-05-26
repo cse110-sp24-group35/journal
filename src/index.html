@@ -23,9 +23,62 @@
     <!-- Polyfill end -->
 </head>
 <body>
+    <script type="module">
+        import { tasks } from './scripts/database/stores/task.js';
+
+        const exampleTasks = [
+            {
+                id: "1",
+                title: "Complete the project report",
+                description: "Finish the final report for the project and submit it.",
+                priority: "High",
+                status: "ONGOING",
+                createdAt: 1685126400000, // Example timestamp for creation
+                dueAt: 1687737600000 // Example timestamp for due date
+            },
+            {
+                id: "2",
+                title: "Prepare presentation",
+                description: "Create slides for the upcoming presentation.",
+                priority: "Medium",
+                status: "PLANNED",
+                createdAt: 1685212800000,
+                dueAt: 1687900400000
+            },
+            {
+                id: "3",
+                title: "Client meeting",
+                description: "Meeting with the client to discuss project requirements.",
+                priority: "High",
+                status: "COMPLETED",
+                createdAt: 1685299200000,
+                dueAt: 1685827200000
+            },
+            {
+                id: "4",
+                title: "Team building event",
+                description: "Organize and participate in the team building event.",
+                priority: "Low",
+                status: "ABANDONED",
+                createdAt: 1685385600000,
+                dueAt: 1685990400000
+            },
+            {
+                id: "5",
+                title: "Code review",
+                description: "Review the new code changes submitted by the development team.",
+                priority: "High",
+                status: "ONGOING",
+                createdAt: 1685472000000,
+                dueAt: 1686080400000
+            }
+        ];
+
+        tasks.set(exampleTasks)
+    </script>
     <div class="container">
         <task-list></task-list>
     </div>
-    <script src="scripts/task-component.js"></script>
+    <script type="module" src="scripts/components/task-component.js"></script>
 </body>
 </html>
