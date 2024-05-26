@@ -28,7 +28,19 @@ const CACHE_DERIVES = {
 
     vendors: [
         "https://unpkg.com/nanostores@0.10.3/index.js",
-        "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
+        "https://unpkg.com/@nanostores/persistent@0.10.1/index.js",
+
+        // Nanostores modules
+        "https://unpkg.com/nanostores@0.9.5/atom/index.js",
+        "https://unpkg.com/nanostores@0.9.5/clean-stores/index.js",
+        "https://unpkg.com/nanostores@0.9.5/task/index.js",
+        "https://unpkg.com/nanostores@0.9.5/map/index.js",
+        "https://unpkg.com/nanostores@0.9.5/listen-keys/index.js",
+        "https://unpkg.com/nanostores@0.9.5/lifecycle/index.js",
+        "https://unpkg.com/nanostores@0.9.5/deep-map/index.js",
+        "https://unpkg.com/nanostores@0.9.5/deep-map/path.js",
+        "https://unpkg.com/nanostores@0.9.5/computed/index.js",
+        "https://unpkg.com/nanostores@0.9.5/action/index.js"
     ]
 };
 
