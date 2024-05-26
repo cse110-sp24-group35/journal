@@ -56,7 +56,7 @@ class UpcomingTaskComponent extends HTMLElement {
     }
 }
 
-class TaskList extends HTMLElement {
+class UpcomingTaskList extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -81,7 +81,7 @@ class TaskList extends HTMLElement {
     }
 }
 customElements.define('upcoming-task-component', UpcomingTaskComponent);
-customElements.define('upcoming-task-list', TaskList);
+customElements.define('upcoming-task-list', UpcomingTaskList);
 
 // change this later but for manual testing
 localStorage.setItem('upcoming-tasks', JSON.stringify([
