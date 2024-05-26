@@ -40,7 +40,7 @@ class UpcomingTaskComponent extends HTMLElement {
         const taskId = this.getAttribute('data-id');
         const taskData = this.getTaskFromLocalStorage(taskId);    
         if (taskData) {
-            this.dayText.textContent = this.getDayName(taskData.day);
+            this.dayText.textContent = this.getDayName(parseInt(taskData.day, 10));
             this.numberText.textContent = taskData.number === 0 ? 'No Upcoming Tasks' : `${taskData.number} Upcoming Tasks`;
         }
     }
@@ -74,14 +74,14 @@ class TaskList extends HTMLElement {
         this.shadowRoot.innerHTML = '';
         const tasks = JSON.parse(localStorage.getItem('upcoming-tasks')) || [];    
         tasks.forEach(task => {
-            const taskElement = document.createElement('task-component');
+            const taskElement = document.createElement('upcoming-task-component');
             taskElement.setAttribute('data-id', task.id);
             this.shadowRoot.appendChild(taskElement);
         });
     }
 }
-customElements.define('task-component', UpcomingTaskComponent);
-customElements.define('task-list', TaskList);
+customElements.define('upcoming-task-component', UpcomingTaskComponent);
+customElements.define('upcoming-task-list', TaskList);
 
 // change this later but for manual testing
 localStorage.setItem('upcoming-tasks', JSON.stringify([
