@@ -34,15 +34,34 @@
     overflow: hidden;
 }
 
+#create-journal {
+    background-color: #00FF00;
+    position:absolute;
+    width: 2em;
+    height: 2em;
+    right: 0%;
+    margin:1em;
+}
+
+#journal-view{
+    background-color:turquoise;
+    height: 100vh;
+    right: 0;
+    position:absolute;
+    left: 25%;
+    top: 0;
+}
+
 #content {
     height: 99vh;
-    padding: .5em;
+    padding: .0em;
     overflow: scroll;
+    margin-top: 4em;
 }
 
 /* Bar to the right of the tree-view. Allows drag to resize */
 #resizer {
-    width: 0.2em;
+    width: 0.5em;
     height: inherit;
     background: #000;
     cursor: ew-resize;
@@ -75,6 +94,17 @@
 
 .treeElement {
     white-space: nowrap; /* Makes elements not wrap in the tree-view */
+    padding-left: 1em; /* Indents each layer (DO NOT USE %) */
 }
 
+.folder{
+    background-color: bisque;
+}
 
+.journalButton {
+    background-color: aqua;
+}
+
+.parentFolderClosed {
+    display:none;
+}

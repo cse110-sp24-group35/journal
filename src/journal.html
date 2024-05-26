@@ -3,6 +3,20 @@
 <head>
     <title>Journal | Overview</title>
     <link rel="stylesheet" href="styles/journal.css">
+    <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
+    <script>
+        window.process = { browser: true, env: { NODE_ENV: "production" } };
+    </script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
+                "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
+            }
+        }
+    </script>
+    <!-- Polyfill end -->
 </head>
 
 <body>
@@ -17,15 +31,18 @@
 
     <!-- Tree View -->
     <div id="resizable-box">
+        <button id="create-journal">+</button>
         <div id="content">
-            <p id="inside-content">inside-content</p>
             <!-- Folders and Files -->
         </div>
         <div id="resizer"></div>
         <button id="collapse-button" class="collapse"><<</button>
     </div>
+
+    <div id="journal-view">
+        <p>journal viewing time lets go YES YES YES</p>
+    </div>
     <button id="expand-button" class="expand">>></button>
     <script src="scripts/journal_tree.js" type="module"></script>
-    <script src="scripts/database/stores/journal.js" type="module"></script>
 </body>
 </html>
