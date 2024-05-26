@@ -6,6 +6,7 @@ export default {
     collectCoverage: true,
     collectCoverageFrom: [
         'src/scripts/**/*.{js,jsx}',
+        '!src/scripts/components/**/*.js',
         '!**/node_modules/**',
         '!**/vendor/**',
     ],
