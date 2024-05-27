@@ -1,0 +1,95 @@
+@font-face {
+    font-family: "biski";
+    src: url(fonts\biskitrialregular-l3jxg.otf) format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: "biski"; 
+    background-color: #FFF5ED;
+    
+}
+
+h1 {
+    margin-left: 250px; 
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 1000px;
+    height: 500px;
+    margin-left: 600px; 
+}
+
+.planned {
+    float: left;
+    text-align: center;
+    text-decoration: none;
+    padding: 14px 20px;
+    border-radius: 25px;
+    width: 450px;
+    height: 700px;
+    flex: 1 1 auto;
+    background-color: #F3E2D5;
+    margin: 25px;
+}
+
+.working {
+    float: left;
+    text-align: center;
+    text-decoration: none;
+    padding: 14px 20px;
+    border-radius: 25px;
+    width: 450px;
+    height: 700px;
+    flex: 1 1 auto;
+    background-color: #F3E2D5;
+    margin: 25px;
+}
+
+.done {
+    float: left;
+    text-align: center;
+    text-decoration: none;
+    padding: 14px 20px;
+    border-radius: 25px;
+    width: 450px;
+    height: 700px;
+    flex: 1 1 auto;
+    background-color: #F3E2D5;
+    margin: 25px;
+    
+}
+
+.h2color {
+    background: #F3E2D5;
+}
+
+.add {
+    border: none;
+    margin-top: 350px;
+    background-color: #F3E2D5;
+    display: inline-block;
+    cursor: pointer;
+}
+
+button > img,
+button > span {
+  vertical-align: middle;
+  background-color: #F3E2D5;
+}
+
+.planTask{
+    display: flex;
+}
+
+.workingTask {
+    display: flex;
+}
+
+.doneTask {
+    display: flex;
+}

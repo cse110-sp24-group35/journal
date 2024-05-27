@@ -82,3 +82,19 @@ export function createTask(id, title, description, priority, status, dueAt) {
         task
     ]);
 }
+
+class NewTasks extends HTMLElement {
+    constructor() {
+        super();
+
+        const shadowRoot = this.attachShadow({mode: 'open'});
+        const span = document.createElement('span');
+        const style = document.createElement('style');
+        //style.innerHTML = '';
+        shadowRoot.appendChild(article);
+		shadowRoot.appendChild(style);
+    }
+
+    
+
+}

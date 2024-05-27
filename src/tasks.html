@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <title>Journal | Overview</title>
+    <link rel="stylesheet" href="styles\task.css" />
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -15,10 +16,41 @@
             }
         }
     </script>
+    
     <!-- Polyfill end -->
+    <h1>Task Lists</h1>
 </head>
 
 <body>
-This is a test page
+    <div class="container">
+        <div class="planned">
+            <h2 class="h2color">Planned:</h2>
+            <div class="planTask">
+
+            </div>
+            <button class="add"> 
+                <img src="styles\images\paw.png" alt= "Cat Paw" width="25" height="25"> <span>Add a task</span>
+            </button>
+        </div>
+        <div class="working">
+            <h2 class="h2color">Working:</h2>
+            <div class="workingTask">
+
+            </div>
+            <button class="add"> 
+                <img src="styles\images\paw.png" alt= "Cat Paw" width="25" height="25"> <span>Add a task</span>
+            </button>
+        </div>
+        <div class="done">
+            <h2 class="h2color">Done:</h2>
+            <div class="doneTask">
+                
+            </div>
+            <button class="add"> 
+                <img src="styles\images\paw.png" alt= "Cat Paw" width="25" height="25"> <span>Add a task</span>
+            </button>
+        </div>
+        
+    </div>
 </body>
 </html>
