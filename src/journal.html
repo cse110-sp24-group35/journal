@@ -5,28 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal | Overview</title>
-    <link rel="stylesheet" href="styles/journal.css">
 </head>
 
 <body>
-    <button id="openModalBtn">Add New Flight</button> <!-- Button to open the modal -->
 
-    <div class="modal">
-        <div class="modal-content">
-            <h2>Create Journal</h2>
-            <form>
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title">
-                <br>
-                <label for="due">Due:</label>
-                <input type="date" id="due" name="due">
-                <br>
-                <label for="tags">Tags:</label>
-                <input type="text" id="tags" name="tags">
-            </form>
-        </div>
-    </div>
+    <!-- Use the custom Web Component here -->
+    <modal-component></modal-component>
+
+    <!-- Include the JavaScript file defining the Web Component -->
+    <script src="scripts/modal-component.js"></script>
 </body>
-
 
 </html>
