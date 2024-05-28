@@ -1,4 +1,4 @@
-class ModalComponent extends HTMLElement {
+class ModalJournal extends HTMLElement {
     constructor() {
         super();
         const shadow = this.attachShadow({ mode: 'open' });
@@ -10,7 +10,7 @@ class ModalComponent extends HTMLElement {
         modalContent.setAttribute('class', 'modal-content');
 
         const style = document.createElement('style');
-        style.textContent = `
+        style.innerHTML = `
             .modal {
                 display: flex;
                 justify-content: center;
@@ -104,4 +104,4 @@ class ModalComponent extends HTMLElement {
     }
 }
 
-customElements.define('modal-component', ModalComponent);
+customElements.define('modal-journal', ModalJournal);
