@@ -5,6 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal | Overview</title>
+    <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
+    <script>
+        window.process = { browser: true, env: { NODE_ENV: "production" } };
+    </script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
+                "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
+            }
+        }
+    </script>
+    <!-- Polyfill end -->
 </head>
 
 <body>
