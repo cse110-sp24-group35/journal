@@ -84,7 +84,7 @@ class ModalJournal extends HTMLElement {
 
         const h2 = document.createElement('h2');
         h2.textContent = 'Create Journal';
-
+        
         const form = document.createElement('form');
         form.innerHTML = `
             <label for="title">Title:</label>
