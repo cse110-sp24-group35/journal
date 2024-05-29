@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Journal | Overview</title>
-
-        <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal | Overview</title>
+    <link rel="stylesheet" href="styles/journal.css">
+    <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
         <script>
             window.process = { browser: true, env: { NODE_ENV: "production" } };
         </script>
@@ -16,12 +18,14 @@
                 }
             }
         </script>
-        <!-- Polyfill end -->
-    </head>
+    <!-- Polyfill end -->
+</head>
 
-    <body>
-        <p>
-            This is a test page
-        </p>
-    </body>
+<body>
+
+    <modal-journal></modal-journal>
+
+    <script src="styles/modal-component.js"></script>
+</body>
+
 </html>
