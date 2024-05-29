@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer';
 import Fastify from 'fastify';
 import staticPlugin from '@fastify/static';
 import path from 'path';
+import assert from 'assert';
 
 describe("Overview Page", () => {
     let browser;
@@ -34,3 +35,4 @@ describe("Overview Page", () => {
         await server.close();
     });
 });
+

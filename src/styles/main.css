@@ -1,16 +1,16 @@
 * {
     color: red;
 }
-.newjournalbutton {
-    background-color: transparent; /* Transparent background */
-      font-size: 16px;               /* Font size */
-      padding: 10px 20px;            /* Padding */
-      color: black;                  /* Text color */
-      border: 2px solid black;                    /* Remove border */
-      border-radius: 5px;            /* Rounded corners */
-      cursor: pointer;               /* Pointer cursor on hover */
+.new-journal-button {
+    background-color: transparent;  /* Transparent background */
+    font-size: 1rem;                /* Font size (16px equivalent) */
+    padding: 0.625rem 1.25rem;      /* Padding (10px 20px equivalent) */
+    color: black;                   /* Text color */
+    border: 0.125rem solid black;   /* Border (2px equivalent) */
+    border-radius: 0.3125rem;       /* Rounded corners (5px equivalent) */
+    cursor: pointer;                /* Pointer cursor on hover */
 }
 
-.newjournalbutton:hover{
+.new-journal-button:hover{
     background-color: rgba(0, 0, 0, 0.1);
 }
