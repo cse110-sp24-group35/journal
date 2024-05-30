@@ -1,4 +1,3 @@
-
 import { persistentAtom } from '@nanostores/persistent';
 
 /**
@@ -97,28 +96,35 @@ class NewTasks extends HTMLElement {
     }
 }
 
+window.addEventListener('DOMContentLoaded', init);
 
-//add task button
-let addButton = document.getElementsByClassName("add"); // grab add button class name
-let modalBox = document.getElementsByClassName("modal"); // grab modal box class name
-let displayBox = document.getElementsByClassName("container"); // grab three box of items class name
+function init() {
+    let addButton0 =  document.getElementsByClassName("add")[0];
+    let addButton1 =  document.getElementsByClassName("add")[1];
+    let addButton2 =  document.getElementsByClassName("add")[2];
+    let modal = document.getElementById("modalBlock");
+    let box = document.getElementById("boxes");
 
-document.getElementsByClassName('add').onclick = function() {
-    alert("button was clicked");
-};
+    addButton0.onclick = function() {
+        modal.style.display = "block";
+        box.style.display = "none";
+    };
 
-//close module button
-const x = document.getElementsByClassName("close");
+    addButton1.onclick = function() {
+        modal.style.display = "block";
+        box.style.display = "none";
+    };
 
-x.onclick = function() {
-    modalBox.style.display = "none";
-    displayBox.style.display = "block";
-}
+    addButton2.onclick = function() {
+        modal.style.display = "block";
+        box.style.display = "none";
+    };
 
-window.onclick = function(event) {
-    if (event.target == modalBox) {
-        modalBox.style.display = "none";
+    //close module button
+    const x = document.getElementsByClassName("close")[0];
+
+    x.onclick = function() {
+        modal.style.display = "none";
+        box.style.display = "flex";
     }
 }
-
-alert("hi");

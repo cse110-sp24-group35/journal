@@ -112,7 +112,7 @@ h1 {
     position: relative;
     background-color: white;
     margin: 0;
-    width: 100px;
+    width: 200px;
 }
 
 /*due date*/
@@ -232,3 +232,5 @@ button > span {
     display: block;
     margin: 0 auto;
 }
+
+/*End of Modal Box Modifications*/
