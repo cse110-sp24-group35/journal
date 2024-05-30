@@ -189,21 +189,20 @@ button > span {
     top: 0;
     font-size: 30px;
     text-align: left;
-    background: #F3E2D5;
+    background-color: transparent;
     width: 70%;
-    height: 96%; 
+    height: 85%; 
     position:absolute;
-    border-radius: 60px;
 }
 
 .modalContent {
     margin: 20px;
-    background: #F3E2D5;
+    background-color: transparent;
 }
 
 .input {
     padding: 20px 30px;
-    margin: 10px 30px 10px 30px;
+    margin: 10px 30px 10px 50px;
     width: 90%;
     border:none;
     background:white;
@@ -217,6 +216,7 @@ button > span {
     font-size: 50px;
     font-weight: bold;
     cursor: pointer;
+    margin-right: 5px;
 }
 
 /*Add Task Button modal box*/
@@ -233,4 +233,20 @@ button > span {
     margin: 0 auto;
 }
 
+.modalBlock{
+    padding: 5px 15px 0px 15px;
+    background-color: #F3E2D5;
+    border-radius: 60px;
+    width: 100%;
+    height: 100%
+}
+
 /*End of Modal Box Modifications*/
+
+/*
+padding: 25px 50px 75px 100px;
+top padding is 25px
+right padding is 50px
+bottom padding is 75px
+left padding is 100px
+*/
