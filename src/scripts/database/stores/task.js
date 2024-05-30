@@ -1,3 +1,4 @@
+
 import { persistentAtom } from '@nanostores/persistent';
 
 /**
@@ -94,7 +95,30 @@ class NewTasks extends HTMLElement {
         shadowRoot.appendChild(article);
 		shadowRoot.appendChild(style);
     }
-
-    
-
 }
+
+
+//add task button
+let addButton = document.getElementsByClassName("add"); // grab add button class name
+let modalBox = document.getElementsByClassName("modal"); // grab modal box class name
+let displayBox = document.getElementsByClassName("container"); // grab three box of items class name
+
+document.getElementsByClassName('add').onclick = function() {
+    alert("button was clicked");
+};
+
+//close module button
+const x = document.getElementsByClassName("close");
+
+x.onclick = function() {
+    modalBox.style.display = "none";
+    displayBox.style.display = "block";
+}
+
+window.onclick = function(event) {
+    if (event.target == modalBox) {
+        modalBox.style.display = "none";
+    }
+}
+
+alert("hi");

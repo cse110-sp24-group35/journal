@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href= "https://code.jquery.com/ui/1.13.0/themes/dark-hive/jquery-ui.css"> 
+    <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"> </script> 
+    <script src= "https://code.jquery.com/ui/1.13.0/jquery-ui.js" integrity= "sha256-xH4q8N0pEzrZMaRmd7gQVcTZiFei+HfRTBPJ1OGXC0k=" 
+            crossorigin="anonymous"> 
+    </script> 
     <title>Journal | Overview</title>
     <link rel="stylesheet" href="styles\task.css" />
+    <script src="scripts/database/stores/task.js"></script>
+    
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
     </script>
-
     <script type="importmap">
         {
             "imports": {
@@ -22,158 +28,122 @@
 </head>
 
 <body>
+
+    <!-- Navigation Bar -->
     <div class="nav">
         <a href="index.html"></a>
         <a href="calendar.html"></a>
         <a href="tasks.html"></a>
         <a href="journal.html"></a>
     </div>
+
+    <!-- Three Boxes -->
     <div class="container">
+
+        <!-- First Plan Boxes -->
         <div class="planned">
             <h2 class="h2color">Planned:</h2>
             <div class="planTask">
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <button class="add"> 
-                    <img src="styles\images\paw.png" alt= "Cat Paw" width="25" height="25"> <span>Add a task</span>
-                </button>
+                <div class="content">
+
+                    <!-- Shadow Root -->
+                    <div class="inside">
+                        <p>task name</p>
+                        <p>description</p>    
+                        <pre>Due 12/22/24</pre>             
+                        <button class="remove">
+                            <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
+                        </button>
+                        <button class="edit">
+                            <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
+                        </button>
+                    </div>
+                </div>
             </div>
+            <p>
+                <button class="add" id="modalPlan"> 
+                    <img src="styles\images\paw.png" alt= "Cat Paw" width="30" height="30"> <span>Add a task</span>
+                </button>
+            </p>
         </div>
+
+        <!-- Second Work Boxes -->
         <div class="working">
             <h2 class="h2color">Working:</h2>
             <div class="workingTask">
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <button class="add"> 
-                    <img src="styles\images\paw.png" alt= "Cat Paw" width="25" height="25"> <span>Add a task</span>
-                </button>
+                <div class="content">
+
+                    <!-- Shadow Root -->
+                    <div class="inside">
+                        <p>task name</p>
+                        <p>description</p>    
+                        <pre>Due 12/22/24</pre>             
+                        <button class="remove">
+                            <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
+                        </button>
+                        <button class="edit">
+                            <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
+                        </button>
+                    </div>
+                </div>
             </div>
+            <p>
+                <button class="add" id="modalWork"> 
+                    <img src="styles\images\paw.png" alt= "Cat Paw" width="30" height="30"> <span>Add a task</span>
+                </button>
+            </p>
         </div>
+
+        <!-- Third Done Boxes -->
         <div class="done">
             <h2 class="h2color">Done:</h2>
             <div class="doneTask">
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <p class="inside">
-                    task name<br>
-                    description
-                    <button class="remove">
-                        <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                    </button>
-                    <button class="edit">
-                        <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
-                    </button>
-                </p>
-                <button class="add"> 
-                    <img src="styles\images\paw.png" alt= "Cat Paw" width="25" height="25"> <span>Add a task</span>
-                </button>
+                <div class="content">
+
+                    <!-- Shadow Root -->
+                    <div class="inside">
+                        <p>Finish Program</p>
+                        <p>CSE 110 Project</p>    
+                        <pre>Due 12/22/24</pre>             
+                        <button class="remove">
+                            <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
+                        </button>
+                        <button class="edit">
+                            <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
+                        </button>
+                    </div>
+                </div>
             </div>
+            <p>
+                <button class="add" id="modalDone"> 
+                    <img src="styles\images\paw.png" alt= "Cat Paw" width="30" height="30"> <span>Add a task</span>
+                </button>
+            </p>
         </div>
-        
+        <script> 
+            $(".inside").draggable({ 
+                snap: ".inside", 
+            }) 
+        </script> 
+    </div>
+
+    <!-- Modal Box -->
+    <div class="modal">
+        <h1>Add a task</h1>
+        <span class="close">&times;</span>
+        <form class="modalContent">
+            <label class="modalContent" for="taskName">Task name</label><br>
+            <input type="text" id="taskName" name="taskName" class="input"><br>
+            <label class="modalContent" for="dueDate">Due Date</label><br>
+            <input type="text" id="dueDate" name="dueDate" class="input"><br>
+            <label class="modalContent" for="taskDesc">Task Description</label><br>
+            <input type="text" id="taskDesc" name="taskDesc" class="input"><br>
+            <label class="modalContent" for="journal">Link to Journal</label><br>
+            <input type="text" id="taskName" name="taskName" class="input"><br>
+            <label class="modalContent" for="tag">Tags</label><br>
+            <input type="text" id="tag" name="tag" class="input"><br>
+        </form>
+        <button class="taskEnter">Add Task</button>
     </div>
 </body>
 </html>
