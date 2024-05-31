@@ -8,7 +8,7 @@
     </script> 
     <title>Journal | Overview</title>
     <link rel="stylesheet" href="styles\task.css" />
-    <script src="scripts/database/stores/task.js"></script>
+    <script src="scripts/database/stores/addTask.js"></script>
     
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
@@ -50,12 +50,14 @@
                     <div class="inside">
                         <p>task name</p>
                         <p>description</p>    
-                        <pre>Due 12/22/24</pre>             
-                        <button class="remove">
-                            <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                        </button>
+                        <pre>Due 12/22/24</pre>
+                        <img class="orangeBlob" src="styles\images\orangeBlob.png" alt="Orange Blob" width="65" height="40">
+                        <img class="grayBlob" src="styles\images\grayBlob.png" alt="Gray Blob" width="50" height="45">             
                         <button class="edit">
-                            <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
+                            <img class="pencil" src="styles\images\pencil.png" alt="remove" width="30" height="30">
+                        </button>
+                        <button class="remove">
+                            <img src="styles\images\close.jpg" alt="edit" width="23" height="23">
                         </button>
                     </div>
                 </div>
@@ -77,14 +79,30 @@
                     <div class="inside">
                         <p>task name</p>
                         <p>description</p>    
-                        <pre>Due 12/22/24</pre>             
-                        <button class="remove">
-                            <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                        </button>
+                        <pre>Due 12/122/124</pre>
+                        <img class="orangeBlob" src="styles\images\orangeBlob.png" alt="Orange Blob" width="65" height="40">
+                        <img class="grayBlob" src="styles\images\grayBlob.png" alt="Gray Blob" width="50" height="45">             
                         <button class="edit">
-                            <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
+                            <img class="pencil" src="styles\images\pencil.png" alt="remove" width="30" height="30">
+                        </button>
+                        <button class="remove">
+                            <img src="styles\images\close.jpg" alt="edit" width="23" height="23">
                         </button>
                     </div>
+                    <div class="inside">
+                        <p>task name</p>
+                        <p>description</p>    
+                        <pre>Due 12/122/124</pre>
+                        <img class="orangeBlob" src="styles\images\orangeBlob.png" alt="Orange Blob" width="65" height="40">
+                        <img class="grayBlob" src="styles\images\grayBlob.png" alt="Gray Blob" width="50" height="45">             
+                        <button class="edit">
+                            <img class="pencil" src="styles\images\pencil.png" alt="remove" width="30" height="30">
+                        </button>
+                        <button class="remove">
+                            <img src="styles\images\close.jpg" alt="edit" width="23" height="23">
+                        </button>
+                    </div>
+                    
                 </div>
             </div>
             <p>
@@ -99,17 +117,18 @@
             <h2 class="h2color">Done:</h2>
             <div class="doneTask">
                 <div class="content">
-
                     <!-- Shadow Root -->
                     <div class="inside">
-                        <p>Finish Program</p>
-                        <p>CSE 110 Project</p>    
-                        <pre>Due 12/22/24</pre>             
-                        <button class="remove">
-                            <img src="styles\images\pencil.jpg" alt="remove" width="20" height="20">
-                        </button>
+                        <p>task name</p>
+                        <p>description</p>    
+                        <pre>Due 12/22/24</pre>
+                        <img class="orangeBlob" src="styles\images\orangeBlob.png" alt="Orange Blob" width="65" height="40">
+                        <img class="grayBlob" src="styles\images\grayBlob.png" alt="Gray Blob" width="50" height="45">             
                         <button class="edit">
-                            <img src="styles\images\x.jpg" alt="edit" width="20" height="20">
+                            <img class="pencil" src="styles\images\pencil.png" alt="remove" width="30" height="30">
+                        </button>
+                        <button class="remove">
+                            <img src="styles\images\close.jpg" alt="edit" width="23" height="23">
                         </button>
                     </div>
                 </div>
@@ -131,17 +150,18 @@
     <div class="modal" id="modalBlock">
         <h1>Add a task</h1>
         <div class="modalBlock">
-            <span class="close">&times;</span>
+            <img class="cat" src="styles\images\cat.png" alt="cat sitting"  width="140" height="110">
+            <span class="close">X</span>
             <form class="modalContent">
-                <label class="modalContent" for="taskName">Task name</label><br>
+                <label for="taskName">Task name</label><br>
                 <input type="text" id="taskName" name="taskName" class="input"><br>
-                <label class="modalContent" for="dueDate">Due Date</label><br>
+                <label for="dueDate">Due Date</label><br>
                 <input type="text" id="dueDate" name="dueDate" class="input"><br>
-                <label class="modalContent" for="taskDesc">Task Description</label><br>
+                <label for="taskDesc">Task Description</label><br>
                 <input type="text" id="taskDesc" name="taskDesc" class="input"><br>
-                <label class="modalContent" for="journal">Link to Journal</label><br>
+                <label for="journal">Link to Journal</label><br>
                 <input type="text" id="taskName" name="taskName" class="input"><br>
-                <label class="modalContent" for="tag">Tags</label><br>
+                <label for="tag">Tags</label><br>
                 <input type="text" id="tag" name="tag" class="input"><br>
             </form>
             <button class="taskEnter">Add Task</button>

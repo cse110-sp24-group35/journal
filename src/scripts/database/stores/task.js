@@ -7,7 +7,7 @@ import { persistentAtom } from '@nanostores/persistent';
  * @property {string} title - The task title
  * @property {string} description - The task description
  * @property {string} priority - The task priority
- * @property {string} status - Task status, can be one of "PLANNED", "ONGOING", "COMPLETED", "ABANDONED"
+ * @property {string} status - Task status, can be one of "PLANNED"z, "ONGOING", "COMPLETED", "ABANDONED"
  * @property {number} createdAt - The timestamp when task has been created
  * @property {number} dueAt - The timestamp when a task is "due"
  */
@@ -83,48 +83,3 @@ export function createTask(id, title, description, priority, status, dueAt) {
     ]);
 }
 
-class NewTasks extends HTMLElement {
-    constructor() {
-        super();
-
-        const shadowRoot = this.attachShadow({mode: 'open'});
-        const span = document.createElement('span');
-        const style = document.createElement('style');
-        //style.innerHTML = '';
-        shadowRoot.appendChild(article);
-		shadowRoot.appendChild(style);
-    }
-}
-
-window.addEventListener('DOMContentLoaded', init);
-
-function init() {
-    let addButton0 =  document.getElementsByClassName("add")[0];
-    let addButton1 =  document.getElementsByClassName("add")[1];
-    let addButton2 =  document.getElementsByClassName("add")[2];
-    let modal = document.getElementById("modalBlock");
-    let box = document.getElementById("boxes");
-
-    addButton0.onclick = function() {
-        modal.style.display = "block";
-        box.style.display = "none";
-    };
-
-    addButton1.onclick = function() {
-        modal.style.display = "block";
-        box.style.display = "none";
-    };
-
-    addButton2.onclick = function() {
-        modal.style.display = "block";
-        box.style.display = "none";
-    };
-
-    //close module button
-    const x = document.getElementsByClassName("close")[0];
-
-    x.onclick = function() {
-        modal.style.display = "none";
-        box.style.display = "flex";
-    }
-}
