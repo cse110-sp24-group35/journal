@@ -1,4 +1,4 @@
-import { journals, createJournal, getJournal, deleteJournal } from '../scripts/database/stores/journal.js';
+import { journals, createJournal, getJournal, deleteJournal } from '../database/stores/journal.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const resizer = document.getElementById('resizer'); // Black bar on the right of the tree-view window. Can be dragged.
