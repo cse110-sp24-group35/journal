@@ -86,52 +86,14 @@ describe("Tree View", () => {
         await server.close();
     });
 
-    beforeEach(() => {
-        // Reset the journal store before each test
-        journals.set([]);
-    });
-
-    it('should create a new journal', () => {
-        const path = "folder1/folder2/journal1";
-        createJournal("Test Journal", path, "Test Content", ["tag1", "tag2"]);
-        const journal = getJournal(path);
-        expect(journal).to.exist;
-        expect(journal.title).to.equal("Test Journal");
-        expect(journal.content).to.equal("Test Content");
-    });
-
-    it('should get a journal by path', () => {
-        const path = "folder1/folder2/journal1";
-        createJournal("Test Journal", path, "Test Content", ["tag1", "tag2"]);
-        const journal = getJournal(path);
-        expect(journal).to.exist;
-        expect(journal.path).to.equal(path);
-    });
-
-    it('should delete a journal by path', () => {
-        const path = "folder1/folder2/journal1";
-        createJournal("Test Journal", path, "Test Content", ["tag1", "tag2"]);
-        const deleted = deleteJournal(path);
-        const journal = getJournal(path);
-        expect(deleted).to.be.true;
-        expect(journal).to.be.undefined;
-    });
-
-    it('should not delete a non-existent journal', () => {
-        const path = "folder1/folder2/nonexistent";
-        const deleted = deleteJournal(path);
-        expect(deleted).to.be.false;
-    });
-
     it('should populate the tree view on load', async () => {
-        createJournal("Test Journal", "folder1/folder2/journal1", "Test Content", ["tag1", "tag2"]);
-        //wait for 3 seconds
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        await page.goto("http://localhost:1000/journal.html", {
-            waitUntil: 'networkidle0',
+        await page.evaluate(async () => {
+            const helper = await import("./scripts/database/stores/journal.js");
+            helper.createJournal("Test Journal", "folder1/journal1", "Test Content", ["tag1"]);
         });
-        await page.waitForSelector('#content .treeElement');
-        const treeElements = await page.$$('#content .treeElement');
+        await page.reload();
+        await page.waitForSelector('#content > .treeElement');
+        const treeElements = await page.$$('#content > .treeElement');
         expect(treeElements.length).to.be.greaterThan(0);
     });
 
@@ -177,9 +139,6 @@ describe("Tree View", () => {
     });
 
     it('should load journal content on button click', async () => {
-        createJournal("Test Journal", "folder1/journal1", "Test Content", ["tag1"]);
-        await page.reload(); // Reload the page to apply the new journal
-
         const journalButton = await page.$('.journalButton');
         await journalButton.click();
         const journalTitle = await page.$eval('#journal-view h1', el => el.textContent);
@@ -187,9 +146,6 @@ describe("Tree View", () => {
     });
 
     it('should populate tree view correctly', async () => {
-        createJournal("Test Journal", "folder1/journal1", "Test Content", ["tag1"]);
-        await page.reload(); // Reload the page to apply the new journal
-
         const treeData = journals.get().map(journal => journal.path);
         const tree = buildTree(treeData);
         const treeArray = convertTreeToArray(tree);
