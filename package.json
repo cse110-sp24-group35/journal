@@ -6,7 +6,7 @@
     "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage \"src/test/unit/*\"",
     "coverage:codecov": "codecov",
     "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js \"src/test/unit/*\"",
-    "test:e2e": "mocha \"src/test/e2e/*.js\"",
+    "test:e2e": "node --experimental-vm-modules node_modules/jest/bin/jest.js \"src/test/e2e/*\"",
     "lint": "pnpm run lint:html && pnpm run lint:css && pnpm run lint:js",
     "lint:html": "htmlhint ./src/**/*.html",
     "lint:css": "stylelint ./src/**/*.css",
