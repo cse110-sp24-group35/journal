@@ -20,12 +20,27 @@ export function loadTreeView() {
     collapseButton.addEventListener('click', () => collapseTreeView(treeViewer, journalViewer, collapseButton, expandButton));
     expandButton.addEventListener('click', () => expandTreeView(treeViewer, journalViewer, collapseButton, expandButton));
 
-    /*
-    deleteJournal("hello/world");
-    createJournal("Hello World", "hello/world", "Hello World", ["Hello", "World"]);
-    */
+    createFakeJournals();
    
     populateTreeView();
+}
+
+export function createFakeJournals() {
+    journals.set([]);
+    deleteJournal("hello/world");
+    createJournal("Hello World", "hello/world", "Hello World", ["Hello", "World"]);
+    deleteJournal("hello/planet");
+    createJournal("Hello Planet", "hello/planet", "Hello Planet", ["Hello", "Planet"]);
+    deleteJournal("hello/far/away/world");
+    createJournal("Hello Far Away World", "hello/far/away/world", "Hello Far Away World", ["Hello", "Far", "Away", "World"]);
+    deleteJournal("goodbye/world");
+    createJournal("Goodbye World", "goodbye/world", "Goodbye World", ["Goodbye", "World"]);
+    deleteJournal("world");
+    createJournal("World", "world", "World", ["World"]);
+    for (let i = 0; i < 100; i++) {
+        deleteJournal("entity" + i);
+        createJournal("entity " + i, "entity" + i, "entity " + i, ["entity", i]);
+    }
 }
 
 // Function populates entire tree-view without any arguments.
@@ -173,8 +188,16 @@ export function populateButtons(parentChildren, parentElement, treePath, journal
             });
         } else { // If the path has no children, the file is a journal not a folder.
             fileButton.innerHTML = "JOURNAL - " + parentChildren[i].name; // Distinctly marks journal buttons (Probably will change later)
+
             fileButton.classList.add("journalButton"); // Marks journal buttons as journalButton for CSS
             fileButton.addEventListener('click', () => { // When a JOURNAL button is clicked
+                            //Clear the .selected class of all elements
+                let selectedOnTree = document.querySelectorAll('.selected');
+                selectedOnTree.forEach((element) => {
+                    element.classList.remove('selected');
+                });
+                fileDiv.classList.add("selected"); // Marks the selected journal as selected for CSS
+
                 journalViewer.innerHTML = ""; // CLEAR whatever is displayed to the right
                 const journalToLoad = getJournal(fileButton.id.slice(5)); // Load in the corresponding journal from the database
 
