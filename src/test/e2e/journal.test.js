@@ -87,14 +87,17 @@ describe("Tree View", () => {
     });
 
     it('should populate the tree view on load', async () => {
+        let treeElements = await page.$$('#content > .treeElement');
+        console.log("Tree view should be empty if no journals exist");
+        expect(treeElements.length).to.equal(0); // The tree view should be empty if no journals exist
         await page.evaluate(async () => {
             const helper = await import("./scripts/database/stores/journal.js");
             helper.createJournal("Test Journal", "folder1/journal1", "Test Content", ["tag1"]);
         });
-        await page.reload();
         await page.waitForSelector('#content > .treeElement');
-        const treeElements = await page.$$('#content > .treeElement');
-        expect(treeElements.length).to.be.greaterThan(0);
+        treeElements = await page.$$('#content > .treeElement');
+        console.log("Tree view should have one folder on the top level");
+        expect(treeElements.length).to.equal(1);
     });
 
     it('should collapse and expand the tree view', async () => {
@@ -127,7 +130,6 @@ describe("Tree View", () => {
 
     it('should open and close folders', async () => {
         const firstFolderButton = await page.$('.folder > button');
-        const initialContent = await firstFolderButton.evaluate(node => node.textContent);
 
         await firstFolderButton.click();
         const openContent = await firstFolderButton.evaluate(node => node.textContent);
@@ -136,25 +138,27 @@ describe("Tree View", () => {
         await firstFolderButton.click();
         const closeContent = await firstFolderButton.evaluate(node => node.textContent);
         expect(closeContent).to.include('+');
+
+        await firstFolderButton.click(); // Open the folder again for the next test
     });
 
     it('should load journal content on button click', async () => {
         const journalButton = await page.$('.journalButton');
         await journalButton.click();
-        const journalTitle = await page.$eval('#journal-view h1', el => el.textContent);
+        const journalTitle = await page.$eval('#journal-view > h1', el => el.textContent);
         expect(journalTitle).to.equal("Test Journal");
     });
 
-    it('should populate tree view correctly', async () => {
-        const treeData = journals.get().map(journal => journal.path);
-        const tree = buildTree(treeData);
-        const treeArray = convertTreeToArray(tree);
-        const contentContainer = await page.$('#content');
-        contentContainer.innerHTML = "";
-        const journalViewer = await page.$('#journal-view');
-
-        populateButtons(treeArray, contentContainer, "tree", journalViewer);
-        const treeElements = await page.$$('#content .treeElement');
-        expect(treeElements.length).to.be.greaterThan(0);
+    it('should update tree view upon journal deletion', async () => {
+        let treeElements = await page.$$('#content > .treeElement');
+        console.log("Tree view should have an element");
+        expect(treeElements.length).to.equal(1); 
+        await page.evaluate(async () => {
+            const helper = await import("./scripts/database/stores/journal.js");
+            helper.deleteJournal("folder1/journal1");
+        });
+        treeElements = await page.$$('#content > .treeElement');
+        console.log("Tree view should be empty");
+        expect(treeElements.length).to.equal(0);
     });
 });

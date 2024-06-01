@@ -1,12 +1,9 @@
 import { journals, createJournal, getJournal, deleteJournal } from './database/stores/journal.js';
 
-let GLOBAL_COUNT = 0;
+journals.listen(() => populateTreeView());
 
 document.addEventListener('DOMContentLoaded', function() {
-    GLOBAL_COUNT++;
     loadTreeView();
-    const journalViewTest = document.getElementById("journal-view-text");
-    journalViewTest.innerHTML = GLOBAL_COUNT;
 });
 
 export function loadTreeView() {

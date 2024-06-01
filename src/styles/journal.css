@@ -31,7 +31,7 @@
     position: fixed;
     top: 0;
     left: 10%; /* Align resizable box to the right of sidebar */
-    background-color: lightyellow;
+    background-color: #FFF5ED;
     overflow: hidden; /* When the resize-bar clips into elements, they don't wrap */
 }
 
@@ -45,7 +45,7 @@
 }
 
 #journal-view{ /* The section to the right of the tree-view */
-    background-color:turquoise;
+    background-color:#FFF5ED;
     height: 100vh;
     right: 0;
     position:absolute;
