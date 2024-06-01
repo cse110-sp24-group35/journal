@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- temporarily add stuff for manual testing -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task List</title>
-    <link rel="stylesheet" href="styles/task.css">
-
+    <title>Journal | Overview</title>
+    <link rel="stylesheet" href="styles/journal.css">
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
-    <script>
-        window.process = { browser: true, env: { NODE_ENV: "production" } };
-    </script>
+        <script>
+            window.process = { browser: true, env: { NODE_ENV: "production" } };
+        </script>
 
     <script type="importmap">
         {
@@ -28,5 +26,10 @@
     </div>
     <script type="module" src="scripts/components/task-component.js"></script>
     <a href="./journal.html">Journal</a>
+    
+    <modal-journal></modal-journal>
+
+    <script src="styles/modal-component.js"></script>
 </body>
+
 </html>

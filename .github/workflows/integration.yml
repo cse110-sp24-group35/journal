@@ -35,6 +35,12 @@ jobs:
         run: pnpm install --no-frozen-lockfile
       - name: Unit Test & Coverage
         run: pnpm i -D lcov && pnpm run coverage
+      - name: Unit Test
+        run: pnpm run test:unit
+      - name: Install LCov
+        run: pnpm i -D lcov
+      - name: Code Quality & Coverage
+        uses: paambaati/codeclimate-action@v6.0.0
         env:
           MOCHA_REPORTER: mocha-reporter-gha
       - name: Upload coverage reports to Codecov
