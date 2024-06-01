@@ -15,70 +15,68 @@ describe("Test if modal appears", () => {
     let page;
     let server;
 
-    const fastify = new Fastify();
+    const fastify = Fastify();
 
-    before(async function () {
-        this.timeout(10000);
-
+    beforeAll(async function () {
         fastify.register(staticPlugin, {
             root: path.join(__dirname, "../../") // Adjust the path to your project's root if needed
         });
 
         server = fastify;
         await server.listen({
-            port: 4321
+            port: 1000
         });
 
         browser = await puppeteer.launch({
             headless: true
         });
         page = await browser.newPage();
-        await page.goto("http://localhost:4321/journal.html"); // Adjust the path to your HTML file
-    });
+        await page.goto("http://localhost:1000/journal.html"); // Adjust the path to your HTML file
+    }, 10000);
 
-    after(async () => {
+    afterAll(async () => {
         await browser.close();
         await server.close();
     });
 
-    it("should display the modal", async () => {
+    test("should display the modal", async () => {
         // Check if the modal is visible
         const isModalVisible = await page.evaluate(() => {
-            const modal = document.querySelector('.modal');
+            const shadow = document.querySelector("modal-journal");
+            const modal = shadow.shadowRoot.querySelector('.modal');
             const style = window.getComputedStyle(modal);
             return style.display !== 'none';
         });
 
-        console.log(`Modal is visible: ${isModalVisible}`);
-        assert.strictEqual(isModalVisible, true, "The modal should be visible");
+        expect(isModalVisible).to.equal(true);
     });
 });
 
-describe("Journal Page", () => {
+//TREE VIEW TESTS
+describe("Tree View", () => {
     let browser;
     let page;
     let server;
 
-    const fastify = new Fastify();
+    const fastify = Fastify();
 
-    beforeAll(async () => {
+    beforeAll(async function () {
         fastify.register(staticPlugin, {
-            root: path.join(__dirname, "../../"),
-            prefix: "/",
+            root: path.join(__dirname, "../../") // Adjust the path to your project's root if needed
         });
 
         server = fastify;
         await server.listen({
-            port: 4322
+            port: 1000
         });
 
         browser = await puppeteer.launch({
-            headless: true,
-            slowMo: 125
+            headless: false,
+            slowMo: 200
         });
         page = await browser.newPage();
-        await page.goto("http://localhost:4322/journal.html");
-    }, 30000);
+        await page.goto("http://localhost:1000/journal.html"); // Adjust the path to your HTML file
+    }, 10000);
 
     afterAll(async () => {
         await browser.close();
@@ -123,6 +121,9 @@ describe("Journal Page", () => {
     });
 
     it('should populate the tree view on load', async () => {
+        const path = "folder1/folder2/journal1";
+        createJournal("Test Journal", path, "Test Content", ["tag1", "tag2"]);
+        await page.reload(); // Reload the page to apply the new journal
         await page.waitForSelector('#content .treeElement');
         const treeElements = await page.$$('#content .treeElement');
         expect(treeElements.length).to.be.greaterThan(0);
