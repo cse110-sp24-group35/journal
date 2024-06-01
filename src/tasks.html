@@ -24,18 +24,29 @@
     </script>
     
     <!-- Polyfill end -->
-    <h1>Task Lists</h1>
 </head>
 
 <body>
-
+    <h1>Task Lists</h1>
     <!-- Navigation Bar -->
     <div class="nav">
-        <a href="index.html"></a>
-        <a href="calendar.html"></a>
-        <a href="tasks.html"></a>
-        <a href="journal.html"></a>
+        <button id="open" onclick="openNav()"><img src="styles\images\navigation.png" alt="Menu Button" width="50" height="50"> </button>
+        <div id="navBar">
+            <button id="close" onclick="closeNav()">X</button>
+            <a href="index.html"></a>
+            <a href="calendar.html"></a>
+            <a href="tasks.html"></a>
+            <a href="journal.html"></a>
+        </div>
     </div>
+    <script>
+        function openNav() {
+            document.getElementById("navbar").style.width = "100px";
+        }
+        function closeNav() {
+            document.getElementById("navBar").style.width = "0";
+        }
+    </script>
 
     <!-- Three Boxes -->
     <div class="container" id="boxes">

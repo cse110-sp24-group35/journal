@@ -12,6 +12,35 @@
     
 }
 
+/*Navigation Bar*/
+.nav {
+    height: 100%;
+    width: 3.5%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.nav a{
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.nav a:hover {
+    color: #f1f1f1;
+}
+
+.navBar {
+
+}
+
 h1 {
     font-size: 60px;
     text-align: center;
