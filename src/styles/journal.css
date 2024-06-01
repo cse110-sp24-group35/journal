@@ -11,13 +11,14 @@
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #00FF00; 
+    background-color: #0F0; 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     z-index: 2; 
 }
+
 #sidebar button {
     margin: 10px 0;
 }
@@ -37,15 +38,15 @@
 
 #content { /* The container for the file-tree */
     height: calc(100vh - 4em); /* Makes the tree-view take up the entire viewport */
-    padding: .0em;
+    padding: .01em;
     overflow: scroll;
     margin-top: 3.5em;
     scrollbar-width: none; /* HIDE scroll bar */
-    border-top: 0.5em solid #000000;
+    border-top: 0.5em solid #000;
 }
 
 #create-journal { /* The plus button on the top-right of the tree view */
-    background-color: #00FF00;
+    background-color: #0F0;
     position:absolute;
     width: 2em;
     height: 2em;
@@ -68,8 +69,6 @@
 #resizer {
     width: 0.5em;
     height: inherit;
-    /* Makes it so the resizer's drag box is larger than it looks */
-    /* background: linear-gradient(to right, #FFF5ED 25%, black 25%, black 75%, #FFF5ED 75%);  */
     background-color: black;
     cursor: ew-resize;
     position: absolute;
@@ -87,7 +86,7 @@
     transform: translateY(-50%);
     cursor: pointer;
     background-color: #ccc;
-    border: 0px solid #ccc;
+    border: none;
     border-radius: 0.5em;
 }
 
@@ -101,14 +100,14 @@
 }
 
 /* Indents subfolders and makes sure they don't wrap */
-.treeElement {
+.tree-element {
     white-space: nowrap; /* Makes elements not wrap in the tree-view */
     padding-left: 1em; /* Indents each layer (DO NOT USE %) */
 }
 
 /* Removes the indentation for the root files */
-#content > .treeElement {
-    padding-left: 0em;
+#content > .tree-element {
+    padding-left: 0.01em;
 }
 
 .folder{ /* The div for each folder button. Probably don't need this */
@@ -124,7 +123,7 @@
     padding: 0.5em;
 }
 
-.journalButton { /* The styling for the journal button (not the div) */
+.journal-button { /* The styling for the journal button (not the div) */
 }
 
 .selected {
@@ -136,14 +135,11 @@
 .selected::before {
     content: ''; /* Required for pseudo-elements */
     position: absolute;
-    top: 0;
-    left: -100vw; /* Extend the background to the left */
-    right: 0; 
-    bottom: 0;
+    inset: 0 0 0 -100vw; /* extend the background color to the left */
     background-color: inherit; /* Inherit the background color from the parent */
     z-index: -1; /* Place the pseudo-element behind the parent element */
 }
 
-.parentFolderClosed { /* Hides the display of a div if its PARENT folder is closed */
+.parent-folder-closed { /* Hides the display of a div if its PARENT folder is closed */
     display:none;
 }

@@ -2,15 +2,11 @@ import puppeteer from 'puppeteer';
 import Fastify from 'fastify';
 import staticPlugin from '@fastify/static';
 import path from 'path';
-import assert from 'assert';
 import { expect } from 'chai';
 import { fileURLToPath } from 'url';
-import { journals, createJournal, getJournal, deleteJournal } from '../../scripts/database/stores/journal';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
-/*
 describe("Test if modal appears", () => {
     let browser;
     let page;
@@ -43,6 +39,9 @@ describe("Test if modal appears", () => {
     test("should display the modal upon clicking add new task", async () => {
         // Check if the modal is visible
         const isModalVisible = await page.evaluate(() => {
+            const journalBody = document.querySelector("body");
+            const newModal = document.createElement("modal-journal");
+            journalBody.appendChild(newModal);
             const shadow = document.querySelector("modal-journal");
             const modal = shadow.shadowRoot.querySelector('.modal');
             const style = window.getComputedStyle(modal);
@@ -50,10 +49,13 @@ describe("Test if modal appears", () => {
         });
 
         expect(isModalVisible).to.equal(true);
+
+        await page.evaluate(() => {
+            const shadow = document.querySelector("modal-journal");
+            shadow.remove();
+        });
     });
 });
-
-*/
 
 //TREE VIEW TESTS
 describe("Tree View", () => {
@@ -87,15 +89,15 @@ describe("Tree View", () => {
     });
 
     it('should populate the tree view on load', async () => {
-        let treeElements = await page.$$('#content > .treeElement');
+        let treeElements = await page.$$('#content > .tree-element');
         console.log("Tree view should be empty if no journals exist");
         expect(treeElements.length).to.equal(0); // The tree view should be empty if no journals exist
         await page.evaluate(async () => {
             const helper = await import("./scripts/database/stores/journal.js");
             helper.createJournal("Test Journal", "folder1/journal1", "Test Content", ["tag1"]);
         });
-        await page.waitForSelector('#content > .treeElement');
-        treeElements = await page.$$('#content > .treeElement');
+        await page.waitForSelector('#content > .tree-element');
+        treeElements = await page.$$('#content > .tree-element');
         console.log("Tree view should have one folder on the top level");
         expect(treeElements.length).to.equal(1);
     });
@@ -143,21 +145,21 @@ describe("Tree View", () => {
     });
 
     it('should load journal content on button click', async () => {
-        const journalButton = await page.$('.journalButton');
+        const journalButton = await page.$('.journal-button');
         await journalButton.click();
         const journalTitle = await page.$eval('#journal-view > h1', el => el.textContent);
         expect(journalTitle).to.equal("Test Journal");
     });
 
     it('should update tree view upon journal deletion', async () => {
-        let treeElements = await page.$$('#content > .treeElement');
+        let treeElements = await page.$$('#content > .tree-element');
         console.log("Tree view should have an element");
         expect(treeElements.length).to.equal(1); 
         await page.evaluate(async () => {
             const helper = await import("./scripts/database/stores/journal.js");
             helper.deleteJournal("folder1/journal1");
         });
-        treeElements = await page.$$('#content > .treeElement');
+        treeElements = await page.$$('#content > .tree-element');
         console.log("Tree view should be empty");
         expect(treeElements.length).to.equal(0);
     });

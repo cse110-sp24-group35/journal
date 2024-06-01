@@ -20,7 +20,7 @@ export function loadTreeView() {
     collapseButton.addEventListener('click', () => collapseTreeView(treeViewer, journalViewer, collapseButton, expandButton));
     expandButton.addEventListener('click', () => expandTreeView(treeViewer, journalViewer, collapseButton, expandButton));
 
-    createFakeJournals();
+    //createFakeJournals();
    
     populateTreeView();
 }
@@ -154,13 +154,13 @@ export function convertTreeToArray(tree) {
 // Function to hide the display of all files inside the folder
 export function closeFolder(folder) {
     for (let i = 1; i < folder.children.length; i++)
-        folder.children[i].classList.add("parentFolderClosed");
+        folder.children[i].classList.add("parent-folder-closed");
 }
 
 // Function to show the display of all files inside the folder
 export function openFolder(folder) {
     for (let i = 1; i < folder.children.length; i++)
-        folder.children[i].classList.remove("parentFolderClosed");
+        folder.children[i].classList.remove("parent-folder-closed");
 }
 
 // Function to recursively load all files into the HTML
@@ -168,10 +168,10 @@ export function populateButtons(parentChildren, parentElement, treePath, journal
     for (let i = 0; i < parentChildren.length; i++) { // For each direct child of the parent path
         const fileDiv = document.createElement("div"); // Container for the button. Path children are appended to this
         const fileButton = document.createElement("button"); // Button for the folder/journal
-        fileDiv.classList.add("treeElement"); // treeElement class for CSS
+        fileDiv.classList.add("tree-element"); // tree-element class for CSS
         fileButton.id = treePath + "/" + parentChildren[i].name; // Makes the ID of each button element match the path in the database
         if (treePath !== "tree") // IF THIS FILE IS NOT AT THE TOPMOST LAYER
-            fileDiv.classList.add("parentFolderClosed"); // Make this element hidden initially
+            fileDiv.classList.add("parent-folder-closed"); // Make this element hidden initially
         if (parentChildren[i].children) { // If the path has children, it is a folder
             fileButton.innerHTML = "+ " + parentChildren[i].name; // + indicates a closed folder
             fileDiv.classList.add("folder"); // Folders are put into the folder class for CSS
@@ -189,7 +189,7 @@ export function populateButtons(parentChildren, parentElement, treePath, journal
         } else { // If the path has no children, the file is a journal not a folder.
             fileButton.innerHTML = "JOURNAL - " + parentChildren[i].name; // Distinctly marks journal buttons (Probably will change later)
 
-            fileButton.classList.add("journalButton"); // Marks journal buttons as journalButton for CSS
+            fileButton.classList.add("journal-button"); // Marks journal buttons as journal-button for CSS
             fileButton.addEventListener('click', () => { // When a JOURNAL button is clicked
                             //Clear the .selected class of all elements
                 let selectedOnTree = document.querySelectorAll('.selected');
