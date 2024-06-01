@@ -1,0 +1,111 @@
+.kanban-column {
+    background: #f4f5f7;
+    border-radius: 3px;
+    display: inline-block;
+    margin: 0 10px;
+    vertical-align: top;
+    width: 250px;
+}
+
+.kanban-column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0079bf;
+    color: #fff;
+    padding: 10px;
+    border-radius: 3px 3px 0 0;
+}
+
+.kanban-card-container {
+    padding: 10px;
+    min-height: 100px;
+}
+
+.add-kanban-card-button {
+    background: #5aac44;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    margin: 10px;
+}
+
+.add-kanban-column-button {
+    background: #5aac44;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    margin: 10px;
+}
+
+.kanban-card-popup {
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+    background: white;
+}
+
+.kanban-card-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kanban-card-popup-body textarea {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+}
+
+.kanban-card-popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.kanban-card {
+    background: white;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
+    cursor: pointer;
+    margin: 0 0 8px 0;
+    padding: 10px;
+    position: relative;
+}
+
+.priority-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 5px;
+    border-radius: 3px 0 0 3px;
+}
+
+.priority-low {
+    background-color: green;
+}
+
+.priority-medium {
+    background-color: yellow;
+}
+
+.priority-high {
+    background-color: red;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

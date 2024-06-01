@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Journal | Overview</title>
+    <title>Journal | Tasks</title>
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -16,9 +16,12 @@
         }
     </script>
     <!-- Polyfill end -->
+
+    <link rel="stylesheet" href="styles/views/kanban.css">
 </head>
 
 <body>
-This is a test page
+    <main></main>
+    <script type="module" src="scripts/components/kanban.js"></script>
 </body>
 </html>
