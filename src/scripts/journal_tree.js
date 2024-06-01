@@ -1,6 +1,15 @@
-import { journals, createJournal, getJournal, deleteJournal } from '../database/stores/journal.js';
+import { journals, createJournal, getJournal, deleteJournal } from './database/stores/journal.js';
+
+let GLOBAL_COUNT = 0;
 
 document.addEventListener('DOMContentLoaded', function() {
+    GLOBAL_COUNT++;
+    loadTreeView();
+    const journalViewTest = document.getElementById("journal-view-text");
+    journalViewTest.innerHTML = GLOBAL_COUNT;
+});
+
+export function loadTreeView() {
     const resizer = document.getElementById('resizer'); // Black bar on the right of the tree-view window. Can be dragged.
     const treeViewer = document.getElementById('resizable-box'); // Tree view window container
     const journalViewer = document.getElementById('journal-view'); // Journal view (Right of tree-view)
@@ -14,8 +23,13 @@ document.addEventListener('DOMContentLoaded', function() {
     collapseButton.addEventListener('click', () => collapseTreeView(treeViewer, journalViewer, collapseButton, expandButton));
     expandButton.addEventListener('click', () => expandTreeView(treeViewer, journalViewer, collapseButton, expandButton));
 
+    /*
+    deleteJournal("hello/world");
+    createJournal("Hello World", "hello/world", "Hello World", ["Hello", "World"]);
+    */
+   
     populateTreeView();
-});
+}
 
 // Function populates entire tree-view without any arguments.
 export function populateTreeView() {

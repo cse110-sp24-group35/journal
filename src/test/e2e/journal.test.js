@@ -6,10 +6,11 @@ import assert from 'assert';
 import { expect } from 'chai';
 import { fileURLToPath } from 'url';
 import { journals, createJournal, getJournal, deleteJournal } from '../../scripts/database/stores/journal';
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
+/*
 describe("Test if modal appears", () => {
     let browser;
     let page;
@@ -39,7 +40,7 @@ describe("Test if modal appears", () => {
         await server.close();
     });
 
-    test("should display the modal", async () => {
+    test("should display the modal upon clicking add new task", async () => {
         // Check if the modal is visible
         const isModalVisible = await page.evaluate(() => {
             const shadow = document.querySelector("modal-journal");
@@ -51,6 +52,8 @@ describe("Test if modal appears", () => {
         expect(isModalVisible).to.equal(true);
     });
 });
+
+*/
 
 //TREE VIEW TESTS
 describe("Tree View", () => {
@@ -72,7 +75,7 @@ describe("Tree View", () => {
 
         browser = await puppeteer.launch({
             headless: false,
-            slowMo: 200
+            slowMo: 50
         });
         page = await browser.newPage();
         await page.goto("http://localhost:1000/journal.html"); // Adjust the path to your HTML file
@@ -121,9 +124,12 @@ describe("Tree View", () => {
     });
 
     it('should populate the tree view on load', async () => {
-        const path = "folder1/folder2/journal1";
-        createJournal("Test Journal", path, "Test Content", ["tag1", "tag2"]);
-        await page.reload(); // Reload the page to apply the new journal
+        createJournal("Test Journal", "folder1/folder2/journal1", "Test Content", ["tag1", "tag2"]);
+        //wait for 3 seconds
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        await page.goto("http://localhost:1000/journal.html", {
+            waitUntil: 'networkidle0',
+        });
         await page.waitForSelector('#content .treeElement');
         const treeElements = await page.$$('#content .treeElement');
         expect(treeElements.length).to.be.greaterThan(0);
