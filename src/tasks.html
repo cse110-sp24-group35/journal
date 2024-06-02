@@ -27,7 +27,10 @@
 </head>
 
 <body>
-    <h1>Task Lists</h1>
+    <div>
+        <h1>Task Lists</h1>
+    </div>
+    
     <!-- Navigation Bar -->
     <div class="nav">
         <button id="open" onclick="openNav()"><img src="styles\images\navigation.png" alt="Menu Button" width="50" height="50"> </button>
@@ -47,6 +50,12 @@
             document.getElementById("navBar").style.width = "0";
         }
     </script>
+
+    <div>
+        <button class="addColumns" id="columnBox"> 
+            <img src="styles\images\paw.png" alt= "Cat Paw" width="30" height="30"> <span>Add a column</span>
+        </button>
+    </div>
 
     <!-- Three Boxes -->
     <div class="container" id="boxes">
@@ -150,6 +159,21 @@
                 </button>
             </p>
         </div>
+        
+        <!--Add a Column Box-->
+        <div class="column">
+            <button class="addColumn" id="columnBox"> 
+                <img src="styles\images\paw.png" alt= "Cat Paw" width="30" height="30"> <span>Add a column</span>
+            </button>
+            <div class="addColumn">
+            </div>
+            <p>
+                <button class="add" id="modalDone"> 
+                    <img src="styles\images\paw.png" alt= "Cat Paw" width="30" height="30"> <span>Add a task</span>
+                </button>
+            </p>
+        </div>
+        
         <script> 
             $(".inside").draggable({ 
                 snap: ".inside", 

@@ -102,6 +102,7 @@ function init() {
     let addButton0 =  document.getElementsByClassName("add")[0];
     let addButton1 =  document.getElementsByClassName("add")[1];
     let addButton2 =  document.getElementsByClassName("add")[2];
+    let addButton3 =  document.getElementsByClassName("add")[3];
     let modal = document.getElementById("modalBlock");
     let box = document.getElementById("boxes");
 
@@ -116,6 +117,11 @@ function init() {
     };
 
     addButton2.onclick = function() {
+        modal.style.display = "block";
+        box.style.display = "none";
+    };
+
+    addButton3.onclick = function() {
         modal.style.display = "block";
         box.style.display = "none";
     };
