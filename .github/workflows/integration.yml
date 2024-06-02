@@ -51,7 +51,7 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     container:
-      image: lts-alpine3.20
+      image: node:lts-alpine3.20
       options: --user root
     steps:
       - name: Check out Git repository
