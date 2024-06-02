@@ -128,4 +128,75 @@ describe("Overview Page", () => {
         });
         expect(taskStatus).to.equal('ONGOING');
     });
+
+    // UpcomingTaskComponent Tests
+    it("Should display the correct number of upcoming tasks", async () => {
+        const newTask = {
+            id: "2",
+            day: "1",
+            number: 2,
+            tasks: ["cse110", "ece45"]
+        };
+
+        await page.evaluate((newTask) => {
+            const tasks = JSON.parse(localStorage.getItem('upcoming-tasks') || '[]');
+            tasks.push(newTask);
+            localStorage.setItem('upcoming-tasks', JSON.stringify(tasks));
+            document.querySelector('upcoming-task-list').update({ get: () => tasks });
+        }, newTask);
+
+        const taskText = await page.evaluate(() => {
+            const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
+            const shadowRoot = taskComponent.shadowRoot;
+            return shadowRoot.querySelector('.number').textContent;
+        });
+
+        expect(taskText).to.equal('2 Upcoming Tasks');
+    });
+
+    it("Should open and display the popup with task details when clicked", async () => {
+        await page.evaluate(() => {
+            const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
+            const shadowRoot = taskComponent.shadowRoot;
+            shadowRoot.querySelector('.task').click();
+        });
+
+        const isVisible = await page.evaluate(() => {
+            const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
+            const shadowRoot = taskComponent.shadowRoot;
+            return shadowRoot.querySelector('.popup').classList.contains('visible');
+        });
+
+        expect(isVisible).to.be.true;
+
+        const taskDetails = await page.evaluate(() => {
+            const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
+            const shadowRoot = taskComponent.shadowRoot;
+            return Array.from(shadowRoot.querySelectorAll('.task-list li')).map(li => li.textContent);
+        });
+
+        expect(taskDetails).to.deep.equal(["cse110", "ece45"]);
+    });
+
+    it("Should close the popup when the close button is clicked", async () => {
+        await page.evaluate(() => {
+            const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
+            const shadowRoot = taskComponent.shadowRoot;
+            shadowRoot.querySelector('.task').click();
+        });
+
+        await page.evaluate(() => {
+            const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
+            const shadowRoot = taskComponent.shadowRoot;
+            shadowRoot.querySelector('.close-btn').click();
+        });
+
+        const isVisible = await page.evaluate(() => {
+            const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
+            const shadowRoot = taskComponent.shadowRoot;
+            return shadowRoot.querySelector('.popup').classList.contains('visible');
+        });
+
+        expect(isVisible).to.be.false;
+    });
 });
