@@ -1,5 +1,5 @@
 import { journals, createJournal, getJournal, deleteJournal } from '../../scripts/database/stores/journal';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 
 describe("Journal Stores", () => {
     it("Journal db initialized properly and empty", () => {

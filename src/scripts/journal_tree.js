@@ -13,18 +13,40 @@ export function loadTreeView() {
     const collapseButton = document.getElementById('collapse-button'); // Button in the center of the resizer
     const expandButton = document.getElementById('expand-button'); // Also button in the center of the resizer
     const sidebar = document.getElementById('sidebar'); // PLACEHOLDER menu (left of tree-view)
+    const createJournalButton = document.getElementById('create-journal'); // Button to create a journal
+    const deleteJournalButton = document.getElementById('delete-journal'); // Button to delete a journal
+    const deleteAllJournalsButton = document.getElementById('delete-all-journals'); // Button to delete all journals
 
     // Calls the functions for resizing the tree-view width
     resizer.addEventListener('mousedown', (e) => startResize(e, treeViewer, journalViewer, sidebar));
     // Buttons to collapse and expand the tree view
     collapseButton.addEventListener('click', () => collapseTreeView(treeViewer, journalViewer, collapseButton, expandButton));
     expandButton.addEventListener('click', () => expandTreeView(treeViewer, journalViewer, collapseButton, expandButton));
-
-    //createFakeJournals();
+    // Buttons to create/delete journals (fake journals for now)
+    createJournalButton.addEventListener('click', createFakeJournals); // Creates fake journals for now
+    deleteJournalButton.addEventListener('click', deleteSelectedJournal); // Deletes selected journal
+    deleteAllJournalsButton.addEventListener('click', () => journals.set([])); // Deletes all journals (Will remove later probably)
    
-    populateTreeView();
+    populateTreeView(); // Populates the tree view with all journals on load
 }
 
+//Function that deletes selected journal
+export function deleteSelectedJournal() {
+    const selected = document.querySelector('.selected > button'); //Selected journal (if any)
+    const journalViewer = document.getElementById('journal-view'); // Journal view (Right of tree-view)
+    journalViewer.innerHTML = ""; // CLEAR whatever was just deleted
+    const journalTitle = document.createElement("p");
+    if (selected) { // If a journal is selected
+        deleteJournal(selected.id.slice(5)); //Slices the tree/ from the id to get the path
+        journalTitle.innerHTML = "JOURNAL DELETED!";
+    }
+    else {
+        journalTitle.innerHTML = "NO JOURNAL SELECTED TO DELETE!";
+    }
+    journalViewer.appendChild(journalTitle);
+}
+
+//Temporary function to create fake journals. Will be removed when "create journal" button is peroperly implemented.
 export function createFakeJournals() {
     journals.set([]);
     deleteJournal("hello/world");
@@ -163,6 +185,18 @@ export function openFolder(folder) {
         folder.children[i].classList.remove("parent-folder-closed");
 }
 
+// Function to set the journal viewer to display the journal with the given path
+export function setJournalViewer(path) {
+    const journalViewer = document.getElementById('journal-view');
+    journalViewer.innerHTML = ""; // CLEAR whatever is displayed to the right
+    const journalToLoad = getJournal(path); // Load in the corresponding journal from the database
+
+    // Temporarily just displays the title as h1
+    const journalTitle = document.createElement("h1");
+    journalTitle.innerHTML = journalToLoad.title;
+    journalViewer.appendChild(journalTitle);
+}
+
 // Function to recursively load all files into the HTML
 export function populateButtons(parentChildren, parentElement, treePath, journalViewer) {
     for (let i = 0; i < parentChildren.length; i++) { // For each direct child of the parent path
@@ -198,13 +232,7 @@ export function populateButtons(parentChildren, parentElement, treePath, journal
                 });
                 fileDiv.classList.add("selected"); // Marks the selected journal as selected for CSS
 
-                journalViewer.innerHTML = ""; // CLEAR whatever is displayed to the right
-                const journalToLoad = getJournal(fileButton.id.slice(5)); // Load in the corresponding journal from the database
-
-                // Temporarily just displays the title as h1
-                const journalTitle = document.createElement("h1");
-                journalTitle.innerHTML = journalToLoad.title;
-                journalViewer.appendChild(journalTitle);
+                setJournalViewer(fileButton.id.slice(5)); // Sets the journal viewer to display the journal with the corresponding path
             });
         }
 

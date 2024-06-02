@@ -52,7 +52,25 @@
     height: 2em;
     right: 0%;
     margin:1em;
-    margin-right: 2em;
+}
+
+#delete-journal { /* The minus button on the top-left of the tree view */
+    background-color: #F00;
+    position:absolute;
+    width: 2em;
+    height: 2em;
+    left: 0%;
+    margin:1em;
+}
+
+#delete-all-journals { /* The minus button on the top-left of the tree view */
+    background-color: #F00;
+    position: absolute;
+    top: 2em;
+    width: calc(100% - 6em);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
 }
 
 #journal-view{ /* The section to the right of the tree-view */
@@ -126,7 +144,7 @@
 .journal-button { /* The styling for the journal button (not the div) */
 }
 
-.selected {
+.selected { /* The selected JOURNAL in the tree view */
     position: relative; /* Ensure the element is positioned relatively */
     background-color: #e6d2c2; /* Original background color */
 }
