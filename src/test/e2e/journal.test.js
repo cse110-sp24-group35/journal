@@ -78,7 +78,7 @@ describe("Tree View", () => {
         browser = await puppeteer.launch({
             headless: true,
             slowMo: 50,
-            args: ["--no-sandbox"]
+            args: ["--no-sandbox", "--disable-setuid-sandbox"]
         });
         page = await browser.newPage();
         await page.goto("http://localhost:1000/journal.html"); // Adjust the path to your HTML file

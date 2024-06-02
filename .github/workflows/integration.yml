@@ -51,7 +51,7 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     container:
-      image: node:lts-alpine3.20
+      image: ghcr.io/puppeteer/puppeteer:latest
       options: --user root
     steps:
       - name: Check out Git repository
