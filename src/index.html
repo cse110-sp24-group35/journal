@@ -11,6 +11,7 @@
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script type="importmap">
         {
@@ -25,7 +26,13 @@
 <body>
     <div class="container">
         <task-list></task-list>
+
     </div>
+    <div class="containerpie">
+        <task-pie-component></task-pie-component>
+    </div>
+
     <script type="module" src="scripts/components/task-component.js"></script>
+    <script type="module" src="scripts/components/task-pie-component.js"></script>
 </body>
 </html>
