@@ -1,0 +1,124 @@
+:root {
+    --day-size: max(min(11vw, 11vh), 3em);
+    --grid-gap: min(1vh, 1vw);
+    --nav-button-bg: #007bff;
+    --nav-button-hover-bg: #0056b3;
+    --day-bg: #F3E2D5;
+    --day-hover-bg: #C3B2A5;
+    --calendar-bg: #FFF5ED;
+}
+
+body {
+    margin: 0;
+}
+
+.calendar-container {
+    background: var(--calendar-bg);
+    box-shadow: var(--calendar-box-shadow);
+    width: calc(100vw - 2em); /* Adjusted to account for padding x2 */
+    padding: 1em; /* Added padding for better spacing */
+    height: calc(100vh - 2em); /* Adjusted to account for padding x2 */
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-button {
+    background-color: var(--nav-button-bg);
+    color: #fff;
+    border: none;
+    padding: 0.75em;
+    border-radius: .5em;
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    background-color: var(--nav-button-hover-bg);
+}
+
+#month-year {
+    font-size: 2em;
+    margin: 0 1em; /* Add some space between the buttons and the text */
+}
+
+.calendar-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centering the grid */
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-items: center; /* Centering the labels */
+    grid-gap: var(--grid-gap);
+}
+
+.day-label {
+    width: var(--day-size);
+    text-align: center;
+    font-weight: bold;
+    line-height: var(--day-size);
+}
+
+.calendar-grid-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, var(--day-size));
+    grid-gap: var(--grid-gap);
+}
+
+.calendar-day {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: var(--day-size);
+    height: var(--day-size);
+    background-color: var(--day-bg);
+    border-radius: 1em;
+    padding: 0.5em; /* Add padding to ensure spacing */
+    box-sizing: border-box; /* Ensure padding is included in width/height */
+    overflow: hidden;
+}
+
+.calendar-day:hover {
+    background-color: var(--day-hover-bg);
+}
+
+.day-number {
+    font-weight: bold;
+    margin-bottom: 0.5em; /* Space between number and list */
+    align-self: center;
+}
+
+.task-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    font-size: 0.8em; /* Smaller font size for tasks */
+}
+
+.previous-month, .next-month {
+    opacity: 0.5;
+}
+
+.day-task-item {
+    display: block; /* Ensure the button is a block element */
+    width: 100%; /* Make the button take the full width of the parent */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+    background: none; /* Remove default button styling */
+    border: none; /* Remove default button border */
+    align-self: left;;
+    cursor: pointer;
+}
