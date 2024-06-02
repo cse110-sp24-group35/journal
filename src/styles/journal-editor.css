@@ -8,26 +8,26 @@ form > * {
     color: white;
 }
 
-#journalTitle,
-#journalTags,
-#journalDeadline {
+#journal-title,
+#journal-tags,
+#journal-deadline {
     background-color: transparent;
     border: none;
 }
 
-#journalTitle {
+#journal-title {
     font-size: 2.5rem;
     text-align: center;
 }
 
-#journalTags,
-#journalDeadline {
+#journal-tags,
+#journal-deadline {
     font-size: 1.0rem;
     text-align: center;
 }
 
 /* Toggle Side View Button */
-#journalSideView {
+#journal-side-view {
     width: fit-content;
     align-self: end;
     background-color: #888;
@@ -35,14 +35,14 @@ form > * {
 
 /***** Journal Content *****/
 
-#journalContent {
+#journal-content {
     display: flex;
 }
 
-#markdownEditor {
+#markdown-editor {
     width: 100%;
 }
 
-#textEditor {
+#text-editor {
     width: 50%;
 }

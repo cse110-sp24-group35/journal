@@ -6,13 +6,13 @@ class JournalEditor extends HTMLElement {
 
         shadow.innerHTML = `
         <form>
-            <input id="journalTitle" type="text" placeholder="Title" autofocus/>
-            <input id="journalTags" type="text" placeholder="Tags"/>
-            <input id="journalDeadline" type="datetime-local"/>
-            <input id="journalSideView" type="button" value="Toggle Side View"/>
-            <div id="journalContent">
-                <div id="markdownEditor"></div>
-                <textarea id="textEditor" hidden></textarea>
+            <input id="journal-title" type="text" placeholder="Title" autofocus/>
+            <input id="journal-tags" type="text" placeholder="Tags"/>
+            <input id="journal-deadline" type="datetime-local"/>
+            <input id="journal-side-view" type="button" value="Toggle Side View"/>
+            <div id="journal-content">
+                <div id="markdown-editor"></div>
+                <textarea id="text-editor" hidden></textarea>
             </div>
         </form>
         `
@@ -38,10 +38,10 @@ class JournalEditor extends HTMLElement {
         //const shadow = this.shadowRoot;
 
         // Side View Button functionality
-        //const button = shadow.getElementById('journalSideView');
-        //const textarea = shadow.getElementById('textEditor');
+        //const button = shadow.getElementById('journal-side-view');
+        //const textarea = shadow.getElementById('text-editor');
         //button.addEventListener('click', () => {
-        //    const editor = shadow.getElementById('markdownEditor');
+        //    const editor = shadow.getElementById('markdown-editor');
         //    if (this.sideBySide) {
         //        textarea.hidden = true;
         //        editor.style.width = "100%";
@@ -68,7 +68,7 @@ class JournalEditor extends HTMLElement {
         
         const hide = !path;
         form.childNodes.forEach(element => {
-            if (element.id != "textEditor")
+            if (element.id != "text-editor")
                 element.hidden = hide;
         });
 
@@ -90,14 +90,14 @@ class JournalEditor extends HTMLElement {
      * @param {Journal} journal - journal to get data from.
      */
     set data(journal) {
-        //const textareaElem = document.getElementById('textEditor');
+        //const textareaElem = document.getElementById('text-editor');
         //textareaElem.value = journal.content;
         //this.wysimark.setMarkdown(journal.content);
         
-        const title = this.shadowRoot.getElementById("journalTitle");
+        const title = this.shadowRoot.getElementById("journal-title");
         title.value = journal.title;
         
-        const tags = this.shadowRoot.getElementById('journalTags');
+        const tags = this.shadowRoot.getElementById('journal-tags');
         tags.value = journal.tags.join(', ');
         
         // getFullYear, getMonth, getDate, getHours, getMinutes all return values of local time.
@@ -110,7 +110,7 @@ class JournalEditor extends HTMLElement {
             return `${year}-${month}-${day}T${hours}:${minutes}`;
         }
         
-        const date = this.shadowRoot.getElementById('journalDeadline');
+        const date = this.shadowRoot.getElementById('journal-deadline');
         date.value = convertToDateTimeLocalString(new Date(journal.createdAt));
 
         this.path = journal.path;
@@ -121,7 +121,7 @@ class JournalEditor extends HTMLElement {
      * @returns {string} - Journal title
      */
     get title() {
-        const title = document.getElementById("journalTitle");
+        const title = document.getElementById("journal-title");
         return title.value;
     }
 
@@ -130,7 +130,7 @@ class JournalEditor extends HTMLElement {
      * @returns {string[]} - Array of tags as strings
      */
     get tags() {
-        const tags = document.getElementById('journalTags');
+        const tags = document.getElementById('journal-tags');
         return tags.value.split(',').map(str => str.trim());
     }
 
@@ -144,12 +144,15 @@ class JournalEditor extends HTMLElement {
     }
 
     setupMarkdownEditor() {
-        const container = this.shadowRoot.getElementById('markdownEditor');
-
+        const container = this.shadowRoot.getElementById('markdown-editor');
+        
+        // Tell linter that this function will be available.
+        /*global createWysimark*/
+        
         this.wysimark = createWysimark(container, {
             initialMarkdown: "",
             onChange: (markdown) => {
-                const textarea = document.getElementById('textEditor');
+                const textarea = document.getElementById('text-editor');
                 textarea.value = markdown;
             },
         });
