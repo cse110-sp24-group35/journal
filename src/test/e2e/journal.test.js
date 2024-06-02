@@ -24,14 +24,14 @@ describe("Test if modal appears", () => {
 
         server = fastify;
         await server.listen({
-            port: 1000
+            port: 6790
         });
 
         browser = await puppeteer.launch({
             headless: true
         });
         page = await browser.newPage();
-        await page.goto("http://localhost:1000/journal.html"); // Adjust the path to your HTML file
+        await page.goto("http://localhost:6790/journal.html"); // Adjust the path to your HTML file
     }, 30000);
 
     afterAll(async () => {
@@ -52,7 +52,7 @@ describe("Test if modal appears", () => {
     });
     
     test("should not have any journal to display", async () => {
-        // Check if the modal is visible
+        // Check that no journal is displayed
         const noJournalMessage = await page.evaluate(() => {
             const editor = document.querySelector("journal-editor");
             const message = editor.shadowRoot.querySelector('p');
@@ -60,5 +60,37 @@ describe("Test if modal appears", () => {
         });
 
         expect(noJournalMessage).toBe(true);
+    });
+    
+    test("journal editor should display when data is set", async () => {
+        // Check that editor is displayed
+        const editorDisplayed = await page.evaluate(() => {
+            const editor = document.querySelector("journal-editor");
+
+            const entry = {
+                title: "Journal Title",
+                tags: ["tag1", "tag2"],
+                path: "path/to/journal",
+                createdAt: Date.now(),
+            };
+
+            editor.data = entry;
+
+            const title = editor.shadowRoot.getElementById('journal-title');
+            if (title.hidden) return false;
+            if (title.value != entry.title) return false;
+            
+            const tags = editor.shadowRoot.getElementById('journal-tags');
+            if (tags.hidden) return false;
+            if (tags.value != entry.tags.join(', ')) return false;
+
+            const deadline = editor.shadowRoot.getElementById('journal-deadline');
+            if (deadline.hidden) return false;
+            if (deadline.value == "") return false;
+
+            return true;
+        });
+
+        expect(editorDisplayed).toBe(true);
     });
 });
