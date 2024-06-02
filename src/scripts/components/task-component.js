@@ -1,3 +1,6 @@
+import * as taskStore from '../database/stores/task.js';
+import { updateTask } from '../database/stores/task.js';
+
 class TaskComponent extends HTMLElement {
     constructor() {
         super();
@@ -40,29 +43,29 @@ class TaskComponent extends HTMLElement {
     attributeChangedCallback() {
         this.updateTask();
     }
-    
+
     updateTask() {
         const taskId = this.getAttribute('data-id');
-        const taskData = this.getTaskFromLocalStorage(taskId);    
-        if (taskData) {
-            this.taskText.textContent = taskData.text;
-            this.checkbox.checked = taskData.completed;
-            this.updateTaskClass(taskData.completed);
+        const task = taskStore.getTask(taskId);
+
+        if (task) {
+            this.taskText.textContent = task.description;
+            this.checkbox.checked = task.status === "COMPLETED";
+            this.updateTaskClass(this.checkbox.checked);
         }
     }
-    
-    getTaskFromLocalStorage(taskId) {
-        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        return tasks.find(task => task.id === taskId);
-    }
+
     updateTaskStatus() {
         const taskId = this.getAttribute('data-id');
-        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        const taskIndex = tasks.findIndex(task => task.id === taskId);   
-        if (taskIndex !== -1) {
-            tasks[taskIndex].completed = this.checkbox.checked;
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            this.updateTaskClass(this.checkbox.checked);
+        const task = taskStore.getTask(taskId);
+
+        if (task) {
+            task.status = task.status === "COMPLETED" ? "ONGOING" : "COMPLETED"; // If user unchecks a completed task, we fall back to ONGOING
+            updateTask(taskId, {
+                status: task.status
+            });
+
+            this.updateTaskClass(task.status === "COMPLETED");
         }
     }
     // to make sure boxes are checked based on local storage call backs are used
@@ -79,20 +82,19 @@ class TaskList extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-    }
-    
-    connectedCallback() {
-        this.update();
-        window.addEventListener('storage', () => {
-            this.update();
-            location.reload();
+
+        this.update(taskStore.tasks);
+
+        /*
+        taskStore.tasks.listen((val) => {
+           this.update(val);
         });
+         */
     }
-    
-    update() {
+
+    update(val) {
         this.shadowRoot.innerHTML = '';
-        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];    
-        tasks.forEach(task => {
+        val.get().forEach(task => {
             const taskElement = document.createElement('task-component');
             taskElement.setAttribute('data-id', task.id);
             this.shadowRoot.appendChild(taskElement);
@@ -101,20 +103,3 @@ class TaskList extends HTMLElement {
 }
 customElements.define('task-component', TaskComponent);
 customElements.define('task-list', TaskList);
-
-// change this later but for manual testing
-localStorage.setItem('tasks', JSON.stringify([
-    { id: '1', text: 'Task 1 dsjbfnaskdnfkljsdafjasndvkl dsfnasd f asf sf ads df asdf  asdfasdf asdf ads', completed: true },
-    { id: '2', text: 'Task 2', completed: true },
-    { id: '3', text: 'Task 3', completed: false },
-    { id: '4', text: 'Task 4', completed: true },
-    { id: '6', text: 'Task 6', completed: true },
-    { id: '7', text: 'Task 7', completed: true },
-    { id: '8', text: 'Task 8', completed: true },
-    { id: '9', text: 'Task 9', completed: true },
-    { id: '10', text: 'Task 10', completed: true },
-    { id: '11', text: 'Task 11', completed: true },
-    { id: '12', text: 'Task 12', completed: true },
-    { id: '13', text: 'Task 13', completed: true },
-
-]));

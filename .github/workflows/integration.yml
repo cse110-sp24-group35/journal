@@ -19,7 +19,7 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: Run Linters
         run: pnpm run lint
   unit-tests:
@@ -32,17 +32,15 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
-      - name: Unit Test
-        run: pnpm run test:unit
-      - name: Install LCov
-        run: pnpm i -D lcov
-      - name: Code Quality & Coverage
-        uses: paambaati/codeclimate-action@v6.0.0
+        run: pnpm install --no-frozen-lockfile
+      - name: Unit Test & Coverage
+        run: pnpm i -D lcov && pnpm run coverage
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          MOCHA_REPORTER: mocha-reporter-gha
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
         with:
-          coverageCommand: pnpm run coverage:ci
+          token: ${{ secrets.CODECOV_TOKEN }}
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
@@ -53,7 +51,7 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: E2E Test
         run: pnpm run test:e2e
         env:
