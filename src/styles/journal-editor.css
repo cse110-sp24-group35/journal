@@ -4,15 +4,36 @@ form {
     flex-direction: column;
 }
 
+form > * {
+    color: white;
+}
+
+#journalTitle,
+#journalTags,
+#journalDeadline {
+    background-color: transparent;
+    border: none;
+}
+
 #journalTitle {
     font-size: 2.5rem;
     text-align: center;
 }
 
-#journalTags, #journalDeadline {
+#journalTags,
+#journalDeadline {
     font-size: 1.0rem;
     text-align: center;
 }
+
+/* Toggle Side View Button */
+#journalSideView {
+    width: fit-content;
+    align-self: end;
+    background-color: #888;
+}
+
+/***** Journal Content *****/
 
 #journalContent {
     display: flex;
@@ -20,11 +41,6 @@ form {
 
 #markdownEditor {
     width: 100%;
-}
-
-#journalSideView {
-    width: fit-content;
-    align-self: end;
 }
 
 #textEditor {
