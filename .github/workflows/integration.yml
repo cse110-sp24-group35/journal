@@ -50,6 +50,9 @@ jobs:
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+      options: --user root
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
