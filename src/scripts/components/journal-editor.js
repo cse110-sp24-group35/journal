@@ -59,7 +59,7 @@ class JournalEditor extends HTMLElement {
     }
 
     /**
-     * Sets journal path (controlls whether editor is hidden or not)
+     * Sets journal path (controls whether editor is hidden or not)
      * @param {string} path - journal path
      */
     set path(path) {
