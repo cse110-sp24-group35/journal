@@ -1,0 +1,32 @@
+form {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+}
+
+#journalTitle {
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+#journalTags, #journalDeadline {
+    font-size: 1.0rem;
+    text-align: center;
+}
+
+#journalContent {
+    display: flex;
+}
+
+#markdownEditor {
+    width: 100%;
+}
+
+#journalSideView {
+    width: fit-content;
+    align-self: end;
+}
+
+#textEditor {
+    width: 50%;
+}
