@@ -20,16 +20,15 @@
     </script>
     <!-- Polyfill end -->
 
-    <script type="module" src="./scripts/journal-editor.js"></script>
+    <script type="module" src="scripts/components/journal-editor.js"></script>
+    <script type="module" src="scripts/components/modal-journal.js"></script>
 </head>
 
 <body>
+    <journal-editor></journal-editor>
 
     <!-- Use the custom Web Component here -->
     <modal-journal></modal-journal>
-
-    <!-- Include the JavaScript file defining the Web Component -->
-    <script src="scripts/components/modal-journal.js"></script>
 </body>
 
 </html>

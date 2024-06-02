@@ -47,4 +47,15 @@ describe("Test if modal appears", () => {
 
         expect(isModalVisible).toBe(true);
     });
+    
+    test("should not have any journal to display", async () => {
+        // Check if the modal is visible
+        const noJournalMessage = await page.evaluate(() => {
+            const editor = document.querySelector("journal-editor");
+            const message = editor.shadowRoot.querySelector('p');
+            return message.innerText == 'No journal selected';
+        });
+
+        expect(noJournalMessage).toBe(true);
+    });
 });
