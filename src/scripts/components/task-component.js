@@ -43,7 +43,7 @@ class TaskComponent extends HTMLElement {
     attributeChangedCallback() {
         this.updateTask();
     }
-    
+
     updateTask() {
         const taskId = this.getAttribute('data-id');
         const task = taskStore.getTask(taskId);
