@@ -7,11 +7,18 @@ class MySidebar extends HTMLElement {
         container.setAttribute('class', 'sidebar');
 
         const buttonNames = ['Overview', 'Calendar', 'Tasks', 'Journal', 'Login'];
+        const buttonActions = {
+            'Calendar': () => window.location.href = 'calendar.html'
+            // Add other button actions here if needed
+        };
 
         buttonNames.forEach(name => {
             const button = document.createElement('button');
             button.textContent = name;
             button.classList.add('sidebar-button');
+            if (buttonActions[name]) {
+                button.addEventListener('click', buttonActions[name]);
+            }
             container.appendChild(button);
         });
 
