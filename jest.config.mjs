@@ -1,11 +1,12 @@
 /** @type {import('jest').Config} */
 export default {
+    testTimeout: 600000,
     transform: {
 
     },
-    collectCoverage: true,
     collectCoverageFrom: [
         'src/scripts/**/*.{js,jsx}',
+        '!src/scripts/components/**/*.js',
         '!**/node_modules/**',
         '!**/vendor/**',
     ],

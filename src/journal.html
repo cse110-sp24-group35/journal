@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal | Overview</title>
+    <link rel="stylesheet" href="styles/journal.css">
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -22,9 +23,35 @@
 </head>
 
 <body>
+    <!-- This is a placeholder for the side-menu -->
+    <div id="sidebar">
+        <button>Overview</button>
+        <button>Calendar</button>
+        <button>Tasks</button>
+        <button>Journal</button>
+        <button>Login</button>
+    </div>
 
-    <!-- Use the custom Web Component here -->
-    <modal-journal></modal-journal>
+    <!-- Tree View -->
+    <div id="resizable-box">
+        <button id="create-journal">+</button>
+        <button id="delete-journal">-</button>
+        <button id="delete-all-journals">DELETE ALL</button>
+        <div id="content">
+            <!-- Folders and Files -->
+        </div>
+        <div id="resizer"></div>
+        <button id="collapse-button" class="collapse">&lt;&lt;</button>
+    </div>
+
+    <div id="journal-view">
+        <p id="journal-view-text"> No Journal Selected </p>
+    </div>
+    <button id="expand-button" class="expand">&gt;&gt;</button>
+    <script src="scripts/components/journal_tree.js" type="module"></script>
+
+    <!-- Use the custom Web Component here  -->
+    <!-- <modal-journal></modal-journal>     -->
 
     <!-- Include the JavaScript file defining the Web Component -->
     <script src="scripts/components/modal-journal.js"></script>
