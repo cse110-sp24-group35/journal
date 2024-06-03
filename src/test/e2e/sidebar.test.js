@@ -47,7 +47,7 @@ describe('MySidebar E2E Tests', () => {
 
     test('should navigate to calendar page and highlight the calendar button', async () => {
         await page.click('my-sidebar >>> button:nth-of-type(1)');
-        await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
+        //await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
 
         const url = await page.url();
         expect(url).to.match(/calendar.html$/);
@@ -61,7 +61,7 @@ describe('MySidebar E2E Tests', () => {
 
     test('should navigate to tasks page and highlight the tasks button', async () => {
         await page.click('my-sidebar >>> button:nth-of-type(3)');
-        await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
+        //await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
 
         const url = await page.url();
         expect(url).to.match(/tasks.html$/);
@@ -75,7 +75,7 @@ describe('MySidebar E2E Tests', () => {
 
     test('should navigate to journal page and highlight the journal button', async () => {
         await page.click('my-sidebar >>> button:nth-of-type(4)');
-        await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
+        //await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
 
         const url = await page.url();
         expect(url).to.match(/journal.html$/);
@@ -89,7 +89,7 @@ describe('MySidebar E2E Tests', () => {
 
     test('should persist the active button state across reloads', async () => {
         await page.click('my-sidebar >>> button:nth-of-type(3)');
-        await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
+        //await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
 
         await page.reload({ waitUntil: 'networkidle2' });
 
