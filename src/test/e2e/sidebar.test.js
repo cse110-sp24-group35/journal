@@ -39,20 +39,20 @@ describe('MySidebar E2E Tests', () => {
     });
 
     test('should load the overview page and highlight the overview button', async () => {
-        const overviewButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(0)', el => el.className);
-        const overviewButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(0)', el => el.disabled);
+        const overviewButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.className);
+        const overviewButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.disabled);
         expect(overviewButtonClass).to.contain('active');
         expect(overviewButtonDisabled).to.be.true;
     });
 
     test('should navigate to calendar page and highlight the calendar button', async () => {
-        await page.click('my-sidebar >>> button:nth-of-type(1)');
+        await page.click('my-sidebar >>> button:nth-of-type(2)');
         //await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
 
         const url = await page.url();
         expect(url).to.match(/calendar.html$/);
 
-        await page.waitForSelector('my-sidebar >>> button:nth-of-type(1).active');
+        await page.waitForSelector('my-sidebar >>> button:nth-of-type(2).active');
         const calendarButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.className);
         const calendarButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.disabled);
         expect(calendarButtonClass).to.contain('active');
