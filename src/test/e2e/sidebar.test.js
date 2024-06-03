@@ -40,7 +40,7 @@ describe('MySidebar E2E Tests', () => {
     test('should load the overview page and highlight the overview button', async () => {
         const overviewButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.className);
         const overviewButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.disabled);
-        expect(overviewButtonClass).toContain('active');
+        expect(overviewButtonClass).contain('active');
         expect(overviewButtonDisabled).toBe(true);
     });
 
