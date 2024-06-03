@@ -63,7 +63,7 @@ export function deleteJournal(path) {
  * @throws {Error} - When there is already a journal with specified path
  */
 export function createJournal(title, path, content, tags) {
-    if (!!getJournal(path)) throw new Error(`Journal with path ${path} already exists!`);
+    if (getJournal(path)) throw new Error(`Journal with path ${path} already exists!`);
 
     const journal = {
         title,
