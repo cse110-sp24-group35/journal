@@ -8,7 +8,7 @@
 #sidebar {
     width: 10%;
     height: 100%;
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     background-color: #0F0; 
@@ -31,7 +31,7 @@
     max-width: 100%;
     position: fixed;
     top: 0;
-    left: 10%; /* Align resizable box to the right of sidebar */
+    left: 15%; /* Align resizable box to the right of sidebar */
     background-color: #FFF5ED;
     overflow: hidden; /* When the resize-bar clips into elements, they don't wrap */
 }

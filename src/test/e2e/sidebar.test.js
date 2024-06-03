@@ -1,7 +1,11 @@
-const puppeteer = require('puppeteer');
-const Fastify = require('fastify');
-const staticPlugin = require('@fastify/static');
-const path = require('path');
+import puppeteer from 'puppeteer';
+import Fastify from 'fastify';
+import staticPlugin from '@fastify/static';
+import path from 'path';
+import { expect } from 'chai';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 describe('MySidebar E2E Tests', () => {
     let browser;
@@ -10,22 +14,27 @@ describe('MySidebar E2E Tests', () => {
 
     const fastify = Fastify();
 
-    beforeAll(async () => {
+    beforeAll(async function () {
         fastify.register(staticPlugin, {
-            root: path.join(__dirname, '../../..'),
-            prefix: '/',
+            root: path.join(__dirname, "../../") // Adjust the path to your project's root if needed
         });
 
-        server = await fastify.listen({ port: 4321 });
+        server = fastify;
+        await server.listen({
+            port: 1002
+        });
 
-        browser = await puppeteer.launch({ headless: true });
+        browser = await puppeteer.launch({
+            headless: false,
+            args: ["--no-sandbox", "--disable-setuid-sandbox"]
+        });
         page = await browser.newPage();
-        await page.goto('http://localhost:4321/src/index.html');
-    }, 30000); // Increased timeout for server and browser setup
+        await page.goto("http://localhost:1002/journal.html"); // Adjust the path to your HTML file
+    }, 30000);
 
     afterAll(async () => {
         await browser.close();
-        await fastify.close();
+        await server.close();
     });
 
     test('should load the overview page and highlight the overview button', async () => {
