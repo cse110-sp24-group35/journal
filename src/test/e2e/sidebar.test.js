@@ -4,6 +4,7 @@ import staticPlugin from '@fastify/static';
 import path from 'path';
 import { expect } from 'chai';
 import { fileURLToPath } from 'url';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -40,8 +41,8 @@ describe('MySidebar E2E Tests', () => {
     test('should load the overview page and highlight the overview button', async () => {
         const overviewButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.className);
         const overviewButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.disabled);
-        expect(overviewButtonClass).contain('active');
-        expect(overviewButtonDisabled).to(true);
+        expect(overviewButtonClass).to.contain('active');
+        expect(overviewButtonDisabled).to.be.true;
     });
 
     test('should navigate to calendar page and highlight the calendar button', async () => {
@@ -49,12 +50,12 @@ describe('MySidebar E2E Tests', () => {
         await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
         const url = await page.url();
-        expect(url).toMatch(/calendar.html$/);
+        expect(url).to.match(/calendar.html$/);
 
         const calendarButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(2)', el => el.className);
         const calendarButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(2)', el => el.disabled);
-        expect(calendarButtonClass).contain('active');
-        expect(calendarButtonDisabled).to(true);
+        expect(calendarButtonClass).to.contain('active');
+        expect(calendarButtonDisabled).to.be.true;
     }, 10000);
 
     test('should navigate to tasks page and highlight the tasks button', async () => {
@@ -62,12 +63,12 @@ describe('MySidebar E2E Tests', () => {
         await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
         const url = await page.url();
-        expect(url).toMatch(/tasks.html$/);
+        expect(url).to.match(/tasks.html$/);
 
         const tasksButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(3)', el => el.className);
         const tasksButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(3)', el => el.disabled);
-        expect(tasksButtonClass).contain('active');
-        expect(tasksButtonDisabled).toBe(true);
+        expect(tasksButtonClass).to.contain('active');
+        expect(tasksButtonDisabled).to.be.true;
     }, 10000);
 
     test('should navigate to journal page and highlight the journal button', async () => {
@@ -75,12 +76,12 @@ describe('MySidebar E2E Tests', () => {
         await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
         const url = await page.url();
-        expect(url).toMatch(/journal.html$/);
+        expect(url).to.match(/journal.html$/);
 
         const journalButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(4)', el => el.className);
         const journalButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(4)', el => el.disabled);
-        expect(journalButtonClass).closeToontain('active');
-        expect(journalButtonDisabled).to(true);
+        expect(journalButtonClass).to.contain('active');
+        expect(journalButtonDisabled).to.be.true;
     }, 10000);
 
     test('should persist the active button state across reloads', async () => {
@@ -91,11 +92,11 @@ describe('MySidebar E2E Tests', () => {
         await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
         const url = await page.url();
-        expect(url).toMatch(/tasks.html$/);
+        expect(url).to.match(/tasks.html$/);
 
         const tasksButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(3)', el => el.className);
         const tasksButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(3)', el => el.disabled);
-        expect(tasksButtonClass).contain('active');
-        expect(tasksButtonDisabled).toBe(true);
+        expect(tasksButtonClass).to.contain('active');
+        expect(tasksButtonDisabled).to.be.true;
     }, 10000);
 });
