@@ -1,28 +1,37 @@
 class MySidebar extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        this.attachShadow({ mode: 'open' }); // Attach a shadow DOM to this element
 
-        const container = document.createElement('div');
-        container.setAttribute('class', 'sidebar');
+        const container = document.createElement('div'); // Create a container div
+        container.setAttribute('class', 'sidebar'); // Set the class of the container to 'sidebar'
 
-        const buttonNames = ['Overview', 'Calendar', 'Tasks', 'Journal', 'Login'];
-        const buttonActions = {
-            'Calendar': () => window.location.href = 'calendar.html'
-            // Add other button actions here if needed
+        // Define button names and corresponding actions (URLs)
+        const buttonNames = ['Overview', 'Calendar', 'Tasks', 'Journal'];
+        this.buttonActions = {
+            'Overview': 'index.html',
+            'Calendar': 'calendar.html',
+            'Tasks': 'tasks.html',
+            'Journal': 'journal.html'
         };
 
+        this.buttons = {}; // Object to store references to the buttons
+        // Retrieve the active button from session storage or default to 'Overview'
+        this.activeButton = sessionStorage.getItem('activeButton') || 'Overview';
+
+        // Create buttons for each name in buttonNames
         buttonNames.forEach(name => {
             const button = document.createElement('button');
-            button.textContent = name;
-            button.classList.add('sidebar-button');
-            if (buttonActions[name]) {
-                button.addEventListener('click', buttonActions[name]);
-            }
-            container.appendChild(button);
+            button.textContent = name; // Set button text to the current name
+            button.classList.add('sidebar-button'); // Add 'sidebar-button' class to the button
+            // Add click event listener to the button
+            button.addEventListener('click', () => this.handleButtonClick(name));
+            this.buttons[name] = button; // Store reference to the button
+            container.appendChild(button); // Append the button to the container
         });
 
-        const style = document.createElement('style');
+        const style = document.createElement('style'); // Create a style element
+        // Set the CSS styles for the sidebar and buttons
         style.textContent = `
             .sidebar {
                 position: fixed;
@@ -50,10 +59,44 @@ class MySidebar extends HTMLElement {
             .sidebar-button:hover {
                 background-color: #ddd;
             }
+            .sidebar-button.active {
+                background-color: #ccc;
+                cursor: default;
+            }
         `;
 
+        // Append the style and container to the shadow root
         this.shadowRoot.append(style, container);
+
+        // Set the active button on initial load
+        this.updateButtonState(this.activeButton);
+    }
+
+    // Handle button click events
+    handleButtonClick(name) {
+        if (this.activeButton === name) { // If the clicked button is already active, do nothing
+            return;
+        }
+
+        this.activeButton = name; // Update the active button
+        sessionStorage.setItem('activeButton', name); // Store the active button in session storage
+        window.location.href = this.buttonActions[name]; // Navigate to the corresponding URL
+    }
+
+    // Update the state of the buttons based on the active button
+    updateButtonState(activeButton) {
+        Object.keys(this.buttons).forEach(key => {
+            const button = this.buttons[key];
+            if (key === activeButton) { // If this button is the active button
+                button.classList.add('active'); // Add 'active' class
+                button.setAttribute('disabled', 'true'); // Disable the button
+            } else {
+                button.classList.remove('active'); // Remove 'active' class
+                button.removeAttribute('disabled'); // Enable the button
+            }
+        });
     }
 }
 
+// Define the custom element
 customElements.define('my-sidebar', MySidebar);

@@ -1,39 +1,40 @@
-import puppeteer from 'puppeteer';
-import Fastify from 'fastify';
-import staticPlugin from '@fastify/static';
-import path from 'path';
-import assert from 'assert';
+const puppeteer = require('puppeteer');
+const Fastify = require('fastify');
+const staticPlugin = require('@fastify/static');
+const path = require('path');
+const assert = require('assert');
 
-describe("MySidebar E2E Tests", () => {
-    let browser;
-    let page;
-    let server;
+const PORT = 3000;
+const BASE_URL = `http://localhost:${PORT}`;
 
-    const fastify = new Fastify();
+let fastify;
+let browser;
+let page;
 
-    before(async function () {
-        this.timeout(10000); // Set timeout to 10 seconds for setup
-
-        // Set up the Fastify server to serve static files
-        fastify.register(staticPlugin, {
-            root: path.join(__dirname, "../../public")
-        });
-
-        server = fastify;
-        await server.listen({ port: 4321 });
-
-        // Launch Puppeteer
-        browser = await puppeteer.launch({ headless: true });
-        page = await browser.newPage();
-        await page.goto("http://localhost:4321/index.html");
+before(async () => {
+    // Set up the Fastify server to serve static files
+    fastify = Fastify();
+    fastify.register(staticPlugin, {
+        root: path.join(__dirname, '../public'),
+        prefix: '/', // optional: default '/'
     });
 
-    after(async () => {
-        await browser.close();
-        await server.close();
-    });
+    await fastify.listen({ port: PORT });
 
+    // Launch Puppeteer
+    browser = await puppeteer.launch();
+    page = await browser.newPage();
+});
+
+after(async () => {
+    await browser.close();
+    await fastify.close();
+});
+
+describe('MySidebar E2E Tests', () => {
     it('should load the overview page and highlight the overview button', async () => {
+        await page.goto(`${BASE_URL}/index.html`);
+
         // Check that the overview button is highlighted and disabled
         const overviewButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.className);
         const overviewButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.disabled);

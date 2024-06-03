@@ -19,15 +19,22 @@
         }
     </script>
     <!-- Polyfill end -->
+    <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
 
     <!-- Use the custom Web Component here -->
-    <modal-journal></modal-journal>
+    <!-- <modal-journal></modal-journal> -->
+    <my-sidebar></my-sidebar>
+    <div class="content">
+        <p>This is the journal page!</p>
+    </div>
+    <script src="scripts/sidebar.js"></script>
 
     <!-- Include the JavaScript file defining the Web Component -->
     <script src="scripts/modal-journal.js"></script>
+    This is the journal page!
 </body>
 
 </html>
