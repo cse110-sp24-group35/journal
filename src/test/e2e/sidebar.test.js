@@ -53,8 +53,8 @@ describe('MySidebar E2E Tests', () => {
         expect(url).to.match(/calendar.html$/);
 
         await page.waitForSelector('my-sidebar >>> button:nth-of-type(2).active');
-        const calendarButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.className);
-        const calendarButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.disabled);
+        const calendarButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(2)', el => el.className);
+        const calendarButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(2)', el => el.disabled);
         expect(calendarButtonClass).to.contain('active');
         expect(calendarButtonDisabled).to.be.true;
     });
