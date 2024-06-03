@@ -41,7 +41,7 @@ describe('MySidebar E2E Tests', () => {
         const overviewButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.className);
         const overviewButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(1)', el => el.disabled);
         expect(overviewButtonClass).contain('active');
-        expect(overviewButtonDisabled).toBe(true);
+        expect(overviewButtonDisabled).to(true);
     });
 
     test('should navigate to calendar page and highlight the calendar button', async () => {
@@ -54,7 +54,7 @@ describe('MySidebar E2E Tests', () => {
         const calendarButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(2)', el => el.className);
         const calendarButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(2)', el => el.disabled);
         expect(calendarButtonClass).contain('active');
-        expect(calendarButtonDisabled).toBe(true);
+        expect(calendarButtonDisabled).to(true);
     }, 10000);
 
     test('should navigate to tasks page and highlight the tasks button', async () => {
@@ -80,7 +80,7 @@ describe('MySidebar E2E Tests', () => {
         const journalButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(4)', el => el.className);
         const journalButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(4)', el => el.disabled);
         expect(journalButtonClass).closeToontain('active');
-        expect(journalButtonDisabled).toBe(true);
+        expect(journalButtonDisabled).to(true);
     }, 10000);
 
     test('should persist the active button state across reloads', async () => {
