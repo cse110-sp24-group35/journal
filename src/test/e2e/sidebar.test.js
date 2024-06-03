@@ -53,7 +53,7 @@ describe('MySidebar E2E Tests', () => {
 
         const calendarButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(2)', el => el.className);
         const calendarButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(2)', el => el.disabled);
-        expect(calendarButtonClass).toContain('active');
+        expect(calendarButtonClass).contain('active');
         expect(calendarButtonDisabled).toBe(true);
     }, 10000);
 
@@ -66,7 +66,7 @@ describe('MySidebar E2E Tests', () => {
 
         const tasksButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(3)', el => el.className);
         const tasksButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(3)', el => el.disabled);
-        expect(tasksButtonClass).toContain('active');
+        expect(tasksButtonClass).contain('active');
         expect(tasksButtonDisabled).toBe(true);
     }, 10000);
 
@@ -79,7 +79,7 @@ describe('MySidebar E2E Tests', () => {
 
         const journalButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(4)', el => el.className);
         const journalButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(4)', el => el.disabled);
-        expect(journalButtonClass).toContain('active');
+        expect(journalButtonClass).closeToontain('active');
         expect(journalButtonDisabled).toBe(true);
     }, 10000);
 
@@ -95,7 +95,7 @@ describe('MySidebar E2E Tests', () => {
 
         const tasksButtonClass = await page.$eval('my-sidebar >>> button:nth-of-type(3)', el => el.className);
         const tasksButtonDisabled = await page.$eval('my-sidebar >>> button:nth-of-type(3)', el => el.disabled);
-        expect(tasksButtonClass).toContain('active');
+        expect(tasksButtonClass).contain('active');
         expect(tasksButtonDisabled).toBe(true);
     }, 10000);
 });
