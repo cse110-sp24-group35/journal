@@ -25,7 +25,7 @@ describe('MySidebar E2E Tests', () => {
         });
 
         browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             args: ["--no-sandbox", "--disable-setuid-sandbox"]
         });
         page = await browser.newPage();
