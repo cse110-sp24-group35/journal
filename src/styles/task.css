@@ -1,0 +1,398 @@
+@font-face {
+    font-family: "biski";
+    src: url(../public/fonts/biskitrialregular-l3jxg.otf) format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  * {
+    font-family: "biski"; 
+    background-color: #FFF5ED;
+    color:#594F4F;
+    
+  }
+  
+  /*Navigation Bar*/
+  .nav {
+    height: 100%;
+    width: 3.5%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+  }
+  
+  .nav a{
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .nav a:hover {
+    color: #F3E2D5;
+  }
+  
+  #open {
+    border-style: none;
+    width: auto;
+    height: auto;
+    background-color: #FFF5ED;
+    cursor: pointer;
+    
+  }
+  
+  h1 {
+    font-size: 60px;
+    text-align: center;
+    margin: auto;
+  }
+  
+  /*Container for three boxes*/
+  #container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    width: 90%;
+    height: 80%;
+    margin: auto;
+    white-space: nowrap;
+  }
+  
+  /*First Planned box*/
+  .planned {
+    text-align: center;
+    text-decoration: none;
+    background-color: #F3E2D5;
+    height: 725x;
+    width: 325px;
+    border-radius: 40px;
+    margin: 0px 40px 0px 40px;
+    flex: 0 0 auto; 
+    box-sizing: border-box;
+  }
+  
+  .planTask{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-right: 10px;
+    background-color: #F3E2D5;
+    width: 320px;
+    height: 550px;
+  }
+  
+  /*Second Working Box*/
+  .working {
+    text-align: center;
+    text-decoration: none;
+    background-color: #F3E2D5;
+    height: 750px;
+    width: 325px;
+    border-radius: 40px;
+    margin: 0px 40px 0px 40px;
+    flex: 0 0 auto; 
+    box-sizing: border-box;
+  }
+  
+  .workingTask {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-right: 10px;
+    background-color: #F3E2D5;
+    width: 320px;
+    height: 550px;
+    
+  }
+  
+  /*Third Done Box*/
+  .done {
+    text-align: center;
+    text-decoration: none;
+    background-color: #F3E2D5;
+    height: 750px;
+    width: 325px;
+    border-radius: 40px;
+    margin: 0px 40px 0px 40px;
+    flex: 0 0 auto; 
+    box-sizing: border-box;
+  }
+  
+  .doneTask {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-right: 10px;
+    background-color: #F3E2D5;
+    width: 320px;
+    height: 550px;
+  }
+  
+  /*Fourth Add Column Box*/
+  .column {
+    text-align: center;
+    text-decoration: none;
+    background-color: #F3E2D5;
+    height: 750px;
+    width: 325px;
+    border-radius: 40px;
+    margin: 0px 40px 0px 40px;
+    flex: 0 0 auto; 
+    box-sizing: border-box;
+  }
+  
+  .addColumn {
+    margin-right: 10px;
+    background-color: #F3E2D5;
+    width: 320px;
+    height: 550px;
+  }
+  
+  .content {
+    background-color: #F3E2D5;
+    display: block;
+  }
+  
+  /*for shadowroot*/
+  /*Oval Information*/
+  .inside {
+    font-size:20px;
+    flex: 1 1 auto;
+    background-color: white;
+    padding-left: 30px;
+    padding-top: 15px;
+    padding-bottom: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    width: 240px;
+    height: 80px;
+    /*change this to make them fly else where*/
+    position: relative;
+    border-radius: 80px;
+  }
+  /*name & description*/
+  .inside p {
+    text-align: left;
+    position: relative;
+    background-color: white;
+    margin: 0;
+    width: 200px;
+  }
+  
+  /*due date*/
+  .inside pre{
+    left: 90px;
+    position: absolute;
+    text-align: right;
+    background-color: white;
+    width: 100px;
+    margin:0;
+    border: none;
+  }
+  
+  .orangeBlob{
+    top: 0;
+    position: absolute;
+    background-color: transparent;
+  }
+  
+  .grayBlob {
+    position: absolute;
+    background-color: transparent;
+    left: 45px;
+    bottom: 0;
+  }
+  
+  /* remove button*/
+  .edit {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    position: absolute;
+    bottom: 32px;
+    right: 13px;
+    transform: scaleX(-1);
+  }
+  
+  /* edit button*/
+  .remove {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    position: absolute;
+    top: 32px;
+    right: 13px;
+  }
+  
+  .pencil {
+    background-color: white;
+  }
+  /*end shadowroot*/
+  
+  /*Title*/
+  .h2color {
+    font-size:50px;
+    margin: 20px 15px 0px 15px;
+    background: #F3E2D5;
+  }
+  
+  /* add button*/
+  .add {
+    border: none;
+    background-color: #F3E2D5;
+    cursor: pointer;
+    top: 0px;
+    font-size: 30px;
+    position: relative;
+    font-weight: 600;
+  }
+  
+  /*Add a column*/
+  .addColumn {
+    height: auto;
+    width: auto;
+    margin: 30px 15px 0px 15px;
+    margin-bottom: 91%;
+    border: none;
+    background-color: #F3E2D5;
+    cursor: pointer;
+    font-size: 30px;
+    position: relative;
+    font-weight: 600;
+  
+  }
+  
+  .addColumns {
+    background-color: #F3E2D5;
+    position: absolute;
+    border: none;
+    height: auto;
+    width: auto;
+    right: 20%;
+    top: 3%;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: 600;
+    border-radius: 25px;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: orange; 
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: orange; 
+  }
+  
+  p {
+    background-color: #F3E2D5;
+    margin: 15px;
+    border: 1px;
+  }
+  
+  button > img,
+  button > span {
+  vertical-align: middle;
+  background-color: #F3E2D5;
+  }
+  
+  /*Modal Box*/
+  .modal {
+    display: none;
+    left: 0;
+    right: 0;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    top: 0;
+    font-size: 30px;
+    text-align: left;
+    background-color: transparent;
+    width: 60%;
+    height: 85%; 
+    position:absolute;
+  }
+  
+  .modalContent {
+    margin: 20px 0px 0px 16px;
+    background-color: transparent;
+  }
+  
+  label {
+    margin: 0;
+    background-color: transparent;
+  }
+  
+  .inputs {
+    margin: 0px 30px 0px 50px;
+    width: 90%;
+    border:none;
+    font-size: 30px;
+    background:white;
+    line-height:normal;
+  }
+  
+  .cat {
+    position: absolute;
+    background-color: transparent;
+    top: 55px;
+    left: 85%;
+  
+  }
+  
+  /*x close button for modal box*/
+  .close {
+    background-color: transparent;
+    float: right;
+    font-size: 50px;
+    height: auto;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  /*Add Task Button modal box*/
+  #taskEnter{
+    border: none;
+    background-color: #F3E2D5;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: 600;
+    width: 200px;
+    height:100px;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .modalBlock{
+    padding: 5px 15px 0px 15px;
+    background-color: #F3E2D5;
+    border-radius: 75px;
+    width: 100%;
+    height: 100%
+  }
+  
+  fieldset {
+    border-style: none;
+    background-color: transparent;
+  }
+  
+  /*End of Modal Box Modifications*/
+  
+  /*
+  padding: 25px 50px 75px 100px;
+  top padding is 25px
+  right padding is 50px
+  bottom padding is 75px
+  left padding is 100px
+  background-image: url("./images/backgroundModal.png");
+  */
