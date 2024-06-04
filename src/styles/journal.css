@@ -6,9 +6,9 @@
 
 /* Dummy sidebar */
 #sidebar {
-    width: 10%;
+    width: 15%;
     height: 100%;
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     background-color: #0F0; 
@@ -19,10 +19,6 @@
     z-index: 2; 
 }
 
-#sidebar button {
-    margin: 10px 0;
-}
-
 /* Container Div for the tree */
 #resizable-box {
     height: 100vh; /* Makes the tree-view take up the entire viewport */
@@ -31,7 +27,7 @@
     max-width: 100%;
     position: fixed;
     top: 0;
-    left: 10%; /* Align resizable box to the right of sidebar */
+    left: 15%; /* Align resizable box to the right of sidebar */
     background-color: #FFF5ED;
     overflow: hidden; /* When the resize-bar clips into elements, they don't wrap */
 }
@@ -67,7 +63,7 @@
     background-color: #F00;
     position: absolute;
     top: 2em;
-    width: calc(100% - 6em);
+    width: min(calc(100% - 6em), 8em);
     left: 50%;
     transform: translate(-50%, -50%);
     overflow: hidden;
@@ -78,8 +74,9 @@
     height: 100vh;
     right: 0;
     position:absolute;
-    left: 25%;
+    left: 30%;
     top: 0;
+    overflow: hidden;
 }
 
 
@@ -113,7 +110,7 @@
 }
 
 #expand-button {
-    left:10%; /* Hugs the right of the menu sidebar. Temporary value */
+    left:15%; /* Hugs the right of the menu sidebar. Temporary value */
     display: none; /* Hides the button initially */
 }
 

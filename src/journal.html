@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal | Overview</title>
-    <link rel="stylesheet" href="styles/journal.css">
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -20,19 +19,29 @@
         }
     </script>
     <!-- Polyfill end -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/journal.css">
+
 </head>
 
 <body>
-    <!-- This is a placeholder for the side-menu -->
-    <div id="sidebar">
-        <button>Overview</button>
-        <button>Calendar</button>
-        <button>Tasks</button>
-        <button>Journal</button>
-        <button>Login</button>
+    
+    <script src="scripts/components/sidebar.js"></script>
+    <script src="scripts/components/journal_tree.js" type="module"></script>
+
+    <!-- Include the JavaScript file defining the Web Component -->
+    <script src="scripts/components/modal-journal.js"></script>
+
+    <!-- Use the custom Web Component here -->
+    <!-- <modal-journal></modal-journal> -->
+    <div style="display: flex; flex-direction: column; position:relative;">
+        <my-sidebar id="sidebar"></my-sidebar>
+
+
+
+        
     </div>
 
-    <!-- Tree View -->
     <div id="resizable-box">
         <button id="create-journal">+</button>
         <button id="delete-journal">-</button>
@@ -42,19 +51,15 @@
         </div>
         <div id="resizer"></div>
         <button id="collapse-button" class="collapse">&lt;&lt;</button>
+        
     </div>
+
 
     <div id="journal-view">
         <p id="journal-view-text"> No Journal Selected </p>
     </div>
+
     <button id="expand-button" class="expand">&gt;&gt;</button>
-    <script src="scripts/components/journal_tree.js" type="module"></script>
-
-    <!-- Use the custom Web Component here  -->
-    <!-- <modal-journal></modal-journal>     -->
-
-    <!-- Include the JavaScript file defining the Web Component -->
-    <script src="scripts/components/modal-journal.js"></script>
 </body>
 
 </html>

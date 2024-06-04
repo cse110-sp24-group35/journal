@@ -102,13 +102,13 @@ export function resize(e, treeViewer, journalViewer, sidebar) {
     // Limits the width of the tree-view during resizing
     if (newWidthPercentage >= 5 && newWidthPercentage <= 85) {
         treeViewer.style.width = newWidthPercentage + '%';
-        journalViewer.style.left = (newWidthPercentage + 10) + '%';
+        journalViewer.style.left = (newWidthPercentage + 15) + '%';
     } else if (newWidthPercentage < 5) {
         treeViewer.style.width = 5 + '%';
-        journalViewer.style.left = 15 + '%';
+        journalViewer.style.left = 20 + '%';
     } else if (newWidthPercentage > 85) {
         treeViewer.style.width = 85 + '%';
-        journalViewer.style.left = 95 + '%';
+        journalViewer.style.left = (85 + sidebarWidth) + '%';
     }
 }
 
@@ -122,7 +122,7 @@ export function stopResize(resizeListener, stopResizeListener) {
 // Function to collapse the tree-view
 export function collapseTreeView(treeViewer, journalViewer, collapseButton, expandButton) {
     treeViewer.style.width = '0%'; // Change width to 0% when collapsed
-    journalViewer.style.left = '10%'; // Makes the journal viewer take up the space the tree view was using
+    journalViewer.style.left = '15%'; // Makes the journal viewer take up the space the tree view was using
     treeViewer.classList.add('collapsed'); // Marks the treeViewer as collapsed
     collapseButton.style.display = 'none'; // Hides the collapse button (<<)
     expandButton.style.display = 'block'; // Shows the expand button (>>)
@@ -131,7 +131,7 @@ export function collapseTreeView(treeViewer, journalViewer, collapseButton, expa
 // Function to expand the tree-view
 export function expandTreeView(treeViewer, journalViewer, collapseButton, expandButton) {
     treeViewer.style.width = '15%'; // Makes the treeViewer take up its default (15%) portion of the window
-    journalViewer.style.left = (25) + '%'; // Makes the journal viewer change its width accordingly
+    journalViewer.style.left = (30) + '%'; // Makes the journal viewer change its width accordingly
     treeViewer.classList.remove('collapsed'); // Unmarks the treeViewer as collapsed
     collapseButton.style.display = 'block'; // Shows the collapse button (<<)
     expandButton.style.display = 'none'; // Hides the expand button (>>)
