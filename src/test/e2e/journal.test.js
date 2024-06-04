@@ -47,3 +47,4 @@ describe("Test if modal appears", () => {
         assert.strictEqual(isModalVisible, true, "The modal should be visible");
     });
 });
+describe
