@@ -25,63 +25,63 @@ class JournalEditor extends HTMLElement {
         //};
         //shadow.appendChild(script);
 
-		const style = document.createElement('style');
-		style.innerHTML = `
-		form {
-			display: flex;
-			gap: 0.5rem;
-			flex-direction: column;
-		}
-		
-		form > * {
-			color: black;
-		}
-		
-		#journal-title,
-		#journal-tags,
-		#journal-deadline {
-			background-color: #00000010;
-			border: none;
-		}
-		
-		#journal-title {
-			font-size: 2.5rem;
-			text-align: center;
-		}
-		
-		#journal-tags,
-		#journal-deadline {
-			font-size: 1.0rem;
-			text-align: center;
-		}
-		
-		/* Toggle Side View Button */
-		#journal-side-view {
-			width: fit-content;
-			align-self: end;
-			background-color: transparent;
-		}
-		
-		/***** Journal Content *****/
-		
-		#journal-content {
-			display: flex;
-		}
-		
-		#markdown-editor {
-			width: 100%;
-		}
-		
-		#text-editor {
-		/* Width is 100% for now, while not using markdown editor */
-			width: 100%;
-		}
-		`;
-		shadow.appendChild(style);
+        const style = document.createElement('style');
+        style.innerHTML = `
+        form {
+            display: flex;
+            gap: 0.5rem;
+            flex-direction: column;
+        }
 
-		// Editor starts out with invalid path,
-		//   so that a message can be displayed
-        this.path = "null";
+        form > * {
+            color: black;
+        }
+
+        #journal-title,
+        #journal-tags,
+        #journal-deadline {
+            background-color: #00000010;
+            border: none;
+        }
+
+        #journal-title {
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        #journal-tags,
+        #journal-deadline {
+            font-size: 1.0rem;
+            text-align: center;
+        }
+
+        /* Toggle Side View Button */
+        #journal-side-view {
+            width: fit-content;
+            align-self: end;
+            background-color: transparent;
+        }
+
+        /***** Journal Content *****/
+
+        #journal-content {
+        	display: flex;
+        }
+
+        #markdown-editor {
+        	width: 100%;
+        }
+
+        #text-editor {
+        /* Width is 100% for now, while not using markdown editor */
+        	width: 100%;
+        }
+        `;
+        shadow.appendChild(style);
+
+        // Editor starts out with invalid path,
+        //   so that a message can be displayed
+        this.path = null;
     }
 
     connectedCallback() {
@@ -115,7 +115,7 @@ class JournalEditor extends HTMLElement {
     set path(path) {
         this.shadowRoot.path = path;
         const form = this.shadowRoot.querySelector('form');
-        
+
         const hide = !path;
         form.childNodes.forEach(element => {
             if (element.id != "text-editor")
@@ -143,13 +143,13 @@ class JournalEditor extends HTMLElement {
         const textarea = this.shadowRoot.getElementById('text-editor');
         textarea.value = journal.content;
         //this.wysimark.setMarkdown(journal.content);
-        
+
         const title = this.shadowRoot.getElementById("journal-title");
         title.value = journal.title;
-        
+
         const tags = this.shadowRoot.getElementById('journal-tags');
         tags.value = journal.tags.join(', ');
-        
+
         this.path = journal.path;
     }
 
@@ -185,10 +185,10 @@ class JournalEditor extends HTMLElement {
      */
     setupMarkdownEditor() {
         const container = this.shadowRoot.getElementById('markdown-editor');
-        
+
         // Tell linter that this function will be available.
         /*global createWysimark*/
-        
+
         this.wysimark = createWysimark(container, {
             initialMarkdown: "",
             onChange: (markdown) => {
