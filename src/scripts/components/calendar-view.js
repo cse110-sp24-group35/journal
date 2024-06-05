@@ -20,6 +20,10 @@ export function initializeTask() {
     createTask("2", "Sample 2", "This is a sample task", "High", "PLANNED", Date.now() + 2000 * 60 * 60);
     createTask("3", "Sample 3", "This is a sample task", "High", "PLANNED", Date.now() + 700000 * 57 * 60);
     createTask("4", "Sample 3", "This is a sample task", "High", "PLANNED", Date.now() + -100000 * 60 * 60);
+    createTask("5", "Sample 5", "This is a sample task", "High", "PLANNED", Date.now() + 2000 * 57 * 60);
+    createTask("6", "Sample 6", "This is a sample task", "High", "PLANNED", Date.now() + 3000 * 57 * 60);
+    createTask("7", "Sample 7", "This is a sample task", "High", "PLANNED", Date.now() + 2000 * 57 * 60);
+    createTask("8", "Sample 8", "This is a sample task", "High", "PLANNED", Date.now() + 3000 * 57 * 60);
 }
 
 export function renderCalendar(date, monthYear, calendarGrid) {
@@ -64,15 +68,28 @@ export function renderCalendar(date, monthYear, calendarGrid) {
 }
 
 export function addTasksToDay(dayDiv, year, month, day, allTasks) {
+    const dayName = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'long' });
+    const dayNameP = document.createElement('p');
+    dayNameP.classList.add('expanded-day', 'day-number');
+    dayNameP.textContent = dayName;
+    dayDiv.appendChild(dayNameP);
+
     const dayNumber = document.createElement('div');
     dayNumber.classList.add('day-number');
     dayNumber.textContent = day;
+    dayDiv.appendChild(dayNumber);
+
+    const addTaskButton = document.createElement('button');
+    addTaskButton.classList.add('add-task-button', 'expanded-day');
+    addTaskButton.innerHTML = 'Create New Task';
+    dayDiv.appendChild(addTaskButton);
 
     const taskList = document.createElement('ul');
     taskList.classList.add('task-list');
 
     const date = new Date(year, month, day).setHours(0, 0, 0, 0);
 
+    let appendedTasks = 0;
     allTasks.forEach(task => {
         const taskDueDate = new Date(task.dueAt).setHours(0, 0, 0, 0);
         if (taskDueDate === date) {
@@ -94,20 +111,53 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
 
             // Set the button text content to the formatted time and task title
             taskItem.textContent = `${formattedTime} - ${task.title}`;
+            if(appendedTasks >= 3) {
+                taskItem.classList.add('expanded-day');
+            } 
             taskList.appendChild(taskItem);
+            appendedTasks++;
         }
     });
 
+    if(appendedTasks > 3) {
+        const moreText = document.createElement('p');
+        moreText.innerHTML = `+${appendedTasks - 3} more`;
+        moreText.classList.add('shrunk-day', 'more-text');
+        taskList.appendChild(moreText);
+    }
+
     dayDiv.addEventListener('click', () => {
-        let selectedDay = document.querySelectorAll('.selected-day');
-        selectedDay.forEach((element) => {
-            element.classList.remove('selected-day');
-        });
         dayDiv.classList.add('selected-day');
+        adjustPosition(dayDiv);
     });
 
-    dayDiv.appendChild(dayNumber);
+    dayDiv.addEventListener('mouseleave', () => {
+        dayDiv.classList.remove('selected-day');
+        dayDiv.style.left = '';
+        dayDiv.style.top = '';
+    });
+
+
     dayDiv.appendChild(taskList);
+}
+
+function adjustPosition(day) {
+    const rect = day.getBoundingClientRect();
+    const scaleX = 2, scaleY = 5; // Scale values must match CSS
+    const scaledWidth = rect.width * scaleX;
+    const scaledHeight = rect.height * scaleY;
+    let offsetX = 0, offsetY = 0;
+  
+    const leftBoundary = window.innerWidth * 0.15;
+  
+    if (rect.left < leftBoundary) offsetX = leftBoundary - rect.left;
+    if (rect.top < 0) offsetY = -rect.top;
+    if (rect.right > window.innerWidth) offsetX = window.innerWidth - rect.right;
+    if (rect.bottom > window.innerHeight) offsetY = window.innerHeight - rect.bottom;
+  
+    day.style.position = 'relative';
+    day.style.left = `${offsetX}px`;
+    day.style.top = `${offsetY}px`;
 }
 
 export function addMonthNavigationListeners(currentDate, monthYear, calendarGrid, prevMonthBtn, nextMonthBtn) {

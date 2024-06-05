@@ -15,9 +15,11 @@ body {
 .calendar-container {
     background: var(--calendar-bg);
     box-shadow: var(--calendar-box-shadow);
-    width: calc(115vw - 2em); /* Adjusted to account for padding x2. 115vw is to account for the sidebar. */
+    width: calc(85vw - 2em); /* Adjusted to account for padding x2. 115vw is to account for the sidebar. */
     padding: 1em; /* Added padding for better spacing */
     height: calc(100vh - 2em); /* Adjusted to account for padding x2 */
+    position: fixed;
+    right: 0;
 }
 
 .calendar-header {
@@ -89,6 +91,7 @@ body {
     padding-top: 0.25em; /* Add padding to ensure spacing */
     box-sizing: border-box; /* Ensure padding is included in width/height */
     overflow: hidden;
+    position: relative; /* Needed for absolute positioning of selected-day */
 }
 
 .calendar-day:hover {
@@ -99,13 +102,14 @@ body {
     font-weight: bold;
     margin-bottom: 0.5em; /* Space between number and list */
     align-self: center;
+    height: 15%;
 }
 
 .task-list {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    text-align: center;
+    text-align: left;
 }
 
 .previous-month, .next-month {
@@ -131,7 +135,45 @@ body {
 
 .selected-day {
     background-color: var(--day-hover-bg);
-    width: 15em;
-    height: 25em;
-    z-index: 50;
+    transform: scale(1,5) translate(-25%, 0%); /* Initial scale */
+    opacity: 1;
+    z-index: 1;
+    border-radius: 1em/0.2em;
+    width: 200%;
+}
+
+.selected-day > .day-number, .selected-day > .add-task-button {
+    transform: scale(1, 0.2); /* Invert scale */
+    margin: 0em;
+    padding: 0px;
+    border: 0px;
+    font-size: 1.5em;
+}
+
+.selected-day > .task-list {
+    transform: scale(1, 0.2) translate(0%, -150%);
+    font-size: 1.25em;
+}
+
+.selected-day > .day-number {
+    height: 10%;
+}
+
+.expanded-day {
+    display: none;
+}
+
+.selected-day .expanded-day {
+    display: block;
+}
+
+.selected-day .shrunk-day {
+    display: none;
+}
+
+.more-text {
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 7.5% ;
 }
