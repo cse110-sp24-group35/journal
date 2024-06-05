@@ -15,7 +15,7 @@ body {
 .calendar-container {
     background: var(--calendar-bg);
     box-shadow: var(--calendar-box-shadow);
-    width: calc(115vw - 2em); /* Adjusted to account for padding x2. 115vw is to account for the sidebar.*/
+    width: calc(115vw - 2em); /* Adjusted to account for padding x2. 115vw is to account for the sidebar. */
     padding: 1em; /* Added padding for better spacing */
     height: calc(100vh - 2em); /* Adjusted to account for padding x2 */
 }
@@ -42,6 +42,8 @@ body {
 #month-year {
     font-size: 2em;
     margin: 0 1em; /* Add some space between the buttons and the text */
+    width: 7em; /* Set a fixed width to prevent text from moving */
+    text-align: center;
 }
 
 .calendar-body {
@@ -84,7 +86,7 @@ body {
     height: var(--day-size);
     background-color: var(--day-bg);
     border-radius: 1em;
-    padding: 0.5em; /* Add padding to ensure spacing */
+    padding-top: 0.25em; /* Add padding to ensure spacing */
     box-sizing: border-box; /* Ensure padding is included in width/height */
     overflow: hidden;
 }
@@ -104,7 +106,6 @@ body {
     padding: 0;
     margin: 0;
     text-align: center;
-    font-size: 0.8em; /* Smaller font size for tasks */
 }
 
 .previous-month, .next-month {
@@ -119,6 +120,11 @@ body {
     text-overflow: ellipsis; /* Add ellipsis for overflowing text */
     background: none; /* Remove default button styling */
     border: none; /* Remove default button border */
-    align-self: left;;
+    align-self: left;
     cursor: pointer;
+    font-size: .6em;
+}
+
+.day-task-item:hover {
+    text-decoration: underline;
 }

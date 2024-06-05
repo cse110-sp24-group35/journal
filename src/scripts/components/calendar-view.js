@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 export function initializeTask() {
     tasks.set([]);
-    createTask("1", "Sample Task", "This is a sample task", "High", "PLANNED", Date.now() + 3000 * 60 * 60);
+    createTask("1", "Sample Task", "This is a sample task", "High", "PLANNED", Date.now() + 1000 * 32 * 60);
     createTask("2", "Sample 2", "This is a sample task", "High", "PLANNED", Date.now() + 2000 * 60 * 60);
-    createTask("3", "Sample 3", "This is a sample task", "High", "PLANNED", Date.now() + 700000 * 60 * 60);
-    createTask("4", "Sample 3", "This is a sample task", "High", "PLANNED", Date.now() + -60000 * 60 * 60);
+    createTask("3", "Sample 3", "This is a sample task", "High", "PLANNED", Date.now() + 700000 * 57 * 60);
+    createTask("4", "Sample 3", "This is a sample task", "High", "PLANNED", Date.now() + -100000 * 60 * 60);
 }
 
 export function renderCalendar(date, monthYear, calendarGrid) {
@@ -85,6 +85,11 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
                 hour: '2-digit',
                 minute: '2-digit',
                 hour12: true
+            });
+
+            // Add a click event listener to the task item to show the task popup modal
+            taskItem.addEventListener('click', () => {
+                alert(`Task: ${task.title}\nDescription: ${task.description}\nPriority: ${task.priority}\nStatus: ${task.status}\nDue At: ${formattedTime}`); //Replace with modal
             });
 
             // Set the button text content to the formatted time and task title
