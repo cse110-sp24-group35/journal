@@ -105,3 +105,13 @@ class ModalJournal extends HTMLElement {
 }
 
 customElements.define('modal-journal', ModalJournal);
+
+
+/** 
+ * Creates a new journal modal to be edited 
+ *  
+ */
+
+export function createJournalModule(){
+    
+}
