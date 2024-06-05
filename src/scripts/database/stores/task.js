@@ -65,7 +65,7 @@ export function deleteTask(id) {
  * @throws {Error} - When there is already a task with the specified ID
  */
 export function createTask(id, title, description, priority, status, dueAt) {
-    if (!!getTask(id)) throw new Error(`Task with ID ${id} already exists!`);
+    if (getTask(id)) throw new Error(`Task with ID ${id} already exists!`);
 
     const task = {
         id,

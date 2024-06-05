@@ -10,22 +10,29 @@
             window.process = { browser: true, env: { NODE_ENV: "production" } };
         </script>
 
-        <script type="importmap">
-            {
-                "imports": {
-                    "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
-                    "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
-                }
+    <script type="importmap">
+        {
+            "imports": {
+                "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
+                "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
             }
-        </script>
+        }
+    </script>
     <!-- Polyfill end -->
+    <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
-
+    <a href="./journal.html">Journal</a>
+    
     <modal-journal></modal-journal>
-
+    <my-sidebar></my-sidebar>
+    <div class="content">
+        <p>This is the overview page!</p>
+    </div>
+    <script src="scripts/components/sidebar.js"></script>
     <script src="styles/modal-component.js"></script>
+  
 </body>
 
 </html>

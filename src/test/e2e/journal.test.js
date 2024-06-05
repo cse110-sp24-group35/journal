@@ -2,15 +2,14 @@ import puppeteer from 'puppeteer';
 import Fastify from 'fastify';
 import staticPlugin from '@fastify/static';
 import path from 'path';
+import { expect } from 'chai';
 import { fileURLToPath } from 'url';
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Tell linter these functions exist.
 /*global beforeAll, afterAll, expect*/
-
-describe("Test if modal appears", () => {
+describe("Journal Page", () => {
     let browser;
     let page;
     let server;
@@ -28,7 +27,8 @@ describe("Test if modal appears", () => {
         });
 
         browser = await puppeteer.launch({
-            headless: true
+            headless: true,
+            args: ["--no-sandbox", "--disable-setuid-sandbox"]
         });
         page = await browser.newPage();
         await page.goto("http://localhost:6790/journal.html"); // Adjust the path to your HTML file
@@ -39,18 +39,26 @@ describe("Test if modal appears", () => {
         await server.close();
     });
 
-    test("should display the modal", async () => {
+    it("should display the modal upon clicking add new task", async () => {
         // Check if the modal is visible
         const isModalVisible = await page.evaluate(() => {
+            const journalBody = document.querySelector("body");
+            const newModal = document.createElement("modal-journal");
+            journalBody.appendChild(newModal);
             const shadow = document.querySelector("modal-journal");
             const modal = shadow.shadowRoot.querySelector('.modal');
             const style = window.getComputedStyle(modal);
             return style.display !== 'none';
         });
 
-        expect(isModalVisible).toBe(true);
+        expect(isModalVisible).to.equal(true);
+
+        await page.evaluate(() => {
+            const shadow = document.querySelector("modal-journal");
+            shadow.remove();
+        });
     });
-    
+  
     test("should not have any journal to display", async () => {
         // Check that no journal is displayed
         const noJournalMessage = await page.evaluate(() => {
