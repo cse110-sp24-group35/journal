@@ -71,8 +71,7 @@ describe("Test if modal appears", () => {
                 title: "Journal Title",
                 tags: ["tag1", "tag2"],
                 path: "path/to/journal",
-				content: "# hello",
-                createdAt: Date.now(),
+				content: "# hello"
             };
 
             editor.data = entry;
@@ -84,10 +83,6 @@ describe("Test if modal appears", () => {
             const tags = editor.shadowRoot.getElementById('journal-tags');
             if (tags.hidden) return false;
             if (tags.value != entry.tags.join(', ')) return false;
-
-            const deadline = editor.shadowRoot.getElementById('journal-deadline');
-            if (deadline.hidden) return false;
-            if (deadline.value == "") return false;
 
 			const text = editor.shadowRoot.getElementById('text-editor');
 			if (text.hidden) return false;

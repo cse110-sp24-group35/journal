@@ -8,7 +8,6 @@ class JournalEditor extends HTMLElement {
         <form>
             <input id="journal-title" type="text" placeholder="Title" autofocus/>
             <input id="journal-tags" type="text" placeholder="Tags"/>
-            <input id="journal-deadline" type="datetime-local"/>
             <input id="journal-side-view" type="button" value="Toggle Side View"/>
             <div id="journal-content">
                 <!--<div id="markdown-editor"></div>-->
@@ -151,19 +150,6 @@ class JournalEditor extends HTMLElement {
         const tags = this.shadowRoot.getElementById('journal-tags');
         tags.value = journal.tags.join(', ');
         
-        // getFullYear, getMonth, getDate, getHours, getMinutes all return values of local time.
-        const convertToDateTimeLocalString = (date) => {
-            const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, "0");
-            const day = date.getDate().toString().padStart(2, "0");
-            const hours = date.getHours().toString().padStart(2, "0");
-            const minutes = date.getMinutes().toString().padStart(2, "0");
-            return `${year}-${month}-${day}T${hours}:${minutes}`;
-        }
-        
-        const date = this.shadowRoot.getElementById('journal-deadline');
-        date.value = convertToDateTimeLocalString(new Date(journal.createdAt));
-
         this.path = journal.path;
     }
 
