@@ -11,8 +11,8 @@ class JournalEditor extends HTMLElement {
             <input id="journal-deadline" type="datetime-local"/>
             <input id="journal-side-view" type="button" value="Toggle Side View"/>
             <div id="journal-content">
-                <div id="markdown-editor"></div>
-                <textarea id="text-editor" hidden></textarea>
+                <!--<div id="markdown-editor"></div>-->
+                <textarea id="text-editor" rows=16></textarea>
             </div>
         </form>
         `
@@ -26,12 +26,63 @@ class JournalEditor extends HTMLElement {
         //};
         //shadow.appendChild(script);
 
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = "./styles/journal-editor.css";
-        shadow.appendChild(link);
+		const style = document.createElement('style');
+		style.innerHTML = `
+		form {
+			display: flex;
+			gap: 0.5rem;
+			flex-direction: column;
+		}
+		
+		form > * {
+			color: black;
+		}
+		
+		#journal-title,
+		#journal-tags,
+		#journal-deadline {
+			background-color: #00000010;
+			border: none;
+		}
+		
+		#journal-title {
+			font-size: 2.5rem;
+			text-align: center;
+		}
+		
+		#journal-tags,
+		#journal-deadline {
+			font-size: 1.0rem;
+			text-align: center;
+		}
+		
+		/* Toggle Side View Button */
+		#journal-side-view {
+			width: fit-content;
+			align-self: end;
+			background-color: transparent;
+		}
+		
+		/***** Journal Content *****/
+		
+		#journal-content {
+			display: flex;
+		}
+		
+		#markdown-editor {
+			width: 100%;
+		}
+		
+		#text-editor {
+		/* Width is 100% for now, while not using markdown editor */
+			width: 100%;
+		}
+		`;
+		shadow.appendChild(style);
 
-        this.path = null;
+		// Editor starts out with invalid path,
+		//   so that a message can be displayed
+        this.path = "null";
     }
 
     connectedCallback() {
@@ -90,8 +141,8 @@ class JournalEditor extends HTMLElement {
      * @param {Journal} journal - journal to get data from.
      */
     set data(journal) {
-        //const textareaElem = document.getElementById('text-editor');
-        //textareaElem.value = journal.content;
+        const textarea = this.shadowRoot.getElementById('text-editor');
+        textarea.value = journal.content;
         //this.wysimark.setMarkdown(journal.content);
         
         const title = this.shadowRoot.getElementById("journal-title");
@@ -121,7 +172,7 @@ class JournalEditor extends HTMLElement {
      * @returns {string} - Journal title
      */
     get title() {
-        const title = document.getElementById("journal-title");
+        const title = this.shadowRoot.getElementById("journal-title");
         return title.value;
     }
 
@@ -130,7 +181,7 @@ class JournalEditor extends HTMLElement {
      * @returns {string[]} - Array of tags as strings
      */
     get tags() {
-        const tags = document.getElementById('journal-tags');
+        const tags = this.shadowRoot.getElementById('journal-tags');
         return tags.value.split(',').map(str => str.trim());
     }
 
@@ -139,10 +190,13 @@ class JournalEditor extends HTMLElement {
      * @returns {string} - Journal content
      */
     get content() {
-        return null;
+        return this.shadowRoot.getElementById('text-editor').value;
         //return this.wysimark.getMarkdown();
     }
 
+    /**
+     * Sets up Wysimark markdown editor
+     */
     setupMarkdownEditor() {
         const container = this.shadowRoot.getElementById('markdown-editor');
         
@@ -158,9 +212,9 @@ class JournalEditor extends HTMLElement {
         });
     }
 
-    /*
-    * Hack to get the styles to show up while using Shadow DOM.
-    */
+    /**
+     * Hack to get the styles to show up while using Shadow DOM.
+     */
     hack() {
         this.styleObserver = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
