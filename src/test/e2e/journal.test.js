@@ -71,6 +71,7 @@ describe("Test if modal appears", () => {
                 title: "Journal Title",
                 tags: ["tag1", "tag2"],
                 path: "path/to/journal",
+				content: "# hello",
                 createdAt: Date.now(),
             };
 
@@ -87,6 +88,10 @@ describe("Test if modal appears", () => {
             const deadline = editor.shadowRoot.getElementById('journal-deadline');
             if (deadline.hidden) return false;
             if (deadline.value == "") return false;
+
+			const text = editor.shadowRoot.getElementById('text-editor');
+			if (text.hidden) return false;
+			if (text.value != "# hello") return false;
 
             return true;
         });
