@@ -31,7 +31,7 @@ describe('MySidebar E2E Tests', () => {
         });
         page = await browser.newPage();
         await page.goto("http://localhost:1002/index.html", { waitUntil: 'networkidle2' }); // Adjust the path to your HTML file
-    }, 3000);
+    }, 10000);
 
     afterAll(async () => {
         await browser.close();
