@@ -1,5 +1,5 @@
 import { tasks, createTask, getTask, deleteTask } from '../../scripts/database/stores/task';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 
 describe("Task Stores", () => {
     it("Task db initialized properly and empty", () => {
