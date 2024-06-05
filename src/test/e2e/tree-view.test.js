@@ -110,9 +110,9 @@ describe("Tree View", () => {
             if (tags.hidden) return false;
             if (tags.value != ["tag1"]) return false;
 
-			const text = editor.shadowRoot.getElementById('text-editor');
-			if (text.hidden) return false;
-			if (text.value != "Test Content") return false;
+            const text = editor.shadowRoot.getElementById('text-editor');
+            if (text.hidden) return false;
+            if (text.value != "Test Content") return false;
 
             return true;
         });
