@@ -1,4 +1,4 @@
-import { tasks, createTask, getTask, deleteTask } from "./database/stores/task.js";
+import { tasks, createTask, getTask, deleteTask } from "../database/stores/task.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const monthYear = document.getElementById('month-year');

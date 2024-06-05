@@ -15,7 +15,7 @@ body {
 .calendar-container {
     background: var(--calendar-bg);
     box-shadow: var(--calendar-box-shadow);
-    width: calc(100vw - 2em); /* Adjusted to account for padding x2 */
+    width: calc(115vw - 2em); /* Adjusted to account for padding x2. 115vw is to account for the sidebar.*/
     padding: 1em; /* Added padding for better spacing */
     height: calc(100vh - 2em); /* Adjusted to account for padding x2 */
 }
