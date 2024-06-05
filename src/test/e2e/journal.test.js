@@ -67,7 +67,7 @@ describe("Journal Page", () => {
             return message.innerText == 'No journal selected';
         });
 
-        expect(noJournalMessage).toBe(true);
+        expect(noJournalMessage).to.equal(true);
     });
     
     test("journal editor should display when data is set", async () => {
@@ -99,6 +99,6 @@ describe("Journal Page", () => {
             return true;
         });
 
-        expect(editorDisplayed).toBe(true);
+        expect(editorDisplayed).to.equal(true);
     });
 });
