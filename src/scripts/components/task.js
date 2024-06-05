@@ -1,138 +1,273 @@
-// Run the init() function when the page has loaded
-window.addEventListener("DOMContentLoaded", init);
+import { statuses } from '../database/stores/kanban.js';
+import { tasks } from '../database/stores/task.js';
 
-// Starts the program, all function calls trace back here
-function init() {
+// Listen for changes to the statuses and tasks
+statuses.listen(() => renderKanbanBoard());
+tasks.listen(() => renderKanbanBoard());
 
-	let addButton0 =  document.getElementsByClassName("add")[0];
-    let addButton1 =  document.getElementsByClassName("add")[1];
-    let addButton2 =  document.getElementsByClassName("add")[2];
-    let addButton3 =  document.getElementsByClassName("add")[3];
-    let modal = document.getElementById("modalBlock");
-    let box = document.getElementById("container");
-    
-    addButton0.onclick = function() {
-        modal.style.display = "block";
-        box.style.display = "none";
-    };
-    
-    addButton1.onclick = function() {
-        modal.style.display = "block";
-        box.style.display = "none";
-    };
-    
-    addButton2.onclick = function() {
-        modal.style.display = "block";
-        box.style.display = "none";
-    };
-    
-    addButton3.onclick = function() {
-        modal.style.display = "block";
-        box.style.display = "none";
-    };
-    
-        //close module button
-    const x = document.getElementsByClassName("close")[0];
-    
-    x.onclick = function() {
-        modal.style.display = "none";
-        box.style.display = "flex";
+// Define the Kanban board and its elements
+document.addEventListener("DOMContentLoaded", () => {
+    defineCustomElements();
+    renderKanbanBoard();
+});
+
+function defineCustomElements() {
+    customElements.define('kanban-column', KanbanColumn);
+    customElements.define('task-card', KanbanCard);
+    customElements.define('add-kanban-column', AddKanbanColumn);
+    customElements.define('task-card-popup', KanbanCardPopup);
+}
+
+function renderKanbanBoard() {
+    const main = document.querySelector('main');
+    main.innerHTML = ''; // Clear the board before re-rendering
+
+    // Render kanban columns
+    statuses.get().forEach(status => {
+        const column = new KanbanColumn(status);
+        main.appendChild(column);
+    });
+
+    // Add the "Add Column" button
+    main.appendChild(new AddKanbanColumn());
+}
+
+// KanbanColumn class
+class KanbanColumn extends HTMLElement {
+    constructor(status) {
+        super();
+        this.status = status;
+
+        this.innerHTML = `
+            <section class="kanban-column">
+                <div class="kanban-column-header">
+                    <h2 name="kanban-column-title">${status}</h2>
+                    <button class="kanban-column-delete-button">x</button>
+                </div>
+                <div class="kanban-card-container"></div>
+                <div>
+                    <button class="add-kanban-card-button">+ Add a Task</button>
+                </div>
+            </section>
+        `;
+
+        this.addEventListeners();
+        this.renderCards();
     }
 
-	// Get the recipes from localStorage
-	let tasks = getRecipesFromStorage();
-	// Add each recipe to the <main> element
-	addRecipesToDocument(tasks);
-	// Add the event listeners to the form elements
-	initFormHandler();
+    addEventListeners() {
+        const deleteButton = this.querySelector('.kanban-column-delete-button');
+        deleteButton.addEventListener('click', () => this.deleteColumn());
+        const box = document.getElementById("container");
+
+        const addCardButton = this.querySelector('.add-kanban-card-button');
+        addCardButton.addEventListener('click', () => {
+            document.body.appendChild(new KanbanCardPopup(this.status));
+            box.style.display = "none";
+        });
+
+        const columnNameInput = this.querySelector('[name="kanban-column-title"]');
+        columnNameInput.addEventListener('input', (event) => {
+            this.status = event.target.value;
+            this.updateStatus();
+        });
+
+        const cardContainer = this.querySelector('.kanban-card-container');
+        cardContainer.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+        });
+
+        cardContainer.addEventListener('drop', (event) => {
+            event.preventDefault();
+            const taskId = event.dataTransfer.getData('application/card-id');
+            this.moveCardToColumn(taskId, this.status);
+        });
+    }
+
+    moveCardToColumn(taskId, newStatus) {
+        const updatedTasks = tasks.get().map((task) => {
+            if (task.id === taskId) {
+                return { ...task, status: newStatus };
+            }
+            return task;
+        });
+        tasks.set(updatedTasks);
+    }
+
+    renderCards() {
+        const cardContainer = this.querySelector('.kanban-card-container');
+        cardContainer.innerHTML = '';
+
+        tasks.get().filter(task => task.status === this.status).forEach(task => {
+            const card = new KanbanCard(task);
+            cardContainer.appendChild(card);
+        });
+    }
+
+    deleteColumn() {
+        const newStatuses = statuses.get().filter(s => s !== this.status);
+        statuses.set(newStatuses);
+    }
+
+    updateStatus() {
+        const currentStatuses = statuses.get();
+        const newStatuses = currentStatuses.map(s => s === this.status ? this.status : s);
+        statuses.set(newStatuses);
+    }
 }
 
-/**
- * Reads 'recipes' from localStorage and returns an array of
- * all of the recipes found (parsed, not in string form). If
- * nothing is found in localStorage for 'recipes', an empty array
- * is returned.
- * @returns {Array<Object>} An array of recipes found in localStorage
- */
-function getRecipesFromStorage() {
-	// A9. TODO - Complete the functionality as described in this function
-	//           header. It is possible in only a single line, but should
-	//           be no more than a few lines.
-	return JSON.parse(localStorage.getItem('tasks')) || [];
+// AddKanbanColumn class
+class AddKanbanColumn extends HTMLElement {
+    constructor() {
+        super();
+        this.innerHTML = `
+            <button class="add-kanban-column-button" role="button">
+                <p>Add Column</p>
+            </button>
+        `;
+
+        this.addEventListener('click', () => {
+            const newStatus = prompt("Enter new column name:");
+            if (newStatus) {
+                const currentStatuses = statuses.get();
+                statuses.set([...currentStatuses, newStatus]);
+            }
+        });
+    }
 }
 
-/**
- * Takes in an array of recipes and for each recipe creates a
- * new <recipe-card> element, adds the recipe data to that card
- * using element.data = {...}, and then appends that new recipe
- * to <main>
- * @param {Array<Object>} tasks An array of recipes
- */
-function addRecipesToDocument(tasks) {
-	// A10. TODO - Get a reference to the <main> element
-	const taskList = document.getElementById("plan");
-	
-	// A11. TODO - Loop through each of the recipes in the passed in array,
-	//            create a <recipe-card> element for each one, and populate
-	//            each <recipe-card> with that recipe data using element.data = ...
-	//            Append each element to <main>
-	tasks.forEach(task => {
-		const taskCard = document.createElement('added-task');
-		taskCard.data = task;
-		taskList.appendChild(taskCard);
-	});
+// KanbanCardPopup class
+class KanbanCardPopup extends HTMLElement {
+    constructor(status) {
+        super();
+        this.status = status;
+        // TODO: ADD HEADER <h2>Add a task</h2> 
+        this.innerHTML = `
 
+            <dialog class="task-card-popup">
+                <img class="cat" src="public/images/cat.png" alt="cat sitting"  width="140" height="110">
+                <div class="kanban-card-popup-header">
+                    <button class="kanban-card-popup-close-button">X</button>
+                </div>
+                <div class="kanban-card-popup-body">
+                    <label for="taskName">Task Name<br> 
+                        <input class="inputs" name="taskName" value="New Card" required/><br>
+                    </label>
+                    <label for="dueDate">Due Date<br>
+                            <input class="inputs" name="dueDate" required/><br>
+                    </label>
+                    <label for="taskDesc">Task Description<br>
+                        <input class="inputs" name="taskDesc" required/><br>
+                    </label>
+                    <label for="journal">Link to Journal<br>
+                        <input class="inputs" name="journal" required/><br>
+                    </label>
+                    <label for="tags">Tags<br>
+                        <input class="inputs" name="tags" required/><br>
+                    </label>
+                </div>
+                <div class="kanban-card-popup-footer">
+                    <button class="kanban-card-popup-save-button">Add Task</button>
+                </div>
+            </dialog>
+        `;
+
+        this.querySelector('dialog').show();
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        const box = document.getElementById("container");
+        this.querySelector('.kanban-card-popup-close-button').addEventListener('click', () => {
+            this.closePopup();
+            box.style.display = "flex";
+        });
+        this.querySelector('.kanban-card-popup-save-button').addEventListener('click', () => {
+            this.saveCard();
+            box.style.display = "flex";
+        });  
+    }
+
+    closePopup() {
+        this.remove();
+    }
+
+    saveCard() {
+        const title = this.querySelector('[name="taskName"]').value;
+        const description = this.querySelector('[name="taskDesc"]').value;
+
+        const newTask = {
+            id: `task-${Date.now()}`,
+            title,
+            description,
+            status: this.status,
+            createdAt: Date.now(),
+            dueAt: Date.now() + 7 * 24 * 60 * 60 * 1000 // Example due date: one week later
+        };
+
+        tasks.set([...tasks.get(), newTask]);
+        this.closePopup();
+    }
 }
 
-/**
- * Takes in an array of recipes, converts it to a string, and then
- * saves that string to 'recipes' in localStorage
- * @param {Array<Object>} tasks An array of recipes
- */
-function saveRecipesToStorage(tasks) {
-	// EXPLORE - START (All explore numbers start with B)
-	// B1. TODO - Complete the functionality as described in this function
-	//            header. It is possible in only a single line, but should
-	//            be no more than a few lines.
-	localStorage.setItem('tasks', JSON.stringify(tasks));
-}
+// KanbanCard class
+class KanbanCard extends HTMLElement {
+    constructor(task) {
+        super();
+        this.task = task;
+        this.innerHTML = `
+            <div class="task-card" draggable="true" id="${task.id}">
+                <div class="card-content">
+                    <div class="card-header">
+                        <h3 class="card-title">${task.title}</h3>
+                        <button class="card-delete-button">x</button>
+                    </div>
+                    <p class="card-description">${task.description}</p>
+                </div>
+            </div>
+        `;
 
-/**
- * Adds the necessary event handlers to <form> and the clear storage
- * <button>.
- */
-function initFormHandler() {
-	// B2. TODO - Get a reference to the <form> element
-	const survey = document.querySelector("form");
-	// B3. TODO - Add an event listener for the 'submit' event, which fires when the
-	//            submit button is clicked	
-	survey.addEventListener("submit", () => {
-	
-	// Steps B4-B9 will occur inside the event listener from step B3
-	// B4. TODO - Create a new FormData object from the <form> element reference above
-	const formData = new FormData(survey);
+        this.addEventListeners();
 
-	// B5. TODO - Create an empty object (we'll refer to this object as recipeObject to
-	//            make this easier to read), and then extract the keys and corresponding
-	//            values from the FormData object and insert them into recipeObject
-	let taskObject = new Object();
-	for (let [key, value] of formData.entries()) {
-		taskObject[key] = value;
-	}
-		
-	// B6. TODO - Create a new <recipe-card> element
-	let newTaskCard = document.createElement('added-task')
-	// B7. TODO - Add the recipeObject data to <recipe-card> using element.data
-	newTaskCard.data = taskObject;
-	// B8. TODO - Append this new <recipe-card> to <main>
-	const mainPage = document.getElementById("plan");
-	mainPage.appendChild(newTaskCard);
-	// B9. TODO - Get the recipes array from localStorage, add this new recipe to it, and
-	//            then save the recipes array back to localStorage
-	let tasks = JSON.parse(localStorage.getItem('tasks')) || []; 
-	tasks.push(taskObject);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-	});
-	// B10. TODO - Get a reference to the "Clear Local Storage" button
-	
+    }
+
+    addEventListeners() {
+        this.querySelector('.card-delete-button').addEventListener('click', () => this.deleteCard());
+        this.querySelector('.card-content').addEventListener('click', () => this.editCard());
+
+        this.addEventListener('dragstart', (event) => this.dragStartHandler(event));
+        this.addEventListener('dragover', (event) => this.dragOverHandler(event));
+        this.addEventListener('drop', (event) => this.dropHandler(event));
+    }
+
+    deleteCard() {
+        const newTasks = tasks.get().filter(task => task.id !== this.task.id);
+        tasks.set(newTasks);
+    }
+
+    editCard() {
+        document.body.appendChild(new KanbanCardPopup(this.task.status, this.task.title, this.task.description, this.task.id));
+    }
+
+    dragStartHandler(event) {
+        event.dataTransfer.setData('application/card-id', this.task.id);
+        event.dataTransfer.setData('application/column-id', this.task.status);
+        event.dataTransfer.dropEffect = 'move';
+    }
+
+    dragOverHandler(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+    }
+
+    dropHandler(event) {
+        event.preventDefault();
+        const cardId = event.dataTransfer.getData('application/card-id');
+
+        const draggedTask = tasks.get().find(task => task.id === cardId);
+        draggedTask.status = this.task.status;
+
+        tasks.set([...tasks.get().filter(task => task.id !== cardId), draggedTask]);
+    }
 }
