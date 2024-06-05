@@ -116,11 +116,14 @@ class JournalEditor extends HTMLElement {
         this.shadowRoot.path = path;
         const form = this.shadowRoot.querySelector('form');
 
+        // Hide all the input stuff if we have an invalid path
         const hide = !path;
+        
         form.childNodes.forEach(element => {
-            if (element.id != "text-editor")
-                element.hidden = hide;
+            element.hidden = hide;
         });
+        
+        this.shadowRoot.getElementById("text-editor").hidden = hide;
 
         if (hide) {
             const message = document.createElement('p');
