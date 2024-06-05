@@ -31,6 +31,7 @@ class ModalJournal extends HTMLElement {
                 width: 90%;
                 max-width: 500px;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                position: relative;
                 animation: fadeIn 0.3s ease-in-out;
             }
             @keyframes fadeIn {
@@ -42,6 +43,20 @@ class ModalJournal extends HTMLElement {
                     opacity: 1;
                     transform: scale(1);
                 }
+            }
+            .close-button {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background-color: transparent;
+                color: #000;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+            .close-button:hover {
+                color: #ff0000;
             }
             h2 {
                 margin-top: 0;
@@ -76,6 +91,7 @@ class ModalJournal extends HTMLElement {
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
+                transition: background-color 0.3s ease;
             }
             input[type="submit"]:hover {
                 background-color: #0056b3;
@@ -96,6 +112,14 @@ class ModalJournal extends HTMLElement {
             <input type="submit" value="Create">
         `;
 
+        const closeButton = document.createElement('button');
+        closeButton.setAttribute('class', 'close-button');
+        closeButton.textContent = '×';
+        closeButton.addEventListener('click', () => {
+            modalWrapper.style.display = 'none';
+        });
+
+        modalContent.appendChild(closeButton);
         modalContent.appendChild(h2);
         modalContent.appendChild(form);
         modalWrapper.appendChild(modalContent);
