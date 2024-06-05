@@ -69,18 +69,24 @@ class ModalJournal extends HTMLElement {
                 margin-top: 10px;
                 font-weight: bold;
             }
-            input[type="text"],
-            input[type="date"] {
+            input[type="text"] {
                 margin-top: 5px;
                 padding: 8px;
                 font-size: 16px;
                 border: 1px solid #ccc;
                 border-radius: 4px;
             }
-            input[type="text"]:focus,
-            input[type="date"]:focus {
+            input[type="text"]:focus {
                 outline: none;
                 border-color: #007BFF;
+            }
+            select {
+                margin-top: 5px;
+                padding: 8px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                height: 100px;
             }
             input[type="submit"] {
                 margin-top: 20px;
@@ -105,8 +111,8 @@ class ModalJournal extends HTMLElement {
         form.innerHTML = `
             <label for="title">Title:</label>
             <input type="text" id="title" name="title">
-            <label for="due">Due:</label>
-            <input type="date" id="due" name="due">
+            <label for="tasks">Tasks:</label>
+            <select id="tasks" name="tasks" multiple></select>
             <label for="tags">Tags:</label>
             <input type="text" id="tags" name="tags">
             <input type="submit" value="Create">
