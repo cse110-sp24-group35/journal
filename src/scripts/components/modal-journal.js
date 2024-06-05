@@ -112,6 +112,10 @@ customElements.define('modal-journal', ModalJournal);
  *  
  */
 
-export function createJournalModule(){
-    
+export function createJournalModal(){
+
 }
+/**
+ * createModalButton is the 'create journal button' in journal.html
+ * it will be called createModalButton b/c it creates a modal journal first
+ */
