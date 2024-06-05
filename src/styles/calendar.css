@@ -128,3 +128,10 @@ body {
 .day-task-item:hover {
     text-decoration: underline;
 }
+
+.selected-day {
+    background-color: var(--day-hover-bg);
+    width: 15em;
+    height: 25em;
+    z-index: 50;
+}

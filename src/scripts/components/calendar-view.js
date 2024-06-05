@@ -98,6 +98,14 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
         }
     });
 
+    dayDiv.addEventListener('click', () => {
+        let selectedDay = document.querySelectorAll('.selected-day');
+        selectedDay.forEach((element) => {
+            element.classList.remove('selected-day');
+        });
+        dayDiv.classList.add('selected-day');
+    });
+
     dayDiv.appendChild(dayNumber);
     dayDiv.appendChild(taskList);
 }
