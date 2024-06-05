@@ -1,16 +1,9 @@
 * {
-    color: red;
-}
-.new-journal-button {
-    background-color: transparent;  /* Transparent background */
-    font-size: 1rem;                /* Font size (16px equivalent) */
-    padding: 0.625rem 1.25rem;      /* Padding (10px 20px equivalent) */
-    color: black;                   /* Text color */
-    border: 0.125rem solid black;   /* Border (2px equivalent) */
-    border-radius: 0.3125rem;       /* Rounded corners (5px equivalent) */
-    cursor: pointer;                /* Pointer cursor on hover */
+    /* color: red; */
 }
 
-.new-journal-button:hover{
-    background-color: rgba(0, 0, 0, 0.1);
+.content {
+    margin-left: 15%; /* Adjust based on the width of your sidebar */
+    padding: 20px;
+    box-sizing: border-box;
 }
