@@ -191,10 +191,10 @@ export function setJournalViewer(path) {
     journalViewer.innerHTML = ""; // CLEAR whatever is displayed to the right
     const journalToLoad = getJournal(path); // Load in the corresponding journal from the database
 
-    // Temporarily just displays the title as h1
-    const journalTitle = document.createElement("h1");
-    journalTitle.innerHTML = journalToLoad.title;
-    journalViewer.appendChild(journalTitle);
+    // Adds <journal-editor></journal-editor> to the journal viewer
+    const journalEditor = document.createElement("journal-editor");
+    journalEditor.data = journalToLoad;
+    journalViewer.appendChild(journalEditor);
 }
 
 // Function to recursively load all files into the HTML

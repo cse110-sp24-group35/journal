@@ -7,6 +7,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Tell linter these functions exist.
+/*global beforeAll, afterAll, expect*/
 describe("Journal Page", () => {
     let browser;
     let page;
@@ -21,7 +23,7 @@ describe("Journal Page", () => {
 
         server = fastify;
         await server.listen({
-            port: 1000
+            port: 6790
         });
 
         browser = await puppeteer.launch({
@@ -29,8 +31,8 @@ describe("Journal Page", () => {
             args: ["--no-sandbox", "--disable-setuid-sandbox"]
         });
         page = await browser.newPage();
-        await page.goto("http://localhost:1000/journal.html"); // Adjust the path to your HTML file
-    }, 10000);
+        await page.goto("http://localhost:6790/journal.html"); // Adjust the path to your HTML file
+    }, 30000);
 
     afterAll(async () => {
         await browser.close();
@@ -55,5 +57,16 @@ describe("Journal Page", () => {
             const shadow = document.querySelector("modal-journal");
             shadow.remove();
         });
+    });
+  
+    test("should not have any journal to display", async () => {
+        // Check that no journal is displayed
+        const noJournalMessage = await page.evaluate(() => {
+            const editor = document.querySelector("journal-editor");
+            const message = editor.shadowRoot.querySelector('p');
+            return message.innerText == 'No journal selected';
+        });
+
+        expect(noJournalMessage).to.equal(true);
     });
 });

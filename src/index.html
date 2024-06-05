@@ -6,9 +6,10 @@
     <title>Journal | Overview</title>
     <link rel="stylesheet" href="styles/journal.css">
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
-        <script>
-            window.process = { browser: true, env: { NODE_ENV: "production" } };
-        </script>
+    <script>
+        window.process = { browser: true, env: { NODE_ENV: "production" } };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script type="importmap">
         {
@@ -23,16 +24,21 @@
 </head>
 
 <body>
-    <a href="./journal.html">Journal</a>
-    
-    <modal-journal></modal-journal>
     <my-sidebar></my-sidebar>
-    <div class="content">
-        <p>This is the overview page!</p>
+
+    <div class="container">
+        <task-list></task-list>
+
     </div>
     <script src="scripts/components/sidebar.js"></script>
-    <script src="styles/modal-component.js"></script>
-  
+    <script src="scripts/components/modal-journal.js"></script>
+
+    <div class="containerpie">
+        <task-pie-component></task-pie-component>
+    </div>
+
+    <script type="module" src="scripts/components/task-component.js"></script>
+    <script type="module" src="scripts/components/task-pie-component.js"></script>
 </body>
 
 </html>
