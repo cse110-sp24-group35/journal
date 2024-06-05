@@ -82,6 +82,7 @@ describe("Journal Page", () => {
 				content: "# hello"
             };
 
+			// TODO: click on a journal entry / create new journal here.
             editor.data = entry;
 
             const title = editor.shadowRoot.getElementById('journal-title');
