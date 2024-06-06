@@ -4,7 +4,6 @@ import staticPlugin from '@fastify/static';
 import path from 'path';
 import { expect } from 'chai';
 import { fileURLToPath } from 'url';
-import { createJournal, getJournal, journals } from '../../scripts/database/stores/journal';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
