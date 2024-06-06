@@ -37,20 +37,20 @@ class KanbanColumn extends HTMLElement {
     constructor(status) {
         super();
         this.status = status;
+        this.columnId = status.id; // Unique ID for the column element
 
         this.innerHTML = `
-            <section class="kanban-column">
+            <section class="kanban-column" data-column-id="${this.columnId}">
                 <div class="kanban-column-header">
-                    <h2 class="column-title" name="kanban-column-title">${status}</h2>
+                    <h2 class="column-title" name="kanban-column-title">${status.name}</h2>
                 </div>
                 <button class="kanban-column-delete-button">X</button>
                 <div class="content">
-                    <div class="kanban-card-container">
-                    </div>
+                    <div class="kanban-card-container"></div>
                 </div>
                 <div class="addBtn">
                     <button class="add-kanban-card-button">
-                        <img src="public/images/paw.png" alt= "Cat Paw" width="30" height="30"> <span>Add a task</span>
+                        <img src="public/images/paw.png" alt="Cat Paw" width="30" height="30"> <span>Add a task</span>
                     </button>
                 </div>
             </section>
@@ -73,8 +73,7 @@ class KanbanColumn extends HTMLElement {
 
         const columnNameInput = this.querySelector('[name="kanban-column-title"]');
         columnNameInput.addEventListener('input', (event) => {
-            this.status = event.target.value;
-            this.updateStatus();
+            this.updateStatus(event.target.value);
         });
 
         const cardContainer = this.querySelector('.kanban-card-container');
@@ -86,14 +85,14 @@ class KanbanColumn extends HTMLElement {
         cardContainer.addEventListener('drop', (event) => {
             event.preventDefault();
             const taskId = event.dataTransfer.getData('application/card-id');
-            this.moveCardToColumn(taskId, this.status);
+            this.moveCardToColumn(taskId, this.columnId);
         });
     }
 
-    moveCardToColumn(taskId, newStatus) {
+    moveCardToColumn(taskId, newColumnId) {
         const updatedTasks = tasks.get().map((task) => {
             if (task.id === taskId) {
-                return { ...task, status: newStatus };
+                return { ...task, status: newColumnId };
             }
             return task;
         });
@@ -104,20 +103,34 @@ class KanbanColumn extends HTMLElement {
         const cardContainer = this.querySelector('.kanban-card-container');
         cardContainer.innerHTML = '';
 
-        tasks.get().filter(task => task.status === this.status).forEach(task => {
+        tasks.get().filter(task => task.status === this.columnId).forEach(task => {
             const card = new KanbanCard(task);
             cardContainer.appendChild(card);
         });
     }
 
     deleteColumn() {
-        const newStatuses = statuses.get().filter(s => s !== this.status);
-        statuses.set(newStatuses);
+        // Remove this specific column element from the DOM
+        this.remove();
+        
+        // Update statuses by filtering out the status of this column only once
+        let currentStatuses = statuses.get();
+        currentStatuses = currentStatuses.filter(status => status.id !== this.columnId);
+        statuses.set(currentStatuses);
+
+        // Remove tasks associated with this column
+        const updatedTasks = tasks.get().filter(task => task.status !== this.columnId);
+        tasks.set(updatedTasks);
     }
 
-    updateStatus() {
+    updateStatus(newName) {
         const currentStatuses = statuses.get();
-        const newStatuses = currentStatuses.map(s => s === this.status ? this.status : s);
+        const newStatuses = currentStatuses.map(s => {
+            if (s.id === this.columnId) {
+                return { ...s, name: newName };
+            }
+            return s;
+        });
         statuses.set(newStatuses);
     }
 }
@@ -128,13 +141,17 @@ class AddKanbanColumn extends HTMLElement {
         super();
         this.innerHTML = `
             <button class="add-kanban-column-button" role="button">
-                <img src="public/images/paw.png" alt= "Cat Paw" width="30" height="30"><span>Add Column</span>
+                <img src="public/images/paw.png" alt="Cat Paw" width="30" height="30"><span>Add Column</span>
             </button>
         `;
 
         this.addEventListener('click', () => {
-            const newStatus = prompt("Enter new column name:");
-            if (newStatus) {
+            const newStatusName = prompt("Enter new column name:");
+            if (newStatusName) {
+                const newStatus = {
+                    id: `status-${Date.now()}`,
+                    name: newStatusName
+                };
                 const currentStatuses = statuses.get();
                 statuses.set([...currentStatuses, newStatus]);
             }
@@ -209,7 +226,7 @@ class KanbanCardPopup extends HTMLElement {
             title,
             description,
             date,
-            status: this.status,
+            status: this.status.id,
             createdAt: this.task.createdAt || Date.now(),
             dueAt: this.task.dueAt || Date.now() + 7 * 24 * 60 * 60 * 1000 // Example due date: one week later
         };

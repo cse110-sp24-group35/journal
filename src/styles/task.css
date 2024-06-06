@@ -12,40 +12,6 @@
 
 }
 
-/*Navigation Bar*/
-.nav {
-  height: 100%;
-  width: 3.5%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  overflow-x: hidden;
-  transition: 0.5s;
-}
-
-.nav a{
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
-}
-
-.nav a:hover {
-  color: #F3E2D5;
-}
-
-#open {
-  border-style: none;
-  width: auto;
-  height: auto;
-  background-color: #FFF5ED;
-  cursor: pointer;
-
-}
-
 h1 {
   font-size: 60px;
   text-align: center;
@@ -54,34 +20,17 @@ h1 {
 
 /*Container for three boxes*/
 #container {
+  justify-content: center;
   display: flex;
   flex-direction: row;
   overflow-x: scroll;
   width: 90%;
-  height: 80%;
+  height: 8 0%;
   margin: auto;
   white-space: nowrap;
 }
 
-/*Fourth Add Column Box*/
-.column {
-  text-align: center;
-  text-decoration: none;
-  background-color: #F3E2D5;
-  height: 750px;
-  width: 325px;
-  border-radius: 40px;
-  margin: 0px 40px 0px 40px;
-  flex: 0 0 auto; 
-  box-sizing: border-box;
-}
 
-.addColumn {
-  margin-right: 10px;
-  background-color: #F3E2D5;
-  width: 320px;
-  height: 550px;
-}
 
 .orangeBlob{
   top: -15px;
@@ -219,7 +168,7 @@ background-color: #F3E2D5;
   display: inline-block;
   margin: 0 10px;
   vertical-align: top;
-  height: 750px;
+  height: 730px;
   width: 325px;
   position: relative;
 }
@@ -239,7 +188,7 @@ background-color: #F3E2D5;
 
 .content {
   width: 320px;
-  height: 585px;
+  height: 555px;
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: transparent;
@@ -277,7 +226,7 @@ background-color: #F3E2D5;
   height: auto;
   width: auto;
   right: 20%;
-  top: 3%;
+  top: 1.5%;
   cursor: pointer;
   font-size: 30px;
   font-weight: 600;
