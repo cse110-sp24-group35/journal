@@ -30,8 +30,6 @@ h1 {
   white-space: nowrap;
 }
 
-
-
 .orangeBlob{
   top: -15px;
   position: absolute;
@@ -54,21 +52,6 @@ h1 {
   font-size: 30px;
   position: relative;
   font-weight: 600;
-}
-
-/*Add a column*/
-.addColumn {
-  height: auto;
-  width: auto;
-  margin: 30px 15px 0px 15px;
-  margin-bottom: 91%;
-  border: none;
-  background-color: #F3E2D5;
-  cursor: pointer;
-  font-size: 30px;
-  position: relative;
-  font-weight: 600;
-
 }
 
 .column-title {
@@ -134,7 +117,6 @@ background-color: #F3E2D5;
   background-color: transparent;
   top: 0px;
   left: 85%;
-
 }
 
 /*x close button for modal box*/
@@ -382,5 +364,3 @@ label {
   top: 0;
   right: 15px;
 }
-
-

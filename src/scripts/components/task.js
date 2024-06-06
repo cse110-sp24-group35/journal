@@ -64,11 +64,12 @@ class KanbanColumn extends HTMLElement {
         const deleteButton = this.querySelector('.kanban-column-delete-button');
         deleteButton.addEventListener('click', () => this.deleteColumn());
         const box = document.getElementById("container");
-
+        const header = document.getElementById("header");
         const addCardButton = this.querySelector('.add-kanban-card-button');
         addCardButton.addEventListener('click', () => {
             document.body.appendChild(new KanbanCardPopup(this.status));
             box.style.display = "none";
+            header.innerHTML = "Add a Task"
         });
 
         const columnNameInput = this.querySelector('[name="kanban-column-title"]');
@@ -171,26 +172,27 @@ class KanbanCardPopup extends HTMLElement {
                 <div class="kanban-card-popup-header">
                     <button class="kanban-card-popup-close-button">X</button>
                 </div>
-                <div class="kanban-card-popup-body">
+                <form class="kanban-card-popup-body">
                     <label for="taskName">Task Name<br> 
-                        <input class="inputs" name="taskName" value="${task.title || ''}" required/><br>
+                        <input type="text" class="inputs" name="taskName" value="${task.title || ''}" required/><br>
                     </label>
                     <label for="dueDate">Due Date<br>
-                        <input class="inputs" name="dueDate" value="${task.date || ''}" required/><br>
+                        <input type="text" class="inputs" name="dueDate" value="${task.date || ''}" required/><br>
                     </label>
                     <label for="taskDesc">Task Description<br>
-                        <input class="inputs" name="taskDesc" value="${task.description || ''}" required/><br>
+                        <input type="text" class="inputs" name="taskDesc" value="${task.description || ''}" required/><br>
                     </label>
                     <label for="journal">Link to Journal<br>
-                        <input class="inputs" name="journal" value="${task.journal || ''}" required/><br>
+                        <input type="text" class="inputs" name="journal" value="${task.journal || ''}" required/><br>
                     </label>
                     <label for="tags">Tags<br>
-                        <input class="inputs" name="tags" value="${task.tags || ''}" required/><br>
+                        <input type="text" class="inputs" name="tags" value="${task.tags || ''}" required/><br>
                     </label>
-                </div>
-                <div class="kanban-card-popup-footer">
-                    <button class="kanban-card-popup-save-button">Add Task</button>
-                </div>
+                    <div class="kanban-card-popup-footer">
+                        <button type="submit" class="kanban-card-popup-save-button" id="saveButton">Add Task</button>
+                    </div>
+                </form>
+                
             </dialog>
         `;
 
@@ -200,13 +202,16 @@ class KanbanCardPopup extends HTMLElement {
 
     addEventListeners() {
         const box = document.getElementById("container");
+        const header = document.getElementById("header");
         this.querySelector('.kanban-card-popup-close-button').addEventListener('click', () => {
             this.closePopup();
             box.style.display = "flex";
+            header.innerHTML = "Task Lists";   
         });
         this.querySelector('.kanban-card-popup-save-button').addEventListener('click', () => {
             this.saveCard();
             box.style.display = "flex";
+            header.innerHTML = "Task Lists";
         });
     }
 
@@ -270,10 +275,12 @@ class KanbanCard extends HTMLElement {
 
     addEventListeners() {
         const box = document.getElementById("container");
+        const header = document.getElementById("header");
         this.querySelector('.card-delete-button').addEventListener('click', () => this.deleteCard());
         this.querySelector('.edit').addEventListener('click', () => {
             this.editCard();
             box.style.display = "none";
+            header.innerHTML = "Edit Task";
         });
 
         this.addEventListener('dragstart', (event) => this.dragStartHandler(event));
