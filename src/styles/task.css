@@ -143,7 +143,7 @@ background-color: #F3E2D5;
   margin: 0 auto;
 }
 
-.kanban-column {
+.task-column {
   border-radius: 40px;
   padding: 20px;
   background-color: #F3E2D5;
@@ -155,7 +155,7 @@ background-color: #F3E2D5;
   position: relative;
 }
 
-.kanban-column-header {
+.task-column-header {
   display: flex;
   position: relative;
   justify-content: center;
@@ -164,7 +164,7 @@ background-color: #F3E2D5;
   border-radius: 3px 3px 0 0;
 }
 
-.kanban-card-container {
+.task-card-container {
   background-color: transparent;
 }
 
@@ -184,7 +184,7 @@ background-color: #F3E2D5;
   background-color: transparent;
 }
 
-.add-kanban-card-button {
+.add-task-card-button {
   background-color: #F3E2D5;
   cursor: pointer;
   font-size: 30px;
@@ -197,7 +197,7 @@ background-color: #F3E2D5;
   margin: 10px;
 }
 
-.add-kanban-column-button {
+.add-task-column-button {
   position: absolute;
   background: #F3E2D5;
   border: none;
@@ -248,19 +248,19 @@ background-color: #F3E2D5;
   background-color: #F3E2D5;
 }
 
-.kanban-card-popup-header > h2 {
+.task-card-popup-header > h2 {
   background-color: #F3E2D5;
 }
 
-.kanban-card-popup-header {
+.task-card-popup-header {
   background-color: #F3E2D5;
 }
 
-.kanban-card-popup-body {
+.task-card-popup-body {
   background-color: transparent;
 }
 
-.kanban-card-popup-footer {
+.task-card-popup-footer {
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
@@ -277,7 +277,7 @@ background-color: #F3E2D5;
   position: relative;
 }
 
-.kanban-card-popup-close-button {
+.task-card-popup-close-button {
   cursor: pointer;
   border: none;
   background-color: transparent;
@@ -344,7 +344,7 @@ label {
   background-color: transparent;
 }
 
-.kanban-card-popup-save-button{
+.task-card-popup-save-button{
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -356,11 +356,17 @@ label {
   margin: 0 auto;
 }
 
-.kanban-column-delete-button {
+.task-column-delete-button {
   border: none;
   position:absolute;
   background-color: transparent;
   font-size: 40px;
   top: 0;
   right: 15px;
+}
+
+.task-card-placeholder {
+  background-color: transparent;
+  margin-top: 20%;
+  text-align: center;
 }
