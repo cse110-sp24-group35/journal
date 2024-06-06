@@ -329,6 +329,7 @@ background-color: #F3E2D5;
 
 .pencil {
   background-color: transparent;
+  transform: scaleX(-1);
 }
 
 .card-content {
