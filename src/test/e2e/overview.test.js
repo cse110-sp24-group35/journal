@@ -57,21 +57,36 @@ describe("Overview Page", () => {
         };
 
         await page.evaluate((newTask) => {
+            console.log("Adding new task to localStorage", newTask);
             const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
             tasks.push(newTask);
             localStorage.setItem('tasks', JSON.stringify(tasks));
-            const taskList = document.querySelector('task-list');
-            if (taskList) {
-                taskList.update({ get: () => tasks });
-            }
+            console.log("Tasks after addition", tasks);
         }, newTask);
 
         const firstTaskDescription = await page.evaluate(() => {
             const taskList = document.querySelector('task-list');
-            const shadowRoot = taskList ? taskList.shadowRoot : null;
-            const taskComponent = shadowRoot ? shadowRoot.querySelector('task-component') : null;
-            const descriptionSpan = taskComponent ? taskComponent.shadowRoot.querySelector('span.description') : null;
-            return descriptionSpan ? descriptionSpan.textContent : '';
+            if (!taskList) {
+                console.error("task-list component not found");
+                return '';
+            }
+            const shadowRoot = taskList.shadowRoot;
+            if (!shadowRoot) {
+                console.error("No shadowRoot found for task-list");
+                return '';
+            }
+            const taskComponent = shadowRoot.querySelector('task-component');
+            if (!taskComponent) {
+                console.error("task-component not found in shadowRoot");
+                return '';
+            }
+            const descriptionSpan = taskComponent.shadowRoot.querySelector('span.description');
+            if (!descriptionSpan) {
+                console.error("Description span not found in task-component");
+                return '';
+            }
+            console.log("Task description found", descriptionSpan.textContent);
+            return descriptionSpan.textContent;
         });
         expect(firstTaskDescription).to.equal(newTask.description);
     });
