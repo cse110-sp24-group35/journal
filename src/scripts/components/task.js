@@ -160,16 +160,16 @@ class KanbanCardPopup extends HTMLElement {
                         <input class="inputs" name="taskName" value="New Card" required/><br>
                     </label>
                     <label for="dueDate">Due Date<br>
-                            <input class="inputs" name="dueDate" required/><br>
+                            <input class="inputs" name="dueDate" value="New Card" required/><br>
                     </label>
                     <label for="taskDesc">Task Description<br>
-                        <input class="inputs" name="taskDesc" required/><br>
+                        <input class="inputs" name="taskDesc" value="New Card" required/><br>
                     </label>
                     <label for="journal">Link to Journal<br>
-                        <input class="inputs" name="journal" required/><br>
+                        <input class="inputs" name="journal" value="New Card" required/><br>
                     </label>
                     <label for="tags">Tags<br>
-                        <input class="inputs" name="tags" required/><br>
+                        <input class="inputs" name="tags" value="New Card" required/><br>
                     </label>
                 </div>
                 <div class="kanban-card-popup-footer">
@@ -202,7 +202,8 @@ class KanbanCardPopup extends HTMLElement {
         const title = this.querySelector('[name="taskName"]').value;
         const description = this.querySelector('[name="taskDesc"]').value;
         const date = this.querySelector('[name="dueDate"]').value;
-        
+        const tags = this.querySelector('[name="tags"]').value;
+        const journal = this.querySelector('[name="journal"]').value;
 
         const newTask = {
             id: `task-${Date.now()}`,
@@ -239,17 +240,17 @@ class KanbanCard extends HTMLElement {
                 </div>
             </div>
         `;
-
-
-
-
         this.addEventListeners();
 
     }
 
     addEventListeners() {
+        const box = document.getElementById("container");
         this.querySelector('.card-delete-button').addEventListener('click', () => this.deleteCard());
-        this.querySelector('.card-content').addEventListener('click', () => this.editCard());
+        this.querySelector('.edit').addEventListener('click', () => {
+            this.editCard();
+            box.style.display = "none";
+        });
 
         this.addEventListener('dragstart', (event) => this.dragStartHandler(event));
         this.addEventListener('dragover', (event) => this.dragOverHandler(event));
@@ -262,6 +263,7 @@ class KanbanCard extends HTMLElement {
     }
 
     editCard() {
+        this.deleteCard();
         document.body.appendChild(new KanbanCardPopup(this.task.status, this.task.title, this.task.description, this.task.id));
     }
 

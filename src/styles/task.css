@@ -383,9 +383,11 @@ background-color: #F3E2D5;
   left: 195px;
   top: -5px;
   border: none;
+  cursor: pointer;
 }
 
 .edit {
+  cursor: pointer;
   background-color: transparent;
   font-size: 25px;
   position: absolute;
