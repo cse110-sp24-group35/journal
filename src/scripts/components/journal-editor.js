@@ -100,6 +100,8 @@ class JournalEditor extends HTMLElement {
 
         console.log('Saving journal');
         
+        // Use get() so we have an array to set as the new journal
+        //    after we have done our changes.
         const journalArray = journals.get();
         const journalIndex = journalArray.findIndex(j => j.path === shadow.path);
         const entry = journalArray[journalIndex];
