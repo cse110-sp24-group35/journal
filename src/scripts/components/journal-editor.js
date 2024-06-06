@@ -10,20 +10,10 @@ class JournalEditor extends HTMLElement {
             <input id="journal-tags" type="text" placeholder="Tags"/>
             <input id="journal-side-view" type="button" value="Toggle Side View"/>
             <div id="journal-content">
-                <!--<div id="markdown-editor"></div>-->
                 <textarea id="text-editor" rows=16></textarea>
             </div>
         </form>
         `
-
-        // Load Javascript script for Markdown editor
-        //    (lets us use `createWysimark`)
-        //const script = document.createElement('script');
-        //script.src = "https://www.unpkg.com/wysimark-standalone/dist/javascript/index.cjs.js";
-        //script.onload = () => {
-        //    this.setupMarkdownEditor();
-        //};
-        //shadow.appendChild(script);
 
         const style = document.createElement('style');
         style.innerHTML = `
@@ -84,29 +74,6 @@ class JournalEditor extends HTMLElement {
         this.path = null;
     }
 
-    connectedCallback() {
-        //const shadow = this.shadowRoot;
-
-        // Side View Button functionality
-        //const button = shadow.getElementById('journal-side-view');
-        //const textarea = shadow.getElementById('text-editor');
-        //button.addEventListener('click', () => {
-        //    const editor = shadow.getElementById('markdown-editor');
-        //    if (this.sideBySide) {
-        //        textarea.hidden = true;
-        //        editor.style.width = "100%";
-        //    } else {
-        //        textarea.hidden = false;
-        //        editor.style.width = "50%";
-        //    }
-        //    this.sideBySide = !this.sideBySide;
-        //});
-
-        // Keep markdown editor in sync with textarea
-        //textarea.addEventListener('input', () => {
-        //    this.wysimark.setMarkdown(textarea.value);
-        //});
-    }
 
     /**
      * Sets journal path (controls whether editor is hidden or not)
@@ -188,18 +155,19 @@ class JournalEditor extends HTMLElement {
      */
     setupMarkdownEditor() {
         const container = this.shadowRoot.getElementById('markdown-editor');
-
+    
         // Tell linter that this function will be available.
         /*global createWysimark*/
-
+    
         this.wysimark = createWysimark(container, {
             initialMarkdown: "",
             onChange: (markdown) => {
-                const textarea = document.getElementById('text-editor');
+                const textarea = this.shadowRoot.getElementById('text-editor');
                 textarea.value = markdown;
             },
         });
     }
+    
 
     /**
      * Hack to get the styles to show up while using Shadow DOM.
