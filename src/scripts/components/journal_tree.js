@@ -188,7 +188,6 @@ export function openFolder(folder) {
 // Function to set the journal viewer to display the journal with the given path
 export function setJournalViewer(path) {
     const journalViewer = document.getElementById('journal-view');
-    journalViewer.innerHTML = ""; // CLEAR whatever is displayed to the right
     const journalToLoad = getJournal(path); // Load in the corresponding journal from the database
 
     // Adds <journal-editor></journal-editor> to the journal viewer

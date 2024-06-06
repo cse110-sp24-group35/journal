@@ -1,3 +1,5 @@
+import { marked } from 'marked';
+
 class JournalEditor extends HTMLElement {
     constructor() {
         super(); // Inherit everything from HTMLElement
@@ -212,11 +214,3 @@ class JournalEditor extends HTMLElement {
 }
 
 customElements.define("journal-editor", JournalEditor);
-
-// Include the marked library
-const script = document.createElement('script');
-script.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
-script.onload = () => {
-    console.log('Marked library loaded');
-};
-document.head.appendChild(script);
