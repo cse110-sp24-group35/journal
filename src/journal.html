@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal | Overview</title>
+    <link rel="stylesheet" href="styles/main.css"/>
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -31,7 +29,8 @@
     <script src="scripts/components/journal-editor.js" type="module"></script>
 
     <!-- Include the JavaScript file defining the Web Component -->
-    <script src="scripts/components/modal-journal.js"></script>
+    <script src="scripts/components/modal-journal.js" type="module"></script>
+    <script src="scripts/components/journal-main.js" type="module"></script>
 
     <!-- Use the custom Web Component here -->
     <!-- <modal-journal></modal-journal> -->
@@ -58,5 +57,9 @@
 
     <button id="expand-button" class="expand">&gt;&gt;</button>
 </body>
-
 </html>
+
+
+
+
+
