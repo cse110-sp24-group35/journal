@@ -4,6 +4,7 @@ import staticPlugin from '@fastify/static';
 import path from 'path';
 import { expect } from 'chai';
 import { fileURLToPath } from 'url';
+import { createJournal, getJournal, journals } from '../../scripts/database/stores/journal';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -69,4 +70,40 @@ describe("Journal Page", () => {
 
         expect(noJournalMessage).to.equal(true);
     });
+    
+    test("should open editor when selected in tree view", async () => {
+        const openEditor = await page.evaluate(() => {
+            // Click on a journal entry
+            // !NOTE: this depends on create-journal button creating a hello world entry
+            document.getElementById('create-journal').click();
+            document.getElementById('tree/hello').click();
+            document.getElementById('tree/hello/world').click();
+            // Check if editor has the journal we selected
+            const editor = document.querySelector("journal-editor");
+            return editor.hasJournal() && editor.shadowRoot.getElementById('journal-title').value === "Hello World";
+        });
+
+        expect(openEditor).to.equal(true);
+    })
+    
+    test("editor should autosave after edit", async () => {
+        const editor = await page.$('journal-editor');
+        const shadowRoot = await editor.evaluateHandle(el => el.shadowRoot);
+        const text = await shadowRoot.$('#text-editor');
+
+        await text.type('\nhello');
+
+        const delay = (time) => new Promise(resolve => setTimeout(resolve, time));
+        await delay(750);
+
+        await page.reload();
+
+        const content = await page.evaluate(() => {
+            const editor = document.querySelector("journal-editor");
+            editor.path = "hello/world";
+            return editor.shadowRoot.getElementById('text-editor').value;
+        });
+
+        expect(content).to.equal("Hello World\nhello");
+    })
 });

@@ -85,6 +85,15 @@ class JournalEditor extends HTMLElement {
         //   so that a message can be displayed
         this.path = null;
     }
+
+    /**
+     * Checks if the editor is currently editing a journal.
+     *
+     * @returns {boolean} True if the editor has a journal being edited, otherwise false.
+     */
+    hasJournal() {
+        return this.shadowRoot.path !== null;
+    }
     
     /**
      * Saves current journal to local storage.
