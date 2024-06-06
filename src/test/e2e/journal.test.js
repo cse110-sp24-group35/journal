@@ -69,37 +69,4 @@ describe("Journal Page", () => {
 
         expect(noJournalMessage).to.equal(true);
     });
-    
-    test("journal editor should display when data is set", async () => {
-        // Check that editor is displayed
-        const editorDisplayed = await page.evaluate(() => {
-            const editor = document.querySelector("journal-editor");
-
-            const entry = {
-                title: "Journal Title",
-                tags: ["tag1", "tag2"],
-                path: "path/to/journal",
-				content: "# hello"
-            };
-
-			// TODO: click on a journal entry / create new journal here.
-            editor.data = entry;
-
-            const title = editor.shadowRoot.getElementById('journal-title');
-            if (title.hidden) return false;
-            if (title.value != entry.title) return false;
-            
-            const tags = editor.shadowRoot.getElementById('journal-tags');
-            if (tags.hidden) return false;
-            if (tags.value != entry.tags.join(', ')) return false;
-
-			const text = editor.shadowRoot.getElementById('text-editor');
-			if (text.hidden) return false;
-			if (text.value != "# hello") return false;
-
-            return true;
-        });
-
-        expect(editorDisplayed).to.equal(true);
-    });
 });

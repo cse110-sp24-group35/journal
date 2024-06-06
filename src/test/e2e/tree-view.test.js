@@ -95,11 +95,29 @@ describe("Tree View", () => {
         await firstFolderButton.click(); // Open the folder again for the next test
     });
 
-    it('should load journal content on button click', async () => {
+    it('journal editor should display content on button click', async () => {
         const journalButton = await page.$('.journal-button');
         await journalButton.click();
-        const journalTitle = await page.$eval('#journal-view > h1', el => el.textContent);
-        expect(journalTitle).to.equal("Test Journal");
+
+        const editorDisplayed = await page.evaluate( async() => {
+            const editor = document.querySelector("journal-editor");
+
+            const title = editor.shadowRoot.getElementById('journal-title');
+            if (title.hidden) return false;
+            if (title.value != "Test Journal") return false;
+            
+            const tags = editor.shadowRoot.getElementById('journal-tags');
+            if (tags.hidden) return false;
+            if (tags.value != ["tag1"]) return false;
+
+            const text = editor.shadowRoot.getElementById('text-editor');
+            if (text.hidden) return false;
+            if (text.value != "Test Content") return false;
+
+            return true;
+        });
+
+        expect(editorDisplayed).to.equal(true);
     });
 
     it('should update tree view upon journal deletion', async () => {
