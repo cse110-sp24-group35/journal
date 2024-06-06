@@ -41,12 +41,17 @@ class KanbanColumn extends HTMLElement {
         this.innerHTML = `
             <section class="kanban-column">
                 <div class="kanban-column-header">
-                    <h2 name="kanban-column-title">${status}</h2>
-                    <button class="kanban-column-delete-button">x</button>
+                    <h2 class="column-title" name="kanban-column-title">${status}</h2>
                 </div>
-                <div class="kanban-card-container"></div>
-                <div>
-                    <button class="add-kanban-card-button">+ Add a Task</button>
+                <button class="kanban-column-delete-button">X</button>
+                <div class="content">
+                    <div class="kanban-card-container">
+                    </div>
+                </div>
+                <div class="addBtn">
+                    <button class="add-kanban-card-button">
+                        <img src="public/images/paw.png" alt= "Cat Paw" width="30" height="30"> <span>Add a task</span>
+                    </button>
                 </div>
             </section>
         `;
@@ -123,7 +128,7 @@ class AddKanbanColumn extends HTMLElement {
         super();
         this.innerHTML = `
             <button class="add-kanban-column-button" role="button">
-                <p>Add Column</p>
+                <img src="public/images/paw.png" alt= "Cat Paw" width="30" height="30"><span>Add Column</span>
             </button>
         `;
 
@@ -196,11 +201,14 @@ class KanbanCardPopup extends HTMLElement {
     saveCard() {
         const title = this.querySelector('[name="taskName"]').value;
         const description = this.querySelector('[name="taskDesc"]').value;
+        const date = this.querySelector('[name="dueDate"]').value;
+        
 
         const newTask = {
             id: `task-${Date.now()}`,
             title,
             description,
+            date,
             status: this.status,
             createdAt: Date.now(),
             dueAt: Date.now() + 7 * 24 * 60 * 60 * 1000 // Example due date: one week later
@@ -219,14 +227,21 @@ class KanbanCard extends HTMLElement {
         this.innerHTML = `
             <div class="task-card" draggable="true" id="${task.id}">
                 <div class="card-content">
-                    <div class="card-header">
-                        <h3 class="card-title">${task.title}</h3>
-                        <button class="card-delete-button">x</button>
-                    </div>
+                    <p class="card-title">${task.title}</p>
                     <p class="card-description">${task.description}</p>
+                    <p class="dueDate">${task.date}</p>
+                    <img class="orangeBlob" src="public/images/orangeBlob.png" alt="Orange Blob" width="65" height="40">
+                    <img class="grayBlob" src="public/images/grayBlob.png" alt="Gray Blob" width="50" height="45">
+                    <button class="card-delete-button">X</button>
+                    <button class="edit">
+                        <img class="pencil" src="public/images/pencil.png" alt="remove" width="30" height="30">
+                    </button>
                 </div>
             </div>
         `;
+
+
+
 
         this.addEventListeners();
 
