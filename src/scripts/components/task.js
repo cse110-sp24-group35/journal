@@ -285,7 +285,7 @@ class TaskCard extends HTMLElement {
                 <div class="card-content">
                     <p class="card-title">${task.title}</p>
                     <p class="card-description">${task.description}</p>
-                    <p class="dueDate">${task.date}</p>
+                    <p class="dueDate">Due ${task.date}</p>
                     <img class="orangeBlob" src="public/images/orangeBlob.png" alt="Orange Blob" width="65" height="40">
                     <img class="grayBlob" src="public/images/grayBlob.png" alt="Gray Blob" width="50" height="45">
                     <button class="card-delete-button">X</button>
