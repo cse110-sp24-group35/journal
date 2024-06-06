@@ -173,7 +173,7 @@ class KanbanCardPopup extends HTMLElement {
                 </div>
                 <div class="kanban-card-popup-body">
                     <label for="taskName">Task Name<br> 
-                        <input class="inputs" name="taskName" value="${task.title || 'New Card'}" required/><br>
+                        <input class="inputs" name="taskName" value="${task.title || ''}" required/><br>
                     </label>
                     <label for="dueDate">Due Date<br>
                         <input class="inputs" name="dueDate" value="${task.date || ''}" required/><br>
