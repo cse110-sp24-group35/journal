@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-    <!-- temporarily add stuff for manual testing -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task List</title>
+    <title>Journal | Overview</title>
+    <link rel="stylesheet" href="styles/journal.css">
     <link rel="stylesheet" href="styles/task.css">
-
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -22,8 +21,12 @@
         }
     </script>
     <!-- Polyfill end -->
+    <link rel="stylesheet" href="styles/main.css">
 </head>
+
 <body>
+    <my-sidebar></my-sidebar>
+
     <div class="container">
         <task-list></task-list>
     </div>
@@ -32,6 +35,9 @@
         <upcoming-task-list></upcoming-task-list>
     </div>
     <script src="scripts/components/upcoming-tasks.js"></script>
+    <script src="scripts/components/sidebar.js"></script>
+    <script src="scripts/components/modal-journal.js"></script>
+
     <div class="containerpie">
         <task-pie-component></task-pie-component>
     </div>
@@ -40,4 +46,5 @@
     <script type="module" src="scripts/components/upcoming-tasks.js"></script>
     <script type="module" src="scripts/components/task-pie-component.js"></script>
 </body>
+
 </html>

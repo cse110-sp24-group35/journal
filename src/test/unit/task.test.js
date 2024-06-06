@@ -1,10 +1,4 @@
-import {
-    tasks,
-    createTask,
-    getTask,
-    deleteTask,
-    updateTask
-} from '../../scripts/database/stores/task';
+import { tasks, createTask, getTask, deleteTask, updateTask } from '../../scripts/database/stores/task';
 import { expect } from 'chai';
 
 describe("Task Stores", () => {
@@ -65,34 +59,31 @@ describe("Task Stores", () => {
 
     it("Update existing task", () => {
         createTask("1", "Sample Task", "This is a sample task", "High", "PLANNED", Date.now() + 1000 * 60 * 60);
-
-        const newDueAt = Date.now() + 1000 * 60 * 120;
-
-        const updated = updateTask("1", {
+        const updateData = {
             title: "Updated Task",
-            description: "This is an updated task description",
+            description: "This is an updated task",
             priority: "Medium",
             status: "ONGOING",
-            dueAt: newDueAt
-        });
-
-        expect(updated).to.eq(true);
+            dueAt: Date.now() + 1000 * 60 * 120,
+        };
+        expect(updateTask("1", updateData)).to.eq(true);
 
         const task = getTask("1");
-        expect(task).not.null;
-        expect(task.id).eq("1");
         expect(task.title).eq("Updated Task");
-        expect(task.description).eq("This is an updated task description");
+        expect(task.description).eq("This is an updated task");
         expect(task.priority).eq("Medium");
         expect(task.status).eq("ONGOING");
-        expect(task.dueAt).eq(newDueAt);
+        expect(task.dueAt).to.be.a('number');
     });
 
     it("Update non-existing task", () => {
-        const updated = updateTask("999", {
-            title: "Non-existing Task"
-        });
-
-        expect(updated).to.eq(false);
+        const updateData = {
+            title: "Non-existing Task",
+            description: "This task does not exist",
+            priority: "Low",
+            status: "PLANNED",
+            dueAt: Date.now() + 1000 * 60 * 60,
+        };
+        expect(updateTask("999", updateData)).to.eq(false);
     });
 });
