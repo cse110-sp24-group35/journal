@@ -70,7 +70,8 @@ describe("Overview Page", () => {
             const taskList = document.querySelector('task-list');
             const shadowRoot = taskList ? taskList.shadowRoot : null;
             const taskComponent = shadowRoot ? shadowRoot.querySelector('task-component') : null;
-            return taskComponent ? taskComponent.shadowRoot.querySelector('span.description').textContent : '';
+            const descriptionSpan = taskComponent ? taskComponent.shadowRoot.querySelector('span.description') : null;
+            return descriptionSpan ? descriptionSpan.textContent : '';
         });
         expect(firstTaskDescription).to.equal(newTask.description);
     });
@@ -83,8 +84,7 @@ describe("Overview Page", () => {
             return taskComponent ? taskComponent.shadowRoot.querySelector('input') : null;
         });
 
-        await checkbox.click();
-
+        await checkbox.click(); // Ensure this triggers the correct event
         const taskClass = await page.evaluate(() => {
             const taskList = document.querySelector('task-list');
             const shadowRoot = taskList ? taskList.shadowRoot : null;
