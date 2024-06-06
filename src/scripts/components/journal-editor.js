@@ -1,3 +1,5 @@
+import { journals, getJournal } from '../database/stores/journal.js';
+
 class JournalEditor extends HTMLElement {
     constructor() {
         super(); // Inherit everything from HTMLElement
@@ -65,16 +67,16 @@ class JournalEditor extends HTMLElement {
         /***** Journal Content *****/
 
         #journal-content {
-        	display: flex;
+            display: flex;
         }
 
         #markdown-editor {
-        	width: 100%;
+            width: 100%;
         }
 
         #text-editor {
         /* Width is 100% for now, while not using markdown editor */
-        	width: 100%;
+            width: 100%;
         }
         `;
         shadow.appendChild(style);
@@ -83,9 +85,36 @@ class JournalEditor extends HTMLElement {
         //   so that a message can be displayed
         this.path = null;
     }
+    
+    /**
+     * Saves current journal to local storage.
+     */
+    save() {
+        const shadow = this.shadowRoot;
+        
+        // sanity check
+        if (this.shadowRoot.path === null) {
+            console.warn("Unable to save: no journal is selected");
+            return;
+        }
+
+        console.log('Saving journal');
+        
+        const journalArray = journals.get();
+        const journalIndex = journalArray.findIndex(j => j.path === shadow.path);
+        const entry = journalArray[journalIndex];
+
+        entry.title   = shadow.getElementById('journal-title').value;
+        entry.content = shadow.getElementById('text-editor').value;
+        const tags = shadow.getElementById('journal-tags');
+        entry.tags = tags.value.split(',').map(str => str.trim());
+        entry.modifiedAt = Date.now();
+        
+        journals.set(journalArray);
+    }
 
     connectedCallback() {
-        //const shadow = this.shadowRoot;
+        const shadow = this.shadowRoot;
 
         // Side View Button functionality
         //const button = shadow.getElementById('journal-side-view');
@@ -106,19 +135,55 @@ class JournalEditor extends HTMLElement {
         //textarea.addEventListener('input', () => {
         //    this.wysimark.setMarkdown(textarea.value);
         //});
+        
+        function debounce(func, timeout = 500) {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        }
+        
+        const inputElements = [
+            shadow.getElementById('text-editor'),
+            shadow.getElementById('journal-title'),
+            shadow.getElementById('journal-tags'),
+        ];
+        
+        const processChange = debounce(() => this.save());
+        for (let element of inputElements) {
+            element.addEventListener('input', processChange);
+        }
     }
 
     /**
-     * Sets journal path (controls whether editor is hidden or not)
-     * @param {string} path - journal path
+     * Sets journal path of journal being edited
+     * (controls whether editor is hidden or not)
+    * @param {string} path - journal path
      */
     set path(path) {
-        this.shadowRoot.path = path;
-        const form = this.shadowRoot.querySelector('form');
+        const entry = getJournal(path);
+        const validPath = (entry !== undefined);
 
-        // Hide all the input stuff if we have an invalid path
-        const hide = !path;
+        // Make sure to save before switching entries
+        if (this.shadowRoot.path) this.save();
+
+        this.shadowRoot.path = validPath ? path : null;
+
+        if (validPath) {
+            this.setData(entry);
+        }
         
+        // Hide all the input stuff if we have an invalid path
+        this.changeInputVisibility(!validPath);
+    }
+
+    /**
+     * Changes the `hidden` property of input elements
+     * @param {boolean} hide - true if we should show input elements
+     */
+    changeInputVisibility(hide) {
+        const form = this.shadowRoot.querySelector('form');
         form.childNodes.forEach(element => {
             element.hidden = hide;
         });
@@ -142,7 +207,7 @@ class JournalEditor extends HTMLElement {
      * Sets data from journal
      * @param {Journal} journal - journal to get data from.
      */
-    set data(journal) {
+    setData(journal) {
         const textarea = this.shadowRoot.getElementById('text-editor');
         textarea.value = journal.content;
         //this.wysimark.setMarkdown(journal.content);
@@ -152,35 +217,6 @@ class JournalEditor extends HTMLElement {
 
         const tags = this.shadowRoot.getElementById('journal-tags');
         tags.value = journal.tags.join(', ');
-
-        this.path = journal.path;
-    }
-
-    /**
-     * Gets journal title
-     * @returns {string} - Journal title
-     */
-    get title() {
-        const title = this.shadowRoot.getElementById("journal-title");
-        return title.value;
-    }
-
-    /**
-     * Gets journal's tags
-     * @returns {string[]} - Array of tags as strings
-     */
-    get tags() {
-        const tags = this.shadowRoot.getElementById('journal-tags');
-        return tags.value.split(',').map(str => str.trim());
-    }
-
-    /**
-     * Gets journal content
-     * @returns {string} - Journal content
-     */
-    get content() {
-        return this.shadowRoot.getElementById('text-editor').value;
-        //return this.wysimark.getMarkdown();
     }
 
     /**

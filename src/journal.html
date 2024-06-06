@@ -22,15 +22,13 @@
 
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/journal.css">
-	
+
 </head>
 
 <body>
-	<journal-editor></journal-editor>
-	
     <script src="scripts/components/sidebar.js"></script>
     <script src="scripts/components/journal_tree.js" type="module"></script>
-	<script src="scripts/components/journal-editor.js" type="module"></script>
+    <script src="scripts/components/journal-editor.js" type="module"></script>
 
     <!-- Include the JavaScript file defining the Web Component -->
     <script src="scripts/components/modal-journal.js"></script>
@@ -38,10 +36,7 @@
     <!-- Use the custom Web Component here -->
     <!-- <modal-journal></modal-journal> -->
     <div style="display: flex; flex-direction: column; position:relative;">
-      <my-sidebar id="sidebar"></my-sidebar>
-
-
-
+        <my-sidebar id="sidebar"></my-sidebar>
         
     </div>
 
@@ -57,9 +52,8 @@
         
     </div>
 
-
     <div id="journal-view">
-        <p id="journal-view-text"> No Journal Selected </p>
+        <journal-editor></journal-editor>
     </div>
 
     <button id="expand-button" class="expand">&gt;&gt;</button>

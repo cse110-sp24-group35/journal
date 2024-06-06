@@ -187,14 +187,8 @@ export function openFolder(folder) {
 
 // Function to set the journal viewer to display the journal with the given path
 export function setJournalViewer(path) {
-    const journalViewer = document.getElementById('journal-view');
-    journalViewer.innerHTML = ""; // CLEAR whatever is displayed to the right
-    const journalToLoad = getJournal(path); // Load in the corresponding journal from the database
-
-    // Temporarily just displays the title as h1
-    const journalTitle = document.createElement("h1");
-    journalTitle.innerHTML = journalToLoad.title;
-    journalViewer.appendChild(journalTitle);
+	console.log({path: path})
+    document.querySelector('journal-editor').path = path;
 }
 
 // Function to recursively load all files into the HTML
