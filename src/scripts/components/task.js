@@ -144,32 +144,31 @@ class AddKanbanColumn extends HTMLElement {
 
 // KanbanCardPopup class
 class KanbanCardPopup extends HTMLElement {
-    constructor(status) {
+    constructor(status, task = {}) {
         super();
         this.status = status;
-        // TODO: ADD HEADER <h2>Add a task</h2> 
-        this.innerHTML = `
+        this.task = task;
 
+        this.innerHTML = `
             <dialog class="task-card-popup">
-                <img class="cat" src="public/images/cat.png" alt="cat sitting"  width="140" height="110">
                 <div class="kanban-card-popup-header">
                     <button class="kanban-card-popup-close-button">X</button>
                 </div>
                 <div class="kanban-card-popup-body">
                     <label for="taskName">Task Name<br> 
-                        <input class="inputs" name="taskName" value="New Card" required/><br>
+                        <input class="inputs" name="taskName" value="${task.title || 'New Card'}" required/><br>
                     </label>
                     <label for="dueDate">Due Date<br>
-                            <input class="inputs" name="dueDate" value="New Card" required/><br>
+                        <input class="inputs" name="dueDate" value="${task.date || ''}" required/><br>
                     </label>
                     <label for="taskDesc">Task Description<br>
-                        <input class="inputs" name="taskDesc" value="New Card" required/><br>
+                        <input class="inputs" name="taskDesc" value="${task.description || ''}" required/><br>
                     </label>
                     <label for="journal">Link to Journal<br>
-                        <input class="inputs" name="journal" value="New Card" required/><br>
+                        <input class="inputs" name="journal" value="${task.journal || ''}" required/><br>
                     </label>
                     <label for="tags">Tags<br>
-                        <input class="inputs" name="tags" value="New Card" required/><br>
+                        <input class="inputs" name="tags" value="${task.tags || ''}" required/><br>
                     </label>
                 </div>
                 <div class="kanban-card-popup-footer">
@@ -191,7 +190,7 @@ class KanbanCardPopup extends HTMLElement {
         this.querySelector('.kanban-card-popup-save-button').addEventListener('click', () => {
             this.saveCard();
             box.style.display = "flex";
-        });  
+        });
     }
 
     closePopup() {
@@ -206,16 +205,21 @@ class KanbanCardPopup extends HTMLElement {
         const journal = this.querySelector('[name="journal"]').value;
 
         const newTask = {
-            id: `task-${Date.now()}`,
+            id: this.task.id || `task-${Date.now()}`,
             title,
             description,
             date,
             status: this.status,
-            createdAt: Date.now(),
-            dueAt: Date.now() + 7 * 24 * 60 * 60 * 1000 // Example due date: one week later
+            createdAt: this.task.createdAt || Date.now(),
+            dueAt: this.task.dueAt || Date.now() + 7 * 24 * 60 * 60 * 1000 // Example due date: one week later
         };
 
-        tasks.set([...tasks.get(), newTask]);
+        if (this.task.id) {
+            tasks.set(tasks.get().map(task => task.id === this.task.id ? newTask : task));
+        } else {
+            tasks.set([...tasks.get(), newTask]);
+        }
+
         this.closePopup();
     }
 }
@@ -241,7 +245,6 @@ class KanbanCard extends HTMLElement {
             </div>
         `;
         this.addEventListeners();
-
     }
 
     addEventListeners() {
@@ -263,8 +266,7 @@ class KanbanCard extends HTMLElement {
     }
 
     editCard() {
-        this.deleteCard();
-        document.body.appendChild(new KanbanCardPopup(this.task.status, this.task.title, this.task.description, this.task.id));
+        document.body.appendChild(new KanbanCardPopup(this.task.status, this.task));
     }
 
     dragStartHandler(event) {
