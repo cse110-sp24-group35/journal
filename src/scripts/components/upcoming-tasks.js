@@ -9,13 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
         'Saturday': { summary: '2 Upcoming Tasks (hover to see)', details: 'Task 1, Task 2' }
     };
 
-    const container = document.createElement('div');
-    container.classList.add('upcoming-tasks-container');
-
-    const popup = document.createElement('div');
-    popup.classList.add('task-popup');
-    popup.style.display = 'none';
-    document.body.appendChild(popup);
+    const container = document.querySelector('.upcoming-tasks-container');
+    const popup = document.querySelector('.task-popup');
 
     for (const [day, task] of Object.entries(tasks)) {
         const taskItem = document.createElement('div');
@@ -42,6 +37,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
         container.appendChild(taskItem);
     }
-
-    document.body.appendChild(container);
 });
