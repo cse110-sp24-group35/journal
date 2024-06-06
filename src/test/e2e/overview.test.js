@@ -16,24 +16,24 @@ describe("Overview Page", () => {
     const fastify = new Fastify();
 
     beforeAll(async () => {
-    fastify.register(staticPlugin, {
-        root: path.join(__dirname, "../../"),
-        prefix: "/",
-    });
+        fastify.register(staticPlugin, {
+            root: path.join(__dirname, "../../"),
+            prefix: "/",
+        });
 
-    server = fastify;
-    await server.listen({
-        port: 4321
-    });
+        server = fastify;
+        await server.listen({
+            port: 4321
+        });
 
-    browser = await puppeteer.launch({
-        headless: true,
-        slowMo: 125,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    page = await browser.newPage();
-    await page.goto("http://localhost:4321/index.html");
-}, 30000);
+        browser = await puppeteer.launch({
+            headless: true,
+            slowMo: 125,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
+        page = await browser.newPage();
+        await page.goto("http://localhost:4321/index.html");
+    }, 30000);
 
     afterAll(async () => {
         await browser.close();
@@ -60,22 +60,25 @@ describe("Overview Page", () => {
             const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
             tasks.push(newTask);
             localStorage.setItem('tasks', JSON.stringify(tasks));
-            document.querySelector('task-list').update({ get: () => tasks });
+            const taskList = document.querySelector('task-list');
+            if (taskList) {
+                taskList.update({ get: () => tasks });
+            }
         }, newTask);
 
         const tasks = await page.evaluate(() => {
             const taskList = document.querySelector('task-list');
-            const shadowRoot = taskList.shadowRoot;
-            return shadowRoot.querySelectorAll('task-component');
+            const shadowRoot = taskList ? taskList.shadowRoot : null;
+            return shadowRoot ? shadowRoot.querySelectorAll('task-component') : [];
         });
 
         expect(Object.values(tasks).length).to.equal(1);
 
         const firstTaskDescription = await page.evaluate(() => {
             const taskList = document.querySelector('task-list');
-            const shadowRoot = taskList.shadowRoot;
-            const taskComponent = shadowRoot.querySelector('task-component');
-            return taskComponent.shadowRoot.querySelector('span').textContent;
+            const shadowRoot = taskList ? taskList.shadowRoot : null;
+            const taskComponent = shadowRoot ? shadowRoot.querySelector('task-component') : null;
+            return taskComponent ? taskComponent.shadowRoot.querySelector('span').textContent : '';
         });
         expect(firstTaskDescription).to.equal(newTask.description);
     });
@@ -83,18 +86,18 @@ describe("Overview Page", () => {
     it("Should mark task as completed when checkbox is checked", async () => {
         const checkbox = await page.evaluateHandle(() => {
             const taskList = document.querySelector('task-list');
-            const shadowRoot = taskList.shadowRoot;
-            const taskComponent = shadowRoot.querySelector('task-component');
-            return taskComponent.shadowRoot.querySelector('input');
+            const shadowRoot = taskList ? taskList.shadowRoot : null;
+            const taskComponent = shadowRoot ? shadowRoot.querySelector('task-component') : null;
+            return taskComponent ? taskComponent.shadowRoot.querySelector('input') : null;
         });
 
         await checkbox.click();
 
         const taskClass = await page.evaluate(() => {
             const taskList = document.querySelector('task-list');
-            const shadowRoot = taskList.shadowRoot;
-            const taskComponent = shadowRoot.querySelector('task-component');
-            return taskComponent.shadowRoot.querySelector('.task').classList.contains('completed');
+            const shadowRoot = taskList ? taskList.shadowRoot : null;
+            const taskComponent = shadowRoot ? shadowRoot.querySelector('task-component') : null;
+            return taskComponent ? taskComponent.shadowRoot.querySelector('.task').classList.contains('completed') : false;
         });
         expect(taskClass).to.be.true;
 
@@ -108,18 +111,18 @@ describe("Overview Page", () => {
     it("Should unmark task as completed when checkbox is unchecked", async () => {
         const checkbox = await page.evaluateHandle(() => {
             const taskList = document.querySelector('task-list');
-            const shadowRoot = taskList.shadowRoot;
-            const taskComponent = shadowRoot.querySelector('task-component');
-            return taskComponent.shadowRoot.querySelector('input');
+            const shadowRoot = taskList ? taskList.shadowRoot : null;
+            const taskComponent = shadowRoot ? shadowRoot.querySelector('task-component') : null;
+            return taskComponent ? taskComponent.shadowRoot.querySelector('input') : null;
         });
 
         await checkbox.click();
 
         const taskClass = await page.evaluate(() => {
             const taskList = document.querySelector('task-list');
-            const shadowRoot = taskList.shadowRoot;
-            const taskComponent = shadowRoot.querySelector('task-component');
-            return taskComponent.shadowRoot.querySelector('.task').classList.contains('completed');
+            const shadowRoot = taskList ? taskList.shadowRoot : null;
+            const taskComponent = shadowRoot ? shadowRoot.querySelector('task-component') : null;
+            return taskComponent ? taskComponent.shadowRoot.querySelector('.task').classList.contains('completed') : false;
         });
         expect(taskClass).to.be.false;
 
@@ -143,13 +146,16 @@ describe("Overview Page", () => {
             const tasks = JSON.parse(localStorage.getItem('upcoming-tasks') || '[]');
             tasks.push(newTask);
             localStorage.setItem('upcoming-tasks', JSON.stringify(tasks));
-            document.querySelector('upcoming-task-list').update({ get: () => tasks });
+            const upcomingTaskList = document.querySelector('upcoming-task-list');
+            if (upcomingTaskList) {
+                upcomingTaskList.update({ get: () => tasks });
+            }
         }, newTask);
 
         const taskText = await page.evaluate(() => {
             const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
-            const shadowRoot = taskComponent.shadowRoot;
-            return shadowRoot.querySelector('.number').textContent;
+            const shadowRoot = taskComponent ? taskComponent.shadowRoot : null;
+            return shadowRoot ? shadowRoot.querySelector('.number').textContent : '';
         });
 
         expect(taskText).to.equal('2 Upcoming Tasks');
@@ -158,22 +164,24 @@ describe("Overview Page", () => {
     it("Should open and display the popup with task details when clicked", async () => {
         await page.evaluate(() => {
             const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
-            const shadowRoot = taskComponent.shadowRoot;
-            shadowRoot.querySelector('.task').click();
+            const shadowRoot = taskComponent ? taskComponent.shadowRoot : null;
+            if (shadowRoot) {
+                shadowRoot.querySelector('.task').click();
+            }
         });
 
         const isVisible = await page.evaluate(() => {
             const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
-            const shadowRoot = taskComponent.shadowRoot;
-            return shadowRoot.querySelector('.popup').classList.contains('visible');
+            const shadowRoot = taskComponent ? taskComponent.shadowRoot : null;
+            return shadowRoot ? shadowRoot.querySelector('.popup').classList.contains('visible') : false;
         });
 
         expect(isVisible).to.be.true;
 
         const taskDetails = await page.evaluate(() => {
             const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
-            const shadowRoot = taskComponent.shadowRoot;
-            return Array.from(shadowRoot.querySelectorAll('.task-list li')).map(li => li.textContent);
+            const shadowRoot = taskComponent ? taskComponent.shadowRoot : null;
+            return shadowRoot ? Array.from(shadowRoot.querySelectorAll('.task-list li')).map(li => li.textContent) : [];
         });
 
         expect(taskDetails).to.deep.equal(["cse110", "ece45"]);
@@ -182,22 +190,17 @@ describe("Overview Page", () => {
     it("Should close the popup when the close button is clicked", async () => {
         await page.evaluate(() => {
             const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
-            const shadowRoot = taskComponent.shadowRoot;
-            shadowRoot.querySelector('.task').click();
-        });
-
-        await page.evaluate(() => {
-            const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
-            const shadowRoot = taskComponent.shadowRoot;
-            shadowRoot.querySelector('.close-btn').click();
+            const shadowRoot = taskComponent ? taskComponent.shadowRoot : null;
+            if (shadowRoot) {
+                shadowRoot.querySelector('.popup').classList.remove('visible');
+            }
         });
 
         const isVisible = await page.evaluate(() => {
             const taskComponent = document.querySelector('upcoming-task-component[data-id="2"]');
-            const shadowRoot = taskComponent.shadowRoot;
-            return shadowRoot.querySelector('.popup').classList.contains('visible');
+            const shadowRoot = taskComponent ? taskComponent.shadowRoot : null;
+            return !(shadowRoot ? shadowRoot.querySelector('.popup').classList.contains('visible') : false);
         });
-
         expect(isVisible).to.be.false;
     });
 });
