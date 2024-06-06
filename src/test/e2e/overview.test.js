@@ -16,23 +16,24 @@ describe("Overview Page", () => {
     const fastify = new Fastify();
 
     beforeAll(async () => {
-        fastify.register(staticPlugin, {
-            root: path.join(__dirname, "../../"),
-            prefix: "/",
-        });
+    fastify.register(staticPlugin, {
+        root: path.join(__dirname, "../../"),
+        prefix: "/",
+    });
 
-        server = fastify;
-        await server.listen({
-            port: 4321
-        });
+    server = fastify;
+    await server.listen({
+        port: 4321
+    });
 
-        browser = await puppeteer.launch({
-            headless: true,
-            slowMo: 125
-        });
-        page = await browser.newPage();
-        await page.goto("http://localhost:4321/index.html");
-    }, 30000);
+    browser = await puppeteer.launch({
+        headless: true,
+        slowMo: 125,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    page = await browser.newPage();
+    await page.goto("http://localhost:4321/index.html");
+}, 30000);
 
     afterAll(async () => {
         await browser.close();
