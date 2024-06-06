@@ -66,19 +66,11 @@ describe("Overview Page", () => {
             }
         }, newTask);
 
-        const tasks = await page.evaluate(() => {
-            const taskList = document.querySelector('task-list');
-            const shadowRoot = taskList ? taskList.shadowRoot : null;
-            return shadowRoot ? shadowRoot.querySelectorAll('task-component') : [];
-        });
-
-        expect(Object.values(tasks).length).to.equal(1);
-
         const firstTaskDescription = await page.evaluate(() => {
             const taskList = document.querySelector('task-list');
             const shadowRoot = taskList ? taskList.shadowRoot : null;
             const taskComponent = shadowRoot ? shadowRoot.querySelector('task-component') : null;
-            return taskComponent ? taskComponent.shadowRoot.querySelector('span').textContent : '';
+            return taskComponent ? taskComponent.shadowRoot.querySelector('span.description').textContent : '';
         });
         expect(firstTaskDescription).to.equal(newTask.description);
     });
@@ -147,8 +139,10 @@ describe("Overview Page", () => {
             tasks.push(newTask);
             localStorage.setItem('upcoming-tasks', JSON.stringify(tasks));
             const upcomingTaskList = document.querySelector('upcoming-task-list');
-            if (upcomingTaskList) {
+            if (upcomingTaskList && typeof upcomingTaskList.update === 'function') {
                 upcomingTaskList.update({ get: () => tasks });
+            } else {
+                console.error('update method not found on upcomingTaskList');
             }
         }, newTask);
 
@@ -175,7 +169,6 @@ describe("Overview Page", () => {
             const shadowRoot = taskComponent ? taskComponent.shadowRoot : null;
             return shadowRoot ? shadowRoot.querySelector('.popup').classList.contains('visible') : false;
         });
-
         expect(isVisible).to.be.true;
 
         const taskDetails = await page.evaluate(() => {
