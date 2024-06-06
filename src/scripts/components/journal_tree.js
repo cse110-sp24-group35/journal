@@ -191,9 +191,14 @@ export function setJournalViewer(path) {
     const journalToLoad = getJournal(path); // Load in the corresponding journal from the database
 
     // Adds <journal-editor></journal-editor> to the journal viewer
-    const journalEditor = document.createElement("journal-editor");
-    journalEditor.data = journalToLoad;
-    journalViewer.appendChild(journalEditor);
+    let journalEditor = document.querySelector("journal-editor");
+    if (!journalEditor) {
+        journalEditor = document.createElement("journal-editor");
+        journalEditor.data = journalToLoad;
+        journalViewer.appendChild(journalEditor);
+    } else {
+        journalEditor.data = journalToLoad;
+    }
 }
 
 // Function to recursively load all files into the HTML
