@@ -6,6 +6,7 @@
     <title>Journal | Overview</title>
     <link rel="stylesheet" href="styles/journal.css">
     <link rel="stylesheet" href="styles/task.css">
+    <link rel="stylesheet" href="styles/upcoming-tasks.css">
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -31,13 +32,16 @@
         <task-list></task-list>
     </div>
 
-    <script src="scripts/components/upcoming-tasks.js"></script>
-    <script src="scripts/components/sidebar.js"></script>
-    <script src="scripts/components/modal-journal.js"></script>
+    <div class="container">
+        <upcoming-task-list></upcoming-task-list>
+    </div>
 
     <div class="containerpie">
         <task-pie-component></task-pie-component>
     </div>
+
+    <script src="scripts/components/sidebar.js"></script>
+    <script src="scripts/components/modal-journal.js"></script>
 
     <script type="module" src="scripts/components/task-component.js"></script>
     <script type="module" src="scripts/components/upcoming-tasks.js"></script>
