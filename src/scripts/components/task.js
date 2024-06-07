@@ -220,30 +220,26 @@ class KanbanCardPopup extends HTMLElement {
         const date = this.querySelector('[name="dueDate"]').value;
         const tags = this.querySelector('[name="tags"]').value;
         const journal = this.querySelector('[name="journal"]').value;
-    
+
         const newTask = {
             id: this.task.id || `task-${Date.now()}`,
             title,
             description,
             date,
-            tags,
-            journal,
-            status: this.status.id, // Use the current status ID
+            status: this.status.id,
             createdAt: this.task.createdAt || Date.now(),
             dueAt: this.task.dueAt || Date.now() + 7 * 24 * 60 * 60 * 1000 // Example due date: one week later
         };
-    
+
         if (this.task.id) {
-            // If task already exists, update it
             tasks.set(tasks.get().map(task => task.id === this.task.id ? newTask : task));
         } else {
-            // If it's a new task, add it to the tasks array
             tasks.set([...tasks.get(), newTask]);
         }
-    
+
         this.closePopup();
     }
-}    
+}
 
 // KanbanCard class
 class KanbanCard extends HTMLElement {
@@ -287,7 +283,7 @@ class KanbanCard extends HTMLElement {
     }
 
     editCard() {
-        document.body.appendChild(new KanbanCardPopup(statuses.get().find(status => status.id === this.task.status), this.task));
+        document.body.appendChild(new KanbanCardPopup(this.task.status, this.task));
     }
 
     dragStartHandler(event) {

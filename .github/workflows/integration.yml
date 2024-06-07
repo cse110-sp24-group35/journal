@@ -35,14 +35,8 @@ jobs:
         run: pnpm install --no-frozen-lockfile
       - name: Unit Test & Coverage
         run: pnpm i -D lcov && pnpm run coverage
-      - name: Unit Test
-        run: pnpm run test:unit
-      - name: Install LCov
-        run: pnpm i -D lcov
-      - name: Code Quality & Coverage
-        uses: paambaati/codeclimate-action@v6.0.0
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          MOCHA_REPORTER: mocha-reporter-gha
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
@@ -50,9 +44,6 @@ jobs:
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/puppeteer/puppeteer:latest
-      options: --user root
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3

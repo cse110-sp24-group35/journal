@@ -78,5 +78,3 @@ export function createJournal(title, path, content, tags) {
         journal
     ]);
 }
-
-
