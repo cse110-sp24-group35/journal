@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const tasksForDate = tasksByDate[taskDateStr] || [];
         const taskCount = tasksForDate.length;
-        const summary = taskCount === 0 ? 'No Upcoming Tasks' : `${taskCount} Upcoming Task${taskCount > 1 ? 's' : ''} (hover to see)`;
+        const summary = taskCount === 0 ? 'No Upcoming Tasks' : `${taskCount} Upcoming Task${taskCount > 1 ? 's' : ''} 〔hover to see〕`;
 
         const dateItem = document.createElement('div');
         dateItem.classList.add('upcoming-task-date');
