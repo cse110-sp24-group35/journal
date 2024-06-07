@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const taskDateStr = currentDate.toDateString();
         const dayOfWeek = daysOfWeek[currentDate.getDay()];
-        const dateDisplay = `${currentDate.getMonth() + 1}/${currentDate.getDate()} (${dayOfWeek})`;
+        const dateDisplay = `${currentDate.getMonth() + 1}／${currentDate.getDate()} （${dayOfWeek}）`;
 
         const tasksForDate = tasksByDate[taskDateStr] || [];
         const taskCount = tasksForDate.length;
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const dateItem = document.createElement('div');
         dateItem.classList.add('upcoming-task-date');
-        dateItem.textContent = `${dateDisplay}: ${summary}`;
+        dateItem.textContent = `${dateDisplay}： ${summary}`;
         
         if (taskCount > 0) {
             dateItem.addEventListener('mouseover', (event) => {
