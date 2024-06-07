@@ -1,9 +1,7 @@
 /** @type {import('jest').Config} */
-export default {
+module.exports = {
     testTimeout: 600000,
-    transform: {
-
-    },
+    transform: {},
     collectCoverageFrom: [
         'src/scripts/**/*.{js,jsx}',
         '!src/scripts/components/**/*.js',
@@ -16,5 +14,6 @@ export default {
             functions: 90,
             lines: 90
         },
-    }
-}
+    },
+    testEnvironment: 'jsdom',
+};
