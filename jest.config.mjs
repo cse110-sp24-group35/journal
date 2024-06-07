@@ -15,5 +15,4 @@ module.exports = {
             lines: 90
         },
     },
-    testEnvironment: 'jsdom',
 };
