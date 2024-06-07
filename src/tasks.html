@@ -1,42 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Journal | Tasks</title>
-        <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
-        <script>
-            window.process = { browser: true, env: { NODE_ENV: "production" } };
-        </script>
-        <script type="importmap">
-            {
-                "imports": {
-                    "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
-                    "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
-                }
+<head>
+    <title>Journal | Overview</title>
+    <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
+    <script>
+        window.process = { browser: true, env: { NODE_ENV: "production" } };
+    </script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
+                "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
             }
-        </script>
-        
-        <!-- Polyfill end -->
+        }
+    </script>
+    <!-- Polyfill end -->
+    <link rel="stylesheet" href="styles/main.css">
+</head>
 
-        <link rel="stylesheet" href="styles/task.css">
-    </head>
+<body>
+    <my-sidebar></my-sidebar>
+    <div class="content">
+        <p>This is the tasks page!</p>
+    </div>
+    <script src="scripts/components/sidebar.js"></script>
 
-    <body>
-        <div>
-            <h1 id="header">Task Lists</h1>
-        </div>
-    
-
-        
-        <!-- Columns -->
-        <div id="container" class="boxes">
-
-            <!-- Where Columns will go-->
-            <main></main>
-            
-            <!--Add a Column Box-->
-            
-        </div>
-
-        <script type="module" src="scripts/components/task.js"></script>
-    </body>
+</body>
 </html>
