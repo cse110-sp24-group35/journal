@@ -40,6 +40,10 @@ body {
     padding: 10px;
 }
 
+.task.completed span {
+    text-decoration: line-through;
+}
+
 .orangeBlob{
   top: -15px;
   position: absolute;
