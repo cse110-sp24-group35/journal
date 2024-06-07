@@ -6,20 +6,18 @@ describe('Upcoming Tasks E2E Test', () => {
 
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      headless: false, // Set to true if you don't need to see the browser
-      slowMo: 50, // Slow down by 50ms for better visibility
+      headless: true, // Run in headless mode
       args: ['--no-sandbox', '--disable-setuid-sandbox'] // Add these arguments to run as root
     });
     page = await browser.newPage();
-  });
+    await page.goto('http://127.0.0.1:5500/src/upcoming-tasks.html'); // Replace with the correct URL
+  }, 30000);
 
   afterAll(async () => {
     await browser.close();
   });
 
   test('Display upcoming tasks', async () => {
-    await page.goto('http://127.0.0.1:5500/src/upcoming-tasks.html'); // Replace with the correct URL
-
     // Check if the upcoming tasks container exists
     const containerExists = await page.$('.upcoming-tasks-container') !== null;
     expect(containerExists).toBe(true);
@@ -32,11 +30,13 @@ describe('Upcoming Tasks E2E Test', () => {
     expect(taskItems.length).toBe(7); // There should be 7 items, one for each day
 
     // Check that each task date contains the correct summary
-    const summaries = await Promise.all(taskItems.map(async item => {
-      const text = await page.evaluate(el => el.textContent, item);
-      return text;
-    }));
-    
+    const summaries = await Promise.all(
+      taskItems.map(async item => {
+        const text = await page.evaluate(el => el.textContent, item);
+        return text;
+      })
+    );
+
     const hasTaskSummary = summaries.some(summary => summary.includes('Upcoming Task'));
     expect(hasTaskSummary).toBe(true); // At least one of the days should have an upcoming task
   });
