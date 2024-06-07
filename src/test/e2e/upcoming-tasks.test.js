@@ -8,6 +8,7 @@ describe('Upcoming Tasks E2E Test', () => {
     browser = await puppeteer.launch({
       headless: false, // Set to true if you don't need to see the browser
       slowMo: 50, // Slow down by 50ms for better visibility
+      args: ['--no-sandbox', '--disable-setuid-sandbox'] // Add these arguments to run as root
     });
     page = await browser.newPage();
   });
