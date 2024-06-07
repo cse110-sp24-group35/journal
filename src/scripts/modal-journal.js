@@ -1,4 +1,4 @@
-import { createJournal } from "./database/stores/journal.js";
+import { createJournal, getJournal } from "./database/stores/journal.js";
 
 class ModalJournal extends HTMLElement {
     constructor() {
@@ -93,8 +93,7 @@ class ModalJournal extends HTMLElement {
             <input type="text" id="title" name="title">
             <label for="path">Path:</label>
             <input type="text" id="path" name="path">
-            <label for="due">Due:</label>
-            <input type="date" id="due" name="due">
+            
             <label for="tags">Tags:</label>
             <input type="text" id="tags" name="tags">
             <input type="submit" value="Create">
@@ -113,25 +112,18 @@ class ModalJournal extends HTMLElement {
     handleFormSubmit(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const journalData = {
-            title: formData.get('title'),
-            due: formData.get('due'),
-            tags: formData.get('tags')
-        };
+        // const journalData = {
+        //     title: formData.get('title'),
+        //     due: formData.get('due'),
+        //     tags: formData.get('tags')
+        // };
         
-        createJournal(formData.get('title'),formData.get('path'),formData.get('tags'),formData.get('due'));
+        createJournal(formData.get('title'),formData.get('path'),formData.get('tags').split(", "));
             // Handle the form data as needed
-        console.log('Journal Data:', journalData);
-        alert(`Journal Created: \nTitle: ${journalData.title}\nDue: ${journalData.due}\nTags: ${journalData.tags}`);
-    
-            
-            
-        }
-    
-        
+        console.log('Journal created: ', getJournal(formData.get('path')));
     }
     
-    
+}
 
 
 customElements.define('modal-journal', ModalJournal);

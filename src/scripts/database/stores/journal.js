@@ -59,10 +59,9 @@ export function deleteJournal(path) {
  * @param {string} title - The journal title
  * @param {string} path - The journal path
  * @param {string[]} tags - The journal tag list
- * @param {string} dueDate - The journals due date
  * @throws {Error} - When there is already a journal with specified path
  */
-export function createJournal(title, path, tags, dueDate) {
+export function createJournal(title, path, tags) {
     if (!!getJournal(path)) throw new Error(`Journal with path ${path} already exists!`);
 
     const journal = {
@@ -70,7 +69,6 @@ export function createJournal(title, path, tags, dueDate) {
         path,
         content: "",
         tags,
-        dueDate,
         createdAt: Date.now()
     };
 
