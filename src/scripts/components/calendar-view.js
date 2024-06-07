@@ -1,17 +1,23 @@
-import { tasks, createTask, getTask, deleteTask } from "../database/stores/task.js";
+import { tasks, createTask } from "../database/stores/task.js";
+
+tasks.listen(() => renderCalendar());
+
+let currentDate = new Date();
+let monthYear;
+let calendarGrid;
+let prevMonthBtn;
+let nextMonthBtn;
 
 document.addEventListener('DOMContentLoaded', () => {
-    const monthYear = document.getElementById('month-year');
-    const calendarGrid = document.getElementById('calendar-grid');
-    const prevMonthBtn = document.getElementById('prev-month');
-    const nextMonthBtn = document.getElementById('next-month');
+    monthYear = document.getElementById('month-year');
+    calendarGrid = document.getElementById('calendar-grid');
+    prevMonthBtn = document.getElementById('prev-month');
+    nextMonthBtn = document.getElementById('next-month');
 
-    initializeTask();
+    //initializeTask(); //FAKE SET OF TASKS. REMOVE LATER
 
-    let currentDate = new Date();
-
-    renderCalendar(currentDate, monthYear, calendarGrid);
-    addMonthNavigationListeners(currentDate, monthYear, calendarGrid, prevMonthBtn, nextMonthBtn);
+    renderCalendar();
+    addMonthNavigationListeners();
 });
 
 document.addEventListener('keydown', function(event) {
@@ -31,15 +37,15 @@ export function initializeTask() {
     createTask("7", "Sample 7", "This is a sample task", "High", "PLANNED", Date.now() + 2000 * 57 * 60);
     createTask("8", "Sample 8", "This is a sample task", "High", "PLANNED", Date.now() + 3000 * 57 * 60);
 
-    for(let i = 0; i < 30; i++) {
+    for (let i = 0; i < 30; i++) {
         createTask(`${i + 9}`, `SampleAMPLEMPAPEPAMPEAP WATCH K-ON!! ${i + 9}`, "This is a sample task", "High", "PLANNED", Date.now() + 1000 * 57 * 60);
     }
 }
 
-export function renderCalendar(date, monthYear, calendarGrid) {
+export function renderCalendar() {
     calendarGrid.innerHTML = '';
-    const year = date.getFullYear();
-    const month = date.getMonth();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
     const firstDayOfWeek = new Date(year, month, 1).getDay();
     const lastDate = new Date(year, month + 1, 0).getDate();
     const lastDayOfWeek = new Date(year, month + 1, 0).getDay();
@@ -90,7 +96,7 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
     const calendarContainer = document.querySelector('.calendar-container'); //Gets the calendar container
 
     //If the day is selected, show the day's name on top of the number
-    if(isSelected) {
+    if (isSelected) {
         const dayName = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'long' });
         const dayNameP = document.createElement('p');
         dayNameP.classList.add('day-number');
@@ -117,7 +123,7 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
             const taskItem = document.createElement('button');
             if (!isSelected)
                 taskItem.classList.add('day-task-item');
-            else 
+            else
                 taskItem.classList.add('expanded-day-task-item');
             // Convert task.dueAt to a Date object and format the time
             const taskDueTime = new Date(task.dueAt);
@@ -134,16 +140,16 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
 
             // Set the button text content to the formatted time and task title
             taskItem.textContent = `${formattedTime} - ${task.title}`;
-            if(appendedTasks < 3 || isSelected) {
+            if (appendedTasks < 3 || isSelected) {
                 taskList.appendChild(taskItem);
-            } 
+            }
 
             appendedTasks++;
         }
     });
 
     //If there are more than 3 tasks, add a +more text (in the non-expanded view)
-    if(appendedTasks > 3 && !isSelected) {
+    if (appendedTasks > 3 && !isSelected) {
         const moreText = document.createElement('p');
         moreText.innerHTML = `+${appendedTasks - 3} more`;
         moreText.classList.add('more-text');
@@ -151,7 +157,7 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
     }
 
     //Creates the expanded day view upon clicking a day
-    if(!isSelected) { //Prevents reselecting a selected day
+    if (!isSelected) { //Prevents reselecting a selected day
         dayDiv.addEventListener('click', () => {
             unselectAllDays();
             const dayDivClone = dayDiv.cloneNode(true);
@@ -167,8 +173,8 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
             });
             calendarContainer.appendChild(dayDivClone);
             const dayDivCloneRect = dayDivClone.getBoundingClientRect();
-            dayDivClone.style.left = `${dayDivRect.left - (dayDivCloneRect.width - dayDivRect.width)/2}px`;
-            dayDivClone.style.top = `${dayDivRect.top - (dayDivCloneRect.height - dayDivRect.height)/2}px`;
+            dayDivClone.style.left = `${dayDivRect.left - (dayDivCloneRect.width - dayDivRect.width) / 2}px`;
+            dayDivClone.style.top = `${dayDivRect.top - (dayDivCloneRect.height - dayDivRect.height) / 2}px`;
             adjustPosition(dayDivClone);
         });
     }
@@ -180,9 +186,9 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
 function adjustPosition(day) {
     const rect = day.getBoundingClientRect();
     let offsetX = 0, offsetY = 0;
-  
+
     const leftBoundary = window.innerWidth * 0.15;
-  
+
     if (rect.left < leftBoundary) offsetX = leftBoundary - rect.left;
     if (rect.top < 0) offsetY = -rect.top;
     if (rect.right > window.innerWidth) offsetX = window.innerWidth - rect.right;
@@ -190,19 +196,19 @@ function adjustPosition(day) {
 
     let newLeft = rect.left + offsetX;
     let newTop = rect.top + offsetY;
-  
+
     day.style.left = `${newLeft}px`;
     day.style.top = `${newTop}px`;
 }
 
 // Buttons to navigate to the previous and next months
-export function addMonthNavigationListeners(currentDate, monthYear, calendarGrid, prevMonthBtn, nextMonthBtn) {
+export function addMonthNavigationListeners() {
     prevMonthBtn.addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendar(currentDate, monthYear, calendarGrid);
+        renderCalendar();
     });
     nextMonthBtn.addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendar(currentDate, monthYear, calendarGrid);
+        renderCalendar();
     });
 }

@@ -80,6 +80,20 @@ body {
     grid-gap: var(--grid-gap);
 }
 
+/* Individual Day Box */
+.calendar-day {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: var(--day-size);
+    height: var(--day-size);
+    background-color: var(--day-bg);
+    border-radius: 1em;
+    padding-top: 0.25em; /* Add padding to ensure spacing */
+    box-sizing: border-box; /* Ensure padding is included in width/height */
+    overflow: hidden;
+    position: relative; /* Needed for absolute positioning of selected-day */
+}
 
 .calendar-day:hover {
     background-color: var(--day-hover-bg);
@@ -139,21 +153,6 @@ body {
 
 .day-task-item:hover, .expanded-day-task-item:hover {
     text-decoration: underline;
-}
-
-/* Individual Day Box */
-.calendar-day {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: var(--day-size);
-    height: var(--day-size);
-    background-color: var(--day-bg);
-    border-radius: 1em;
-    padding-top: 0.25em; /* Add padding to ensure spacing */
-    box-sizing: border-box; /* Ensure padding is included in width/height */
-    overflow: hidden;
-    position: relative; /* Needed for absolute positioning of selected-day */
 }
 
 /* SELECTED Day */
