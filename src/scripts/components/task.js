@@ -249,10 +249,10 @@ class ModalCardPopup extends HTMLElement {
     saveCard() {
         const title = this.querySelector('[name="taskName"]').value;
         const description = this.querySelector('[name="taskDesc"]').value;
-        const date = this.querySelector('[name="dueDate"]').value;
+        const date = this.querySelector('[name="dueDate"]').value; // Ensure this is a valid date string
         const tags = this.querySelector('[name="tags"]').value;
         const journal = this.querySelector('[name="journal"]').value;
-    
+
         const newTask = {
             id: this.task.id || `task-${Date.now()}`,
             title,
@@ -262,9 +262,9 @@ class ModalCardPopup extends HTMLElement {
             journal,
             status: this.status.id, // Use the current status ID
             createdAt: this.task.createdAt || Date.now(),
-            dueAt: this.task.dueAt || Date.now() + 7 * 24 * 60 * 60 * 1000 // Example due date: one week later
+            dueAt: new Date(date).setHours(0, 0, 0, 0) // Convert the date string to a timestamp and set to midnight
         };
-    
+
         if (this.task.id) {
             // If task already exists, update it
             tasks.set(tasks.get().map(task => task.id === this.task.id ? newTask : task));
@@ -272,7 +272,7 @@ class ModalCardPopup extends HTMLElement {
             // If it's a new task, add it to the tasks array
             tasks.set([...tasks.get(), newTask]);
         }
-    
+
         this.closePopup();
     }
 }
@@ -282,12 +282,13 @@ class TaskCard extends HTMLElement {
     constructor(task) {
         super();
         this.task = task;
+        const dueDate = new Date(task.dueAt).toLocaleDateString(); // Convert timestamp to locale date string
         this.innerHTML = `
             <div class="task-card" draggable="true" id="${task.id}">
                 <div class="card-content">
                     <p class="card-title">${task.title}</p>
                     <p class="card-description">${task.description}</p>
-                    <p class="dueDate">Due ${task.date}</p>
+                    <p class="dueDate">Due ${dueDate}</p>
                     <img class="orangeBlob" src="public/images/orangeBlob.png" alt="Orange Blob" width="65" height="40">
                     <img class="grayBlob" src="public/images/grayBlob.png" alt="Gray Blob" width="50" height="45">
                     <button class="card-delete-button">X</button>
@@ -308,7 +309,6 @@ class TaskCard extends HTMLElement {
             this.editCard();
             box.style.display = "none";
             header.innerHTML = "Edit Task";
-
         });
 
         this.addEventListener('dragstart', (event) => this.dragStartHandler(event));
