@@ -1,4 +1,4 @@
-import { tasks } from '../database/stores/task.js';
+import * as taskStore from './task.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const container = document.querySelector('.upcoming-tasks-container');
@@ -47,25 +47,82 @@ document.addEventListener('DOMContentLoaded', function() {
         dateItem.classList.add('upcoming-task-date');
         dateItem.textContent = `${dateDisplay}： ${summary}`;
         
-        if (taskCount > 0) {
-            dateItem.addEventListener('mouseover', (event) => {
-                const taskDetails = tasksForDate.map(task => task.title).join(', ');
-                popup.textContent = taskDetails;
-                popup.style.display = 'block';
-                popup.style.left = `${event.pageX + 10}px`;
-                popup.style.top = `${event.pageY + 10}px`;
-            });
-
-            dateItem.addEventListener('mousemove', (event) => {
-                popup.style.left = `${event.pageX + 10}px`;
-                popup.style.top = `${event.pageY + 10}px`;
-            });
-
-            dateItem.addEventListener('mouseout', () => {
-                popup.style.display = 'none';
-            });
-        }
-
-        container.appendChild(dateItem);
+        this.checkbox = this.shadowRoot.querySelector('input');
+        this.taskText = this.shadowRoot.querySelector('span');
+        this.taskContainer = this.shadowRoot.querySelector('.task');
+        
+        this.checkbox.addEventListener('change', () => this.updateTaskStatus());
     }
-});
+    
+    connectedCallback() {
+        this.updateTask();
+    }
+    
+    static get observedAttributes() {
+        return ['data-id'];
+    }
+    
+    attributeChangedCallback() {
+        this.updateTask();
+    }
+
+    updateTask() {
+        const taskId = this.getAttribute('data-id');
+        const task = taskStore.getTask(taskId);
+
+        if (task) {
+            this.taskText.textContent = task.description;
+            this.checkbox.checked = task.status === "COMPLETED";
+            this.updateTaskClass(this.checkbox.checked);
+        }
+    }
+
+    updateTaskStatus() {
+        const taskId = this.getAttribute('data-id');
+        const task = taskStore.getTask(taskId);
+
+        if (task) {
+            task.status = task.status === "COMPLETED" ? "ONGOING" : "COMPLETED";
+            taskStore.updateTask(taskId, {
+                status: task.status
+            });
+
+            this.updateTaskClass(task.status === "COMPLETED");
+        }
+    }
+
+    updateTaskClass(completed) {
+        if (completed) {
+            this.taskContainer.classList.add('completed');
+        } else {
+            this.taskContainer.classList.remove('completed');
+        }
+    }
+}
+
+class UpcomingTaskList extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+
+        this.update(taskStore.tasks);
+    }
+
+    connectedCallback() {
+        taskStore.tasks.listen((val) => {
+            this.update(val);
+        });
+    }
+
+    update(val) {
+        this.shadowRoot.innerHTML = '';
+        val.get().forEach(task => {
+            const taskElement = document.createElement('upcoming-task-component');
+            taskElement.setAttribute('data-id', task.id);
+            this.shadowRoot.appendChild(taskElement);
+        });
+    }
+}
+
+customElements.define('upcoming-task-component', UpcomingTaskComponent);
+customElements.define('upcoming-task-list', UpcomingTaskList);

@@ -1,42 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Journal | Tasks</title>
-        <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
-        <script>
-            window.process = { browser: true, env: { NODE_ENV: "production" } };
-        </script>
-        <script type="importmap">
-            {
-                "imports": {
-                    "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
-                    "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
-                }
+<head>
+    <title>Journal | Tasks</title>
+    <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
+    <script>
+        window.process = { browser: true, env: { NODE_ENV: "production" } };
+    </script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
+                "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
             }
-        </script>
-        
-        <!-- Polyfill end -->
-
-        <link rel="stylesheet" href="styles/task.css">
-    </head>
-
-    <body>
-        <div>
-            <h1 id="header">Task Lists</h1>
-        </div>
+        }
+    </script>
     
+    <!-- Polyfill end -->
+</head>
 
-        
-        <!-- Columns -->
-        <div id="container" class="boxes">
-
-            <!-- Where Columns will go-->
-            <main></main>
-            
-            <!--Add a Column Box-->
-            
-        </div>
-
-        <script type="module" src="scripts/components/task.js"></script>
-    </body>
+<body>
+This is a test page
+</body>
 </html>

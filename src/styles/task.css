@@ -1,34 +1,51 @@
-@font-face {
-  font-family: "biski";
-  src: url(../public/fonts/biskitrialregular-l3jxg.otf) format('opentype');
-  font-weight: normal;
-  font-style: normal;
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    padding-top: 50px;
 }
 
-* {
-  font-family: "biski"; 
-  background-color: #FFF5ED;
-  color:#594F4F;
+.container {
+    width: 600px;
+    max-height: 300px;
+    overflow-y: scroll;
+    background-color: #F3E2D5;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
+    padding: 20px;
+    margin: 20px;
+    position: relative;
+    margin-right: auto;
+    margin-left: auto;
 
 }
 
-h1 {
-  font-size: 60px;
-  text-align: center;
-  margin: auto;
+.containerpie {
+    position: relative;
+    border-radius: 10px;
+
+    padding: 20px;
+    margin-left: 65%;
+
 }
 
-/*Container for three boxes*/
-#container {
-  justify-content: center;
-  display: flex;
-  flex-direction: row;
-  overflow-x: scroll;
-  width: 90%;
-  height: 8 0%;
-  margin: auto;
-  white-space: nowrap;
+.task {
+    display: flex;
+    align-items: center;
+    margin: 35px 0;
+    padding: 10px;
 }
+
+.task.completed span {
+    text-decoration: line-through;
+}
+
+
 
 .orangeBlob{
   top: -15px;
@@ -52,6 +69,21 @@ h1 {
   font-size: 30px;
   position: relative;
   font-weight: 600;
+}
+
+/*Add a column*/
+.addColumn {
+  height: auto;
+  width: auto;
+  margin: 30px 15px 0px 15px;
+  margin-bottom: 91%;
+  border: none;
+  background-color: #F3E2D5;
+  cursor: pointer;
+  font-size: 30px;
+  position: relative;
+  font-weight: 600;
+
 }
 
 .column-title {
@@ -117,6 +149,7 @@ background-color: #F3E2D5;
   background-color: transparent;
   top: 0px;
   left: 85%;
+
 }
 
 /*x close button for modal box*/
@@ -143,7 +176,7 @@ background-color: #F3E2D5;
   margin: 0 auto;
 }
 
-.task-column {
+.kanban-column {
   border-radius: 40px;
   padding: 20px;
   background-color: #F3E2D5;
@@ -155,7 +188,7 @@ background-color: #F3E2D5;
   position: relative;
 }
 
-.task-column-header {
+.kanban-column-header {
   display: flex;
   position: relative;
   justify-content: center;
@@ -164,7 +197,7 @@ background-color: #F3E2D5;
   border-radius: 3px 3px 0 0;
 }
 
-.task-card-container {
+.kanban-card-container {
   background-color: transparent;
 }
 
@@ -184,7 +217,7 @@ background-color: #F3E2D5;
   background-color: transparent;
 }
 
-.add-task-card-button {
+.add-kanban-card-button {
   background-color: #F3E2D5;
   cursor: pointer;
   font-size: 30px;
@@ -197,7 +230,7 @@ background-color: #F3E2D5;
   margin: 10px;
 }
 
-.add-task-column-button {
+.add-kanban-column-button {
   position: absolute;
   background: #F3E2D5;
   border: none;
@@ -248,19 +281,19 @@ background-color: #F3E2D5;
   background-color: #F3E2D5;
 }
 
-.task-card-popup-header > h2 {
+.kanban-card-popup-header > h2 {
   background-color: #F3E2D5;
 }
 
-.task-card-popup-header {
+.kanban-card-popup-header {
   background-color: #F3E2D5;
 }
 
-.task-card-popup-body {
+.kanban-card-popup-body {
   background-color: transparent;
 }
 
-.task-card-popup-footer {
+.kanban-card-popup-footer {
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
@@ -277,7 +310,7 @@ background-color: #F3E2D5;
   position: relative;
 }
 
-.task-card-popup-close-button {
+.kanban-card-popup-close-button {
   cursor: pointer;
   border: none;
   background-color: transparent;
@@ -329,7 +362,6 @@ background-color: #F3E2D5;
 
 .pencil {
   background-color: transparent;
-  transform: scaleX(-1);
 }
 
 .card-content {
@@ -345,7 +377,7 @@ label {
   background-color: transparent;
 }
 
-.task-card-popup-save-button{
+.kanban-card-popup-save-button{
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -357,7 +389,7 @@ label {
   margin: 0 auto;
 }
 
-.task-column-delete-button {
+.kanban-column-delete-button {
   border: none;
   position:absolute;
   background-color: transparent;
@@ -366,8 +398,4 @@ label {
   right: 15px;
 }
 
-.task-card-placeholder {
-  background-color: transparent;
-  margin-top: 20%;
-  text-align: center;
-}
+
