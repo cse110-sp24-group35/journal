@@ -1,15 +1,16 @@
-.upcoming-tasks-container {
-    background-color: #f4e9db;
-    border-radius: 15px;
+body .upcoming-tasks-container {
+    font-family: "biski"; 
+    background-color: #e6d2c2;
+    border-radius: 30px;
     padding: 20px;
-    font-family: Arial, sans-serif;
-    color: #5a403a;
-    width: 300px;
+    color: #594F4F;
+    width: 600px;
     margin: 20px auto;
 }
 
-.upcoming-task-item {
+.upcoming-task-date {
     margin: 10px 0;
+    background-color: #e6d2c2;
 }
 
 .upcoming-task-item:hover {
