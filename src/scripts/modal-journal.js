@@ -1,4 +1,5 @@
 import { createJournal, getJournal } from "./database/stores/journal.js";
+import { linkTaskToJournal } from "./database/stores/relation.js";
 
 class ModalJournal extends HTMLElement {
     constructor() {
@@ -93,7 +94,8 @@ class ModalJournal extends HTMLElement {
             <input type="text" id="title" name="title">
             <label for="path">Path:</label>
             <input type="text" id="path" name="path">
-            
+            <label for="tasks">Tasks:</label>
+            <input type="text" id="tasks" name="tasks">
             <label for="tags">Tags:</label>
             <input type="text" id="tags" name="tags">
             <input type="submit" value="Create">
@@ -119,6 +121,10 @@ class ModalJournal extends HTMLElement {
         // };
         
         createJournal(formData.get('title'),formData.get('path'),formData.get('tags').split(", "));
+        let tasks=formData.get("tasks").split(", ");
+        tasks.forEach(element =>  {
+            linkTaskToJournal(element,getJournal(formData.get('path')));
+        });
             // Handle the form data as needed
         console.log('Journal created: ', getJournal(formData.get('path')));
     }

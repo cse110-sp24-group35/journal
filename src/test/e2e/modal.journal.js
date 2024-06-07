@@ -48,8 +48,8 @@ describe('ModalJournal Component', () => {
         titleInput: shadow.querySelector('input#title') !== null,
         pathLabel: shadow.querySelector('label[for="path"]').textContent,
         pathInput: shadow.querySelector('input#path') !== null,
-        dueLabel: shadow.querySelector('label[for="due"]').textContent,
-        dueInput: shadow.querySelector('input#due') !== null,
+        tasksLabel: shadow.querySelector('label[for="tasks"]').textContent,
+        tasksInput: shadow.querySelector('input#tasks') !== null,
         tagsLabel: shadow.querySelector('label[for="tags"]').textContent,
         tagsInput: shadow.querySelector('input#tags') !== null,
         submitButton: shadow.querySelector('input[type="submit"]') !== null,
@@ -60,8 +60,8 @@ describe('ModalJournal Component', () => {
     assert.strictEqual(formFields.titleInput, true, 'Title input should exist');
     assert.strictEqual(formFields.pathLabel, 'Path:', 'Path label should be "Path:"');
     assert.strictEqual(formFields.pathInput, true, 'Path input should exist');
-    assert.strictEqual(formFields.dueLabel, 'Due:', 'Due label should be "Due:"');
-    assert.strictEqual(formFields.dueInput, true, 'Due input should exist');
+    assert.strictEqual(formFields.tasksLabel, 'Due:', 'tasks label should be "Tasks:"');
+    assert.strictEqual(formFields.tasksInput, true, 'tasks input should exist');
     assert.strictEqual(formFields.tagsLabel, 'Tags:', 'Tags label should be "Tags:"');
     assert.strictEqual(formFields.tagsInput, true, 'Tags input should exist');
     assert.strictEqual(formFields.submitButton, true, 'Submit button should exist');
@@ -78,7 +78,7 @@ describe('ModalJournal Component', () => {
       const shadow = el.shadowRoot;
       shadow.querySelector('input#title').value = 'Test Journal';
       shadow.querySelector('input#path').value = 'test/path';
-      shadow.querySelector('input#due').value = '2023-12-31';
+      shadow.querySelector('input#tasks').value = 'testtask, tester';
       shadow.querySelector('input#tags').value = 'test, journal';
       shadow.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
     });

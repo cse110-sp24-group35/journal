@@ -13,7 +13,7 @@ describe('ModalJournal Logic', () => {
     const mockFormData = new Map([
       ['title', 'Test Journal'],
       ['path', 'test/path'],
-      ['due', '2023-12-31'],
+      ['tasks', 'testtask, tester'],
       ['tags', 'test, journal']
     ]);
     
@@ -26,14 +26,14 @@ describe('ModalJournal Logic', () => {
     expect(result).to.deep.equal({
       title: 'Test Journal',
       path: 'test/path',
-      due: '2023-12-31',
+      tasks: 'testtask, tester',
       tags: 'test, journal'
     });
 
     expect(journalData).to.deep.equal({
       title: 'Test Journal',
       path: 'test/path',
-      due: '2023-12-31',
+      tasks: 'testtask, tester',
       tags: 'test, journal'
     });
   });
