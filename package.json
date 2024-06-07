@@ -47,8 +47,5 @@
   "dependencies": {
     "@nanostores/persistent": "^0.10.1",
     "nanostores": "^0.10.3"
-  },
-  "jest": {
-    "testEnvironment": "jsdom"
   }
 }
