@@ -20,6 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Group tasks by date within the next 7 days
     for (const task of sortedTasks) {
         const taskDueDate = new Date(task.dueAt);
+        // Zero out the time part for accurate comparison
+        taskDueDate.setHours(0, 0, 0, 0);
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(0, 0, 0, 0);
+
         if (taskDueDate >= startDate && taskDueDate <= endDate) {
             const taskDateStr = taskDueDate.toDateString();
             if (!tasksByDate[taskDateStr]) {

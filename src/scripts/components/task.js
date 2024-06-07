@@ -15,7 +15,7 @@ function defineCustomElements() {
     customElements.define('task-column', TaskColumn);
     customElements.define('task-card', TaskCard);
     customElements.define('add-task-column', AddTaskColumn);
-    customElements.define('task-card-popup', TaskCardPopup);
+    customElements.define('modal-card-popup', ModalCardPopup);
 }
 
 function renderTaskPage() {
@@ -67,7 +67,7 @@ class TaskColumn extends HTMLElement {
         const header = document.getElementById("header");
         const addCardButton = this.querySelector('.add-task-card-button');
         addCardButton.addEventListener('click', () => {
-            document.body.appendChild(new TaskCardPopup(this.status));
+            document.body.appendChild(new ModalCardPopup(this.status));
             box.style.display = "none";
             header.innerHTML = "Add a Task";
         });
@@ -180,8 +180,8 @@ class AddTaskColumn extends HTMLElement {
     }
 }
 
-// TaskCardPopup class
-class TaskCardPopup extends HTMLElement {
+// ModalCardPopup class
+class ModalCardPopup extends HTMLElement {
     constructor(status, task = {}) {
         super();
         this.status = status;
@@ -190,11 +190,12 @@ class TaskCardPopup extends HTMLElement {
         const isEditing = !!task.id; // Determine if we are editing an existing task
 
         this.innerHTML = `
-            <dialog class="task-card-popup">
-                <div class="task-card-popup-header">
-                    <button class="task-card-popup-close-button">X</button>
+            <dialog class="modal-card-popup">
+                ${isEditing ? '<img id="orange-cat" src="public/images/orange_cat.png" alt="cat sitting" width="140" height="110">' : '<img id="cat" src="public/images/cat.png" alt="cat sitting" width="140" height="110">'}
+                <div class="modal-card-popup-header">
+                    <button class="modal-card-popup-close-button">X</button>
                 </div>
-                <form class="task-card-popup-body">
+                <form class="modal-card-popup-body">
                     <label for="taskName">Task Name<br> 
                         <input type="text" class="inputs" name="taskName" value="${task.title || ''}" required/><br>
                     </label>
@@ -210,8 +211,8 @@ class TaskCardPopup extends HTMLElement {
                     <label for="tags">Tags<br>
                         <input type="text" class="inputs" name="tags" value="${task.tags || ''}" required/><br>
                     </label>
-                    <div class="task-card-popup-footer">
-                        <button type="submit" class="task-card-popup-save-button" id="saveButton">${isEditing ? 'Edit Task' : 'Add Task'}</button>
+                    <div class="modal-card-popup-footer">
+                        <button type="submit" class="modal-card-popup-save-button" id="saveButton">${isEditing ? 'Edit Task' : 'Add Task'}</button>
                     </div>
                 </form>
             </dialog>
@@ -224,12 +225,12 @@ class TaskCardPopup extends HTMLElement {
     addEventListeners() {
         const box = document.getElementById("container");
         const header = document.getElementById("header");
-        this.querySelector('.task-card-popup-close-button').addEventListener('click', () => {
+        this.querySelector('.modal-card-popup-close-button').addEventListener('click', () => {
             this.closePopup();
             box.style.display = "flex";
             header.innerHTML = "Task Lists";   
         });
-        this.querySelector('.task-card-popup-save-button').addEventListener('click', (event) => {
+        this.querySelector('.modal-card-popup-save-button').addEventListener('click', (event) => {
             event.preventDefault(); // Prevent default form submission
             if (this.querySelector('form').checkValidity()) {
                 this.saveCard();
@@ -275,6 +276,7 @@ class TaskCardPopup extends HTMLElement {
         this.closePopup();
     }
 }
+
 // TaskCard class
 class TaskCard extends HTMLElement {
     constructor(task) {
@@ -306,6 +308,7 @@ class TaskCard extends HTMLElement {
             this.editCard();
             box.style.display = "none";
             header.innerHTML = "Edit Task";
+
         });
 
         this.addEventListener('dragstart', (event) => this.dragStartHandler(event));
@@ -317,7 +320,7 @@ class TaskCard extends HTMLElement {
     }
 
     editCard() {
-        document.body.appendChild(new TaskCardPopup(statuses.get().find(status => status.id === this.task.status), this.task));
+        document.body.appendChild(new ModalCardPopup(statuses.get().find(status => status.id === this.task.status), this.task));
     }
 
     dragStartHandler(event) {
