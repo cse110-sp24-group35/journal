@@ -14,6 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     addMonthNavigationListeners(currentDate, monthYear, calendarGrid, prevMonthBtn, nextMonthBtn);
 });
 
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+        unselectAllDays();
+    }
+});
 export function initializeTask() {
     tasks.set([]);
     createTask("1", "Sample Task", "This is a sample task", "High", "PLANNED", Date.now() + 1000 * 32 * 60);
@@ -67,6 +72,14 @@ export function renderCalendar(date, monthYear, calendarGrid) {
     }
 }
 
+export function unselectAllDays() {
+    const selectedDays = document.querySelectorAll('.selected-day');
+    selectedDays.forEach(day => {
+        day.remove();
+    });
+
+}
+
 export function addTasksToDay(dayDiv, year, month, day, allTasks) {
     const dayName = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'long' });
     const dayNameP = document.createElement('p');
@@ -86,6 +99,8 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
 
     const taskList = document.createElement('ul');
     taskList.classList.add('task-list');
+
+    const calendarContainer = document.querySelector('.calendar-container');
 
     const date = new Date(year, month, day).setHours(0, 0, 0, 0);
 
@@ -126,16 +141,30 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
         taskList.appendChild(moreText);
     }
 
-    dayDiv.addEventListener('click', () => {
-        dayDiv.classList.add('selected-day');
-        adjustPosition(dayDiv);
-    });
+    //Creates the expanded day view upon clicking a day
+    if(!dayDiv.classList.contains('selected-day')) { //Prevents reselecting a selected day
+        dayDiv.addEventListener('click', () => {
+            unselectAllDays();
+            const dayDivClone = dayDiv.cloneNode(true);
+            dayDivClone.classList.add('selected-day');
+            dayDivClone.classList.remove('calendar-day', 'previous-month', 'next-month');
+            dayDivClone.innerHTML = '';
+            addTasksToDay(dayDivClone, year, month, day, allTasks);
+            const dayDivRect = dayDiv.getBoundingClientRect();
+            dayDivClone.style.left = `${dayDivRect.left}px`;
+            dayDivClone.style.top = `${dayDivRect.top}px`;
+            dayDivClone.addEventListener('mouseleave', () => {
+                dayDivClone.remove();
+            });
+            calendarContainer.appendChild(dayDivClone);
+            const dayDivCloneRect = dayDivClone.getBoundingClientRect();
+            dayDivClone.style.left = `${dayDivRect.left - (dayDivCloneRect.width - dayDivRect.width)/2}px`;
+            dayDivClone.style.top = `${dayDivRect.top - (dayDivCloneRect.height - dayDivRect.height)/2}px`;
+            adjustPosition(dayDivClone);
+        });
+    }
 
-    dayDiv.addEventListener('mouseleave', () => {
-        dayDiv.classList.remove('selected-day');
-        dayDiv.style.left = '';
-        dayDiv.style.top = '';
-    });
+
 
 
     dayDiv.appendChild(taskList);
@@ -143,9 +172,6 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
 
 function adjustPosition(day) {
     const rect = day.getBoundingClientRect();
-    const scaleX = 2, scaleY = 5; // Scale values must match CSS
-    const scaledWidth = rect.width * scaleX;
-    const scaledHeight = rect.height * scaleY;
     let offsetX = 0, offsetY = 0;
   
     const leftBoundary = window.innerWidth * 0.15;
@@ -154,10 +180,12 @@ function adjustPosition(day) {
     if (rect.top < 0) offsetY = -rect.top;
     if (rect.right > window.innerWidth) offsetX = window.innerWidth - rect.right;
     if (rect.bottom > window.innerHeight) offsetY = window.innerHeight - rect.bottom;
+
+    let newLeft = rect.left + offsetX;
+    let newTop = rect.top + offsetY;
   
-    day.style.position = 'relative';
-    day.style.left = `${offsetX}px`;
-    day.style.top = `${offsetY}px`;
+    day.style.left = `${newLeft}px`;
+    day.style.top = `${newTop}px`;
 }
 
 export function addMonthNavigationListeners(currentDate, monthYear, calendarGrid, prevMonthBtn, nextMonthBtn) {

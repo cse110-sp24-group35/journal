@@ -80,6 +80,52 @@ body {
     grid-gap: var(--grid-gap);
 }
 
+
+.calendar-day:hover {
+    background-color: var(--day-hover-bg);
+}
+
+/* Number inside each day box */
+.day-number {
+    font-weight: bold;
+    margin-bottom: 0.5em; /* Space between number and list */
+    align-self: center;
+    height: 15%;
+}
+
+/* List of tasks within a day */
+.task-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+/* Boxes for days outside of the current month */
+.previous-month, .next-month {
+    opacity: 0.5;
+}
+
+/* Individual Task Within a Day */
+.day-task-item {
+    display: block; /* Ensure the button is a block element */
+    width: 100%; /* Make the button take the full width of the parent */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+    background: none; /* Remove default button styling */
+    border: none; /* Remove default button border */
+    align-self: left;
+    text-align: left;
+    cursor: pointer;
+    font-size: .6em;
+}
+
+.day-task-item:hover {
+    text-decoration: underline;
+}
+
+/* Individual Day Box */
 .calendar-day {
     display: flex;
     flex-direction: column;
@@ -94,69 +140,29 @@ body {
     position: relative; /* Needed for absolute positioning of selected-day */
 }
 
-.calendar-day:hover {
-    background-color: var(--day-hover-bg);
-}
-
-.day-number {
-    font-weight: bold;
-    margin-bottom: 0.5em; /* Space between number and list */
-    align-self: center;
-    height: 15%;
-}
-
-.task-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-}
-
-.previous-month, .next-month {
-    opacity: 0.5;
-}
-
-.day-task-item {
-    display: block; /* Ensure the button is a block element */
-    width: 100%; /* Make the button take the full width of the parent */
-    white-space: nowrap; /* Prevent text from wrapping */
-    overflow: hidden; /* Hide overflow text */
-    text-overflow: ellipsis; /* Add ellipsis for overflowing text */
-    background: none; /* Remove default button styling */
-    border: none; /* Remove default button border */
-    align-self: left;
-    cursor: pointer;
-    font-size: .6em;
-}
-
-.day-task-item:hover {
-    text-decoration: underline;
-}
-
+/* SELECTED Day */
 .selected-day {
-    background-color: var(--day-hover-bg);
-    transform: scale(1,5) translate(-25%, 0%); /* Initial scale */
-    opacity: 1;
-    z-index: 1;
-    border-radius: 1em/0.2em;
-    width: 200%;
+    background-color: #F3E2D5;
+    border-radius: 1em;
+    border: 0.25em solid #C3B2A5;
+    position:fixed;
+    text-align: center;
+    top: 0%;
+    left: 0%;
+    width: 10em;
+    height: 30em;
 }
 
-.selected-day > .day-number, .selected-day > .add-task-button {
-    transform: scale(1, 0.2); /* Invert scale */
-    margin: 0em;
-    padding: 0px;
-    border: 0px;
-    font-size: 1.5em;
-}
-
-.selected-day > .task-list {
-    transform: scale(1, 0.2) translate(0%, -150%);
-    font-size: 1.25em;
-}
-
-.selected-day > .day-number {
-    height: 10%;
+/* Button to add task IN SELECTED DAY */
+.add-task-button {
+    background-color: var(--nav-button-bg);
+    align-content: center;
+    color: #fff;
+    border: none;
+    padding: 0.75em;
+    border-radius: .5em;
+    cursor: pointer;
+    margin-top: 5%;
 }
 
 .expanded-day {
