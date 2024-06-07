@@ -13,7 +13,7 @@ class JournalEditor extends HTMLElement {
             <input id="show-preview" type="button" value="Show live preview"/>
             <div id="journal-content">
                 <textarea id="text-editor" rows=16></textarea>
-                <div id="markdown-preview" class="preview" hidden></div>
+                <div id="markdown-preview" class="preview"></div>
             </div>
         </form>
         `
@@ -22,19 +22,22 @@ class JournalEditor extends HTMLElement {
         style.innerHTML = `
         form {
             display: flex;
-            gap: 0.5rem;
             flex-direction: column;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        form > * {
-            color: black;
-        }
-
-        #journal-title,
-        #journal-tags,
-        #journal-deadline {
-            background-color: #00000010;
-            border: none;
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
         }
 
         #journal-title {
@@ -42,42 +45,51 @@ class JournalEditor extends HTMLElement {
             text-align: center;
         }
 
-        #journal-tags,
-        #journal-deadline {
-            font-size: 1.0rem;
+        #journal-tags {
+            font-size: 1rem;
             text-align: center;
         }
 
         /* Show Live Preview Button */
         #show-preview {
-            width: fit-content;
-            align-self: end;
-            background-color: transparent;
+            align-self: flex-end;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        #show-preview:hover {
+            background-color: #0056b3;
         }
 
         /***** Journal Content *****/
 
         #journal-content {
             display: flex;
-            flex-direction: column;
-        }
-
-        #markdown-editor {
-            width: 100%;
+            gap: 1rem;
         }
 
         #text-editor {
-            width: 100%;
-            margin-bottom: 1rem;
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: width 0.3s ease;
         }
 
         #markdown-preview {
-            width: 100%;
+            width: 50%;
             background-color: #f4f4f4;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             overflow-y: auto;
+            transition: width 0.3s ease;
         }
         `;
         shadow.appendChild(style);
@@ -185,7 +197,16 @@ class JournalEditor extends HTMLElement {
 
     togglePreview() {
         const preview = this.shadowRoot.getElementById('markdown-preview');
-        preview.hidden = !preview.hidden;
+        const textarea = this.shadowRoot.getElementById('text-editor');
+        if (preview.hidden) {
+            preview.hidden = false;
+            textarea.style.width = "50%";
+            this.shadowRoot.getElementById('show-preview').value = "Hide live preview";
+        } else {
+            preview.hidden = true;
+            textarea.style.width = "100%";
+            this.shadowRoot.getElementById('show-preview').value = "Show live preview";
+        }
     }
 
     /**
