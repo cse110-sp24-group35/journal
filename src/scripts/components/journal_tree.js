@@ -35,15 +35,11 @@ export function deleteSelectedJournal() {
     const selected = document.querySelector('.selected > button'); //Selected journal (if any)
     const journalViewer = document.getElementById('journal-view'); // Journal view (Right of tree-view)
     journalViewer.innerHTML = ""; // CLEAR whatever was just deleted
-    const journalTitle = document.createElement("p");
+    const newJournalEditor = document.createElement("journal-editor"); // Create a new journal editor
     if (selected) { // If a journal is selected
         deleteJournal(selected.id.slice(5)); //Slices the tree/ from the id to get the path
-        journalTitle.innerHTML = "JOURNAL DELETED!";
     }
-    else {
-        journalTitle.innerHTML = "NO JOURNAL SELECTED TO DELETE!";
-    }
-    journalViewer.appendChild(journalTitle);
+    journalViewer.appendChild(newJournalEditor); // Add the new journal editor to the journal viewer
 }
 
 //Temporary function to create fake journals. Will be removed when "create journal" button is peroperly implemented.
