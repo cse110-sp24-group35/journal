@@ -7,7 +7,7 @@ class JournalEditor extends HTMLElement {
         const shadow = this.attachShadow({ mode: "open" });
 
         shadow.innerHTML = `
-        <form id="journal-edit-form">
+        <form>
             <input id="journal-title" type="text" placeholder="Title" autofocus/>
             <input id="journal-tags" type="text" placeholder="Tags"/>
             <input id="show-preview" type="button" value="Show live preview"/>
@@ -130,7 +130,6 @@ class JournalEditor extends HTMLElement {
 
         this.shadowRoot.getElementById("text-editor").hidden = hide;
         this.shadowRoot.getElementById("markdown-preview").hidden = hide;
-        
 
         if (hide) {
             if (!this.shadowRoot.querySelector('#no-journal-message')) {
