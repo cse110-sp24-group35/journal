@@ -1,3 +1,6 @@
+import { createJournal, getJournal } from "./database/stores/journal.js";
+import { linkTaskToJournal } from "./database/stores/relation.js";
+
 class ModalJournal extends HTMLElement {
     constructor() {
         super();
@@ -31,7 +34,6 @@ class ModalJournal extends HTMLElement {
                 width: 90%;
                 max-width: 500px;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                position: relative;
                 animation: fadeIn 0.3s ease-in-out;
             }
             @keyframes fadeIn {
@@ -44,20 +46,6 @@ class ModalJournal extends HTMLElement {
                     transform: scale(1);
                 }
             }
-            .close-button {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background-color: transparent;
-                color: #000;
-                border: none;
-                font-size: 24px;
-                cursor: pointer;
-                transition: color 0.3s ease;
-            }
-            .close-button:hover {
-                color: #ff0000;
-            }
             h2 {
                 margin-top: 0;
             }
@@ -69,24 +57,18 @@ class ModalJournal extends HTMLElement {
                 margin-top: 10px;
                 font-weight: bold;
             }
-            input[type="text"] {
+            input[type="text"],
+            input[type="date"] {
                 margin-top: 5px;
                 padding: 8px;
                 font-size: 16px;
                 border: 1px solid #ccc;
                 border-radius: 4px;
             }
-            input[type="text"]:focus {
+            input[type="text"]:focus,
+            input[type="date"]:focus {
                 outline: none;
                 border-color: #007BFF;
-            }
-            select {
-                margin-top: 5px;
-                padding: 8px;
-                font-size: 16px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                height: 100px;
             }
             input[type="submit"] {
                 margin-top: 20px;
@@ -97,7 +79,6 @@ class ModalJournal extends HTMLElement {
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
-                transition: background-color 0.3s ease;
             }
             input[type="submit"]:hover {
                 background-color: #0056b3;
@@ -111,41 +92,45 @@ class ModalJournal extends HTMLElement {
         form.innerHTML = `
             <label for="title">Title:</label>
             <input type="text" id="title" name="title">
+            <label for="path">Path:</label>
+            <input type="text" id="path" name="path">
             <label for="tasks">Tasks:</label>
-            <select id="tasks" name="tasks" multiple></select>
+            <input type="text" id="tasks" name="tasks">
             <label for="tags">Tags:</label>
             <input type="text" id="tags" name="tags">
             <input type="submit" value="Create">
         `;
 
-        const closeButton = document.createElement('button');
-        closeButton.setAttribute('class', 'close-button');
-        closeButton.textContent = '×';
-        closeButton.addEventListener('click', () => {
-            modalWrapper.style.display = 'none';
-        });
+        form.addEventListener('submit', this.handleFormSubmit);
 
-        modalContent.appendChild(closeButton);
         modalContent.appendChild(h2);
         modalContent.appendChild(form);
         modalWrapper.appendChild(modalContent);
         shadow.appendChild(style);
         shadow.appendChild(modalWrapper);
     }
+
+    /**
+    * Handles the submission of a form, preventing the default submission event,
+    * extracting form data, creating a journal entry, and linking tasks to the journal.
+    *
+    * @param {Event} event - The event object representing the form submission.
+    * @fires Event#preventDefault
+    * @returns {void}
+    */
+    handleFormSubmit(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+        createJournal(formData.get('title'),formData.get('path'),formData.get('tags').split(", "));
+        let tasks=formData.get("tasks").split(", ");
+        tasks.forEach(element =>  {
+            linkTaskToJournal(element,getJournal(formData.get('path')));
+        });
+            // Handle the form data as needed
+        console.log('Journal created: ', getJournal(formData.get('path')));
+    }
+
 }
 
 customElements.define('modal-journal', ModalJournal);
-
-
-/** 
- * Creates a new journal modal to be edited 
- *  
- */
-
-export function createJournalModal(){
-
-}
-/**
- * createModalButton is the 'create journal button' in journal.html
- * it will be called createModalButton b/c it creates a modal journal first
- */

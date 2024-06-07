@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <title>Journal | Overview</title>
-    <link rel="stylesheet" href="styles/main.css"/>
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -20,15 +19,15 @@
 
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/journal.css">
-	
+
 </head>
 
 <body>
-	
+
+
     <script src="scripts/components/sidebar.js"></script>
     <script src="scripts/components/journal_tree.js" type="module"></script>
 	<script src="scripts/components/journal-editor.js" type="module"></script>
-
     <!-- Include the JavaScript file defining the Web Component -->
     <script src="scripts/components/modal-journal.js" type="module"></script>
     <script src="scripts/components/journal-main.js" type="module"></script>
@@ -40,7 +39,7 @@
 
 
 
-        
+
     </div>
 
     <div id="resizable-box">
@@ -52,7 +51,7 @@
         </div>
         <div id="resizer"></div>
         <button id="collapse-button" class="collapse">&lt;&lt;</button>
-        
+
     </div>
 
 
@@ -62,9 +61,5 @@
 
     <button id="expand-button" class="expand">&gt;&gt;</button>
 </body>
+
 </html>
-
-
-
-
-

@@ -70,3 +70,4 @@ describe("Journal Page", () => {
         expect(noJournalMessage).to.equal(true);
     });
 });
+describe
