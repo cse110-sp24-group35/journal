@@ -110,15 +110,17 @@ class ModalJournal extends HTMLElement {
         shadow.appendChild(modalWrapper);
     }
 
-    //form handler to take data and put it in local storage
+    /**
+    * Handles the submission of a form, preventing the default submission event,
+    * extracting form data, creating a journal entry, and linking tasks to the journal.
+    *
+    * @param {Event} event - The event object representing the form submission.
+    * @fires Event#preventDefault
+    * @returns {void}
+    */
     handleFormSubmit(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
-        // const journalData = {
-        //     title: formData.get('title'),
-        //     due: formData.get('due'),
-        //     tags: formData.get('tags')
-        // };
         
         createJournal(formData.get('title'),formData.get('path'),formData.get('tags').split(", "));
         let tasks=formData.get("tasks").split(", ");
