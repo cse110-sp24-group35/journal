@@ -1,40 +1,105 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const tasks = {
-        'Sunday': { summary: 'No Upcoming Tasks', details: '' },
-        'Monday': { summary: '2 Upcoming Tasks (hover to see)', details: 'Task 1, Task 2' },
-        'Tuesday': { summary: '1 Upcoming Task (hover to see)', details: 'Task 1' },
-        'Wednesday': { summary: '2 Upcoming Tasks (hover to see)', details: 'Task 1, Task 2' },
-        'Thursday': { summary: 'No Upcoming Tasks', details: '' },
-        'Friday': { summary: '2 Upcoming Tasks (hover to see)', details: 'Task 1, Task 2' },
-        'Saturday': { summary: '2 Upcoming Tasks (hover to see)', details: 'Task 1, Task 2' }
-    };
+import * as taskStore from './task.js';
 
-    const container = document.querySelector('.upcoming-tasks-container');
-    const popup = document.querySelector('.task-popup');
-
-    for (const [day, task] of Object.entries(tasks)) {
-        const taskItem = document.createElement('div');
-        taskItem.classList.add('upcoming-task-item');
-        taskItem.textContent = `${day}: ${task.summary}`;
-
-        if (task.details) {
-            taskItem.addEventListener('mouseover', (event) => {
-                popup.textContent = task.details;
-                popup.style.display = 'block';
-                popup.style.left = `${event.pageX + 10}px`;
-                popup.style.top = `${event.pageY + 10}px`;
-            });
-
-            taskItem.addEventListener('mousemove', (event) => {
-                popup.style.left = `${event.pageX + 10}px`;
-                popup.style.top = `${event.pageY + 10}px`;
-            });
-
-            taskItem.addEventListener('mouseout', () => {
-                popup.style.display = 'none';
-            });
-        }
-
-        container.appendChild(taskItem);
+class UpcomingTaskComponent extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.innerHTML = `
+            <style>
+                .task {
+                    display: flex;
+                    align-items: center;
+                    margin: 20px 0;
+                }
+                .task:first-of-type {
+                    margin-top: 0;
+                }
+                .task.completed span {
+                    text-decoration: line-through;
+                }
+            </style>
+            <div class="task">
+                <input type="checkbox">
+                <span></span>
+            </div>
+        `;
+        
+        this.checkbox = this.shadowRoot.querySelector('input');
+        this.taskText = this.shadowRoot.querySelector('span');
+        this.taskContainer = this.shadowRoot.querySelector('.task');
+        
+        this.checkbox.addEventListener('change', () => this.updateTaskStatus());
     }
-});
+    
+    connectedCallback() {
+        this.updateTask();
+    }
+    
+    static get observedAttributes() {
+        return ['data-id'];
+    }
+    
+    attributeChangedCallback() {
+        this.updateTask();
+    }
+
+    updateTask() {
+        const taskId = this.getAttribute('data-id');
+        const task = taskStore.getTask(taskId);
+
+        if (task) {
+            this.taskText.textContent = task.description;
+            this.checkbox.checked = task.status === "COMPLETED";
+            this.updateTaskClass(this.checkbox.checked);
+        }
+    }
+
+    updateTaskStatus() {
+        const taskId = this.getAttribute('data-id');
+        const task = taskStore.getTask(taskId);
+
+        if (task) {
+            task.status = task.status === "COMPLETED" ? "ONGOING" : "COMPLETED";
+            taskStore.updateTask(taskId, {
+                status: task.status
+            });
+
+            this.updateTaskClass(task.status === "COMPLETED");
+        }
+    }
+
+    updateTaskClass(completed) {
+        if (completed) {
+            this.taskContainer.classList.add('completed');
+        } else {
+            this.taskContainer.classList.remove('completed');
+        }
+    }
+}
+
+class UpcomingTaskList extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+
+        this.update(taskStore.tasks);
+    }
+
+    connectedCallback() {
+        taskStore.tasks.listen((val) => {
+            this.update(val);
+        });
+    }
+
+    update(val) {
+        this.shadowRoot.innerHTML = '';
+        val.get().forEach(task => {
+            const taskElement = document.createElement('upcoming-task-component');
+            taskElement.setAttribute('data-id', task.id);
+            this.shadowRoot.appendChild(taskElement);
+        });
+    }
+}
+
+customElements.define('upcoming-task-component', UpcomingTaskComponent);
+customElements.define('upcoming-task-list', UpcomingTaskList);
