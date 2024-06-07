@@ -40,10 +40,6 @@ body {
     padding: 10px;
 }
 
-<<<<<<< HEAD
-.task.completed span {
-    text-decoration: line-through;
-=======
 .orangeBlob{
   top: -15px;
   position: absolute;
@@ -383,5 +379,4 @@ label {
   background-color: transparent;
   margin-top: 20%;
   text-align: center;
->>>>>>> parent of b0fca9c (Flipped image of pencil #8)
 }
