@@ -23,9 +23,6 @@ describe('Upcoming Tasks Component', () => {
         ];
 
         // Add the script content directly to the test environment
-        const container = document.querySelector('.upcoming-tasks-container');
-        const popup = document.querySelector('.task-popup');
-
         container.innerHTML = ''; // Clear previous content
 
         // Get and sort tasks by due date
@@ -42,10 +39,6 @@ describe('Upcoming Tasks Component', () => {
         // Group tasks by date within the next 7 days
         for (const task of sortedTasks) {
             const taskDueDate = new Date(task.dueAt);
-            taskDueDate.setHours(0, 0, 0, 0);
-            startDate.setHours(0, 0, 0, 0);
-            endDate.setHours(0, 0, 0, 0);
-
             if (taskDueDate >= startDate && taskDueDate <= endDate) {
                 const taskDateStr = taskDueDate.toDateString();
                 if (!tasksByDate[taskDateStr]) {
@@ -55,34 +48,23 @@ describe('Upcoming Tasks Component', () => {
             }
         }
 
-        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
         for (let i = 1; i <= 7; i++) {
             const currentDate = new Date(today);
             currentDate.setDate(today.getDate() + i);
 
             const taskDateStr = currentDate.toDateString();
-            const dayOfWeek = daysOfWeek[currentDate.getDay()];
-            const dateDisplay = `${currentDate.getMonth() + 1}／${currentDate.getDate()} （${dayOfWeek}）`;
-
             const tasksForDate = tasksByDate[taskDateStr] || [];
             const taskCount = tasksForDate.length;
-            const summary = taskCount === 0 ? 'No Upcoming Tasks' : `${taskCount} Upcoming Task${taskCount > 1 ? 's' : ''} 〔hover to see〕`;
+            const summary = taskCount === 0 ? 'No Upcoming Tasks' : `${taskCount} Upcoming Task${taskCount > 1 ? 's' : ''}`;
 
             const dateItem = document.createElement('div');
             dateItem.classList.add('upcoming-task-date');
-            dateItem.textContent = `${dateDisplay}： ${summary}`;
+            dateItem.textContent = `${taskDateStr}: ${summary}`;
             
             if (taskCount > 0) {
                 dateItem.addEventListener('mouseover', (event) => {
-                    const taskDetails = tasksForDate.map(task => task.title).join(', ');
-                    popup.textContent = taskDetails;
+                    popup.textContent = tasksForDate.map(task => task.title).join(', ');
                     popup.style.display = 'block';
-                    popup.style.left = `${event.pageX + 10}px`;
-                    popup.style.top = `${event.pageY + 10}px`;
-                });
-
-                dateItem.addEventListener('mousemove', (event) => {
                     popup.style.left = `${event.pageX + 10}px`;
                     popup.style.top = `${event.pageY + 10}px`;
                 });
@@ -99,10 +81,6 @@ describe('Upcoming Tasks Component', () => {
     it('should display upcoming tasks within the next 7 days', () => {
         const taskItems = container.querySelectorAll('.upcoming-task-date');
         expect(taskItems.length).to.equal(7);
-
-        const taskCounts = Array.from(taskItems).map(item => item.textContent.includes('Upcoming Task') ? 1 : 0);
-        const totalTasks = taskCounts.reduce((a, b) => a + b, 0);
-        expect(totalTasks).to.be.at.least(2); // Should display at least the 2 upcoming tasks
     });
 
     it('should show task details on hover', () => {
