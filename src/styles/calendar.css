@@ -90,7 +90,6 @@ body {
     font-weight: bold;
     margin-bottom: 0.5em; /* Space between number and list */
     align-self: center;
-    height: 15%;
 }
 
 /* List of tasks within a day */
@@ -121,7 +120,24 @@ body {
     font-size: .6em;
 }
 
-.day-task-item:hover {
+.expanded-day-task-item {
+    display: block; /* Ensure the button is a block element */
+    width: 100%; /* Make the button take the full width of the parent */
+    white-space: normal; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+    background: none; /* Remove default button styling */
+    border: none; /* Remove default button border */
+    align-self: left;
+    text-align: left;
+    cursor: pointer;
+    max-height: 3.75em;
+    font-size: .8em;
+    margin-bottom: 0.3em;
+    word-break: break-all;
+}
+
+.day-task-item:hover, .expanded-day-task-item:hover {
     text-decoration: underline;
 }
 
@@ -142,6 +158,8 @@ body {
 
 /* SELECTED Day */
 .selected-day {
+    box-sizing: border-box;
+    padding-top: 0.5em;
     background-color: #F3E2D5;
     border-radius: 1em;
     border: 0.25em solid #C3B2A5;
@@ -149,20 +167,14 @@ body {
     text-align: center;
     top: 0%;
     left: 0%;
-    width: 10em;
+    width: 15em;
     height: 30em;
+    overflow-y:scroll;
+    scrollbar-width: none;
 }
 
-/* Button to add task IN SELECTED DAY */
-.add-task-button {
-    background-color: var(--nav-button-bg);
-    align-content: center;
-    color: #fff;
-    border: none;
-    padding: 0.75em;
-    border-radius: .5em;
-    cursor: pointer;
-    margin-top: 5%;
+.selected-day > * {
+    margin-top: 1em;
 }
 
 .expanded-day {
@@ -170,7 +182,7 @@ body {
 }
 
 .selected-day .expanded-day {
-    display: block;
+    display:inline;
 }
 
 .selected-day .shrunk-day {

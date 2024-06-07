@@ -19,6 +19,7 @@ document.addEventListener('keydown', function(event) {
         unselectAllDays();
     }
 });
+
 export function initializeTask() {
     tasks.set([]);
     createTask("1", "Sample Task", "This is a sample task", "High", "PLANNED", Date.now() + 1000 * 32 * 60);
@@ -29,6 +30,10 @@ export function initializeTask() {
     createTask("6", "Sample 6", "This is a sample task", "High", "PLANNED", Date.now() + 3000 * 57 * 60);
     createTask("7", "Sample 7", "This is a sample task", "High", "PLANNED", Date.now() + 2000 * 57 * 60);
     createTask("8", "Sample 8", "This is a sample task", "High", "PLANNED", Date.now() + 3000 * 57 * 60);
+
+    for(let i = 0; i < 30; i++) {
+        createTask(`${i + 9}`, `SampleAMPLEMPAPEPAMPEAP WATCH K-ON!! ${i + 9}`, "This is a sample task", "High", "PLANNED", Date.now() + 1000 * 57 * 60);
+    }
 }
 
 export function renderCalendar(date, monthYear, calendarGrid) {
@@ -81,36 +86,39 @@ export function unselectAllDays() {
 }
 
 export function addTasksToDay(dayDiv, year, month, day, allTasks) {
-    const dayName = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'long' });
-    const dayNameP = document.createElement('p');
-    dayNameP.classList.add('expanded-day', 'day-number');
-    dayNameP.textContent = dayName;
-    dayDiv.appendChild(dayNameP);
+    const isSelected = dayDiv.classList.contains('selected-day'); //Checks if the day is selected (Expanded)
+    const calendarContainer = document.querySelector('.calendar-container'); //Gets the calendar container
 
+    //If the day is selected, show the day's name on top of the number
+    if(isSelected) {
+        const dayName = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'long' });
+        const dayNameP = document.createElement('p');
+        dayNameP.classList.add('day-number');
+        dayNameP.textContent = dayName;
+        dayDiv.appendChild(dayNameP);
+    }
+
+    // Create the day number
     const dayNumber = document.createElement('div');
     dayNumber.classList.add('day-number');
     dayNumber.textContent = day;
     dayDiv.appendChild(dayNumber);
 
-    const addTaskButton = document.createElement('button');
-    addTaskButton.classList.add('add-task-button', 'expanded-day');
-    addTaskButton.innerHTML = 'Create New Task';
-    dayDiv.appendChild(addTaskButton);
-
+    // Create the task list
     const taskList = document.createElement('ul');
     taskList.classList.add('task-list');
 
-    const calendarContainer = document.querySelector('.calendar-container');
-
     const date = new Date(year, month, day).setHours(0, 0, 0, 0);
 
-    let appendedTasks = 0;
+    let appendedTasks = 0; //Counter for how many tasks have been added to this day's task list
     allTasks.forEach(task => {
         const taskDueDate = new Date(task.dueAt).setHours(0, 0, 0, 0);
         if (taskDueDate === date) {
             const taskItem = document.createElement('button');
-            taskItem.classList.add('day-task-item');
-
+            if (!isSelected)
+                taskItem.classList.add('day-task-item');
+            else 
+                taskItem.classList.add('expanded-day-task-item');
             // Convert task.dueAt to a Date object and format the time
             const taskDueTime = new Date(task.dueAt);
             const formattedTime = taskDueTime.toLocaleTimeString([], {
@@ -119,30 +127,31 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
                 hour12: true
             });
 
-            // Add a click event listener to the task item to show the task popup modal
+            // Alert w/ task info. REPLACE WITH TASK POP-UP MODAL
             taskItem.addEventListener('click', () => {
                 alert(`Task: ${task.title}\nDescription: ${task.description}\nPriority: ${task.priority}\nStatus: ${task.status}\nDue At: ${formattedTime}`); //Replace with modal
             });
 
             // Set the button text content to the formatted time and task title
             taskItem.textContent = `${formattedTime} - ${task.title}`;
-            if(appendedTasks >= 3) {
-                taskItem.classList.add('expanded-day');
+            if(appendedTasks < 3 || isSelected) {
+                taskList.appendChild(taskItem);
             } 
-            taskList.appendChild(taskItem);
+
             appendedTasks++;
         }
     });
 
-    if(appendedTasks > 3) {
+    //If there are more than 3 tasks, add a +more text (in the non-expanded view)
+    if(appendedTasks > 3 && !isSelected) {
         const moreText = document.createElement('p');
         moreText.innerHTML = `+${appendedTasks - 3} more`;
-        moreText.classList.add('shrunk-day', 'more-text');
+        moreText.classList.add('more-text');
         taskList.appendChild(moreText);
     }
 
     //Creates the expanded day view upon clicking a day
-    if(!dayDiv.classList.contains('selected-day')) { //Prevents reselecting a selected day
+    if(!isSelected) { //Prevents reselecting a selected day
         dayDiv.addEventListener('click', () => {
             unselectAllDays();
             const dayDivClone = dayDiv.cloneNode(true);
@@ -164,12 +173,10 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
         });
     }
 
-
-
-
     dayDiv.appendChild(taskList);
 }
 
+// Adjusts the position of the expanded day view to fit within the window
 function adjustPosition(day) {
     const rect = day.getBoundingClientRect();
     let offsetX = 0, offsetY = 0;
@@ -188,6 +195,7 @@ function adjustPosition(day) {
     day.style.top = `${newTop}px`;
 }
 
+// Buttons to navigate to the previous and next months
 export function addMonthNavigationListeners(currentDate, monthYear, calendarGrid, prevMonthBtn, nextMonthBtn) {
     prevMonthBtn.addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
