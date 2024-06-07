@@ -87,7 +87,7 @@ class ModalJournal extends HTMLElement {
 
         const h2 = document.createElement('h2');
         h2.textContent = 'Create Journal';
-        
+
         const form = document.createElement('form');
         form.innerHTML = `
             <label for="title">Title:</label>
@@ -121,7 +121,7 @@ class ModalJournal extends HTMLElement {
     handleFormSubmit(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
-        
+
         createJournal(formData.get('title'),formData.get('path'),formData.get('tags').split(", "));
         let tasks=formData.get("tasks").split(", ");
         tasks.forEach(element =>  {
@@ -130,8 +130,7 @@ class ModalJournal extends HTMLElement {
             // Handle the form data as needed
         console.log('Journal created: ', getJournal(formData.get('path')));
     }
-    
-}
 
+}
 
 customElements.define('modal-journal', ModalJournal);

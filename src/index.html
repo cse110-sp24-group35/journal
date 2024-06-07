@@ -5,27 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal | Overview</title>
     <link rel="stylesheet" href="styles/journal.css">
+    <link rel="stylesheet" href="styles/task.css">
+    <link rel="stylesheet" href="styles/upcoming-tasks.css">
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
-        <script>
-            window.process = { browser: true, env: { NODE_ENV: "production" } };
-        </script>
+    <script>
+        window.process = { browser: true, env: { NODE_ENV: "production" } };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <script type="importmap">
-            {
-                "imports": {
-                    "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
-                    "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
-                }
+    <script type="importmap">
+        {
+            "imports": {
+                "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
+                "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js"
             }
-        </script>
+        }
+    </script>
     <!-- Polyfill end -->
+    <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
+    <my-sidebar></my-sidebar>
 
-    <modal-journal></modal-journal>
+    <div class="container">
+        <task-list></task-list>
+    </div>
+    
+    <!-- Add the container and popup elements directly to the HTML -->
+    <div class="upcoming-tasks-container"></div>
+    <div class="task-popup" style="display: none;"></div>
 
-    <script src="styles/modal-component.js"></script>
+    <div class="containerpie">
+        <task-pie-component></task-pie-component>
+    </div>
+
+    <script type="module" src="scripts/components/upcoming-tasks.js"></script>
+    <script src="scripts/components/sidebar.js"></script>
+    <script src="scripts/components/modal-journal.js"></script>
+    <script type="module" src="scripts/components/task-component.js"></script>
+    <script type="module" src="scripts/components/task-pie-component.js"></script>
 </body>
-
 </html>
