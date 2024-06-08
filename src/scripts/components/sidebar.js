@@ -39,7 +39,7 @@ class MySidebar extends HTMLElement {
                 left: 0;
                 width: 15%;
                 height: 100%;
-                background-color: #f4f4f4;
+                background-color: #FFF5ED;
                 box-shadow: 2px 0 5px rgba(0,0,0,0.1);
                 display: flex;
                 flex-direction: column;
@@ -47,7 +47,7 @@ class MySidebar extends HTMLElement {
                 box-sizing: border-box;
             }
             .sidebar-button {
-                background-color: #ffffff;
+                background-color: #fff ;
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 margin: 5px 0;
@@ -55,12 +55,13 @@ class MySidebar extends HTMLElement {
                 text-align: left;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
+                text-color: black;
             }
             .sidebar-button:hover {
                 background-color: #ddd;
             }
             .sidebar-button.active {
-                background-color: #ccc;
+                background-color: #FF914D;
                 cursor: default;
             }
         `;

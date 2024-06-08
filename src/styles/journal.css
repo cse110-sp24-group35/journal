@@ -11,7 +11,8 @@
     position: sticky;
     top: 0;
     left: 0;
-    background-color: #0F0; 
+    background-color: #FFF5ED; 
+    color: #000;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

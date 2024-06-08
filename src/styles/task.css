@@ -19,13 +19,14 @@ h1 {
 
 /* Container for boxes */
 #container {
-  justify-content: center;
+  justify-content: inherit;
   display: flex;
   flex-direction: row;
   overflow-x: scroll;
-  width: 90%;
+  width: 85%;
   height: 8 0%;
-  margin: auto;
+  margin-left: 15%;
+  
   white-space: nowrap;
 }
 
@@ -72,7 +73,7 @@ p {
 
 .task-column-header {
   display: flex;
-  position: relative;
+  position: sticky;
   justify-content: center;
   background-color: transparent;
   padding: 10px;
@@ -107,7 +108,7 @@ p {
   margin: 10px;
   height: auto;
   width: auto;
-  right: 20%;
+  right: 5vw;
   top: 1.5%;
   cursor: pointer;
   font-size: 30px;
