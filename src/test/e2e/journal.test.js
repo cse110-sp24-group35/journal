@@ -68,4 +68,46 @@ describe("Journal Page", () => {
 
         expect(noJournalMessage).to.equal(true);
     });
+    
+    test("should open editor when selected in tree view", async () => {
+        // Click on a journal entry
+        // !NOTE: this depends on create-journal button creating a hello world entry
+        await page.$('button#create-journal'  )?.then(button => button.click());
+        await page.$('button[id="tree/hello"]')?.then(button => button.click());
+
+        const openEditor = await page.evaluate(() => {
+            document.getElementById('tree/hello/world').click();
+            
+            // Check if editor has the journal we selected
+            const editor = document.querySelector("journal-editor");
+            return editor.hasJournal() && editor.shadowRoot.getElementById('journal-title').value === "Hello World";
+        });
+
+        expect(openEditor).to.equal(true);
+    })
+    
+    test("editor should autosave after edit", async () => {
+        const editor = await page.$('journal-editor');
+        const shadowRoot = await editor.evaluateHandle(el => el.shadowRoot);
+        const text = await shadowRoot.$('#text-editor');
+
+        await text.type('\nhello');
+
+        // Wait for an autosave
+        const delay = (time) => new Promise(resolve => setTimeout(resolve, time));
+        await delay(1000);
+
+        await page.reload();
+
+        // Go to entry we changed
+        await page.$('[id="tree/hello"]'      )?.then(button => button.click());
+        await page.$('[id="tree/hello/world"]')?.then(button => button.click());
+
+        const content = await page.evaluate(() => {
+            const editor = document.querySelector("journal-editor");
+            return editor.shadowRoot.getElementById('text-editor').value;
+        });
+
+        expect(content).to.equal("Hello World\nhello");
+    })
 });

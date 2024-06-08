@@ -1,4 +1,4 @@
-import { journals, createJournal, getJournal, deleteJournal } from '../database/stores/journal.js';
+import { journals, createJournal, deleteJournal } from '../database/stores/journal.js';
 
 journals.listen(() => populateTreeView());
 
@@ -35,15 +35,11 @@ export function deleteSelectedJournal() {
     const selected = document.querySelector('.selected > button'); //Selected journal (if any)
     const journalViewer = document.getElementById('journal-view'); // Journal view (Right of tree-view)
     journalViewer.innerHTML = ""; // CLEAR whatever was just deleted
-    const journalTitle = document.createElement("p");
+    const newJournalEditor = document.createElement("journal-editor"); // Create a new journal editor
     if (selected) { // If a journal is selected
         deleteJournal(selected.id.slice(5)); //Slices the tree/ from the id to get the path
-        journalTitle.innerHTML = "JOURNAL DELETED!";
     }
-    else {
-        journalTitle.innerHTML = "NO JOURNAL SELECTED TO DELETE!";
-    }
-    journalViewer.appendChild(journalTitle);
+    journalViewer.appendChild(newJournalEditor); // Add the new journal editor to the journal viewer
 }
 
 //Temporary function to create fake journals. Will be removed when "create journal" button is peroperly implemented.
@@ -187,18 +183,7 @@ export function openFolder(folder) {
 
 // Function to set the journal viewer to display the journal with the given path
 export function setJournalViewer(path) {
-    const journalViewer = document.getElementById('journal-view');
-    const journalToLoad = getJournal(path); // Load in the corresponding journal from the database
-
-    // Adds <journal-editor></journal-editor> to the journal viewer
-    let journalEditor = document.querySelector("journal-editor");
-    if (!journalEditor) {
-        journalEditor = document.createElement("journal-editor");
-        journalEditor.data = journalToLoad;
-        journalViewer.appendChild(journalEditor);
-    } else {
-        journalEditor.data = journalToLoad;
-    }
+    document.querySelector('journal-editor').path = path;
 }
 
 // Function to recursively load all files into the HTML

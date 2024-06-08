@@ -24,10 +24,9 @@
 </head>
 
 <body>
-	
     <script src="scripts/components/sidebar.js"></script>
     <script src="scripts/components/journal_tree.js" type="module"></script>
-	<script src="scripts/components/journal-editor.js" type="module"></script>
+    <script src="scripts/components/journal-editor.js" type="module"></script>
 
     <!-- Include the JavaScript file defining the Web Component -->
     <script src="scripts/components/modal-journal.js" type="module"></script>
@@ -36,10 +35,7 @@
     <!-- Use the custom Web Component here -->
     <!-- <modal-journal></modal-journal> -->
     <div style="display: flex; flex-direction: column; position:relative;">
-      <my-sidebar id="sidebar"></my-sidebar>
-
-
-
+        <my-sidebar id="sidebar"></my-sidebar>
         
     </div>
 
@@ -54,7 +50,6 @@
         <button id="collapse-button" class="collapse">&lt;&lt;</button>
         
     </div>
-
 
     <div id="journal-view">
         <journal-editor></journal-editor>
