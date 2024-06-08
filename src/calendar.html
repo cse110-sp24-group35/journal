@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Journal | Overview</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal | Calendar </title>
+    <link rel="stylesheet" href="styles/calendar.css">
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -20,10 +23,29 @@
 </head>
 
 <body>
-    <my-sidebar></my-sidebar>
-    <div class="content">
-        <p>This is the calender page!</p>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button id="prev-month" class="nav-button">&lt;</button>
+            <span id="month-year"></span>
+            <button id="next-month" class="nav-button">&gt;</button>
+        </div>
+        <div class="calendar-body">
+            <div class="calendar-days">
+                <div class="day-label">Sun</div>
+                <div class="day-label">Mon</div>
+                <div class="day-label">Tue</div>
+                <div class="day-label">Wed</div>
+                <div class="day-label">Thu</div>
+                <div class="day-label">Fri</div>
+                <div class="day-label">Sat</div>
+            </div>
+            <div class="calendar-grid-wrapper">
+                <div id="calendar-grid" class="calendar-grid"></div>
+            </div>
+        </div>
     </div>
+    <script type="module" src="scripts/components/calendar-view.js"></script>
+    <my-sidebar></my-sidebar>
     <script src="scripts/components/sidebar.js"></script>
 
 </body>
