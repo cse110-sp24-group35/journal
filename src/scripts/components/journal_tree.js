@@ -1,4 +1,4 @@
-import { journals, createJournal, getJournal, deleteJournal } from '../database/stores/journal.js';
+import { journals, createJournal, deleteJournal } from '../database/stores/journal.js';
 
 journals.listen(() => populateTreeView());
 

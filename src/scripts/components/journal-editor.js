@@ -5,7 +5,7 @@ class JournalEditor extends HTMLElement {
     constructor() {
         super(); // Inherit everything from HTMLElement
 
-        const shadow = this.attachShadow({ mode: "open" });
+        const shadow = this.attachShadow({mode: "open"});
 
         shadow.innerHTML = `
         <form>
@@ -101,6 +101,7 @@ class JournalEditor extends HTMLElement {
         // Editor starts out with invalid path,
         //   so that a message can be displayed
         this.path = null;
+    }
 
     /**
      * Checks if the editor is currently editing a journal.
@@ -163,7 +164,7 @@ class JournalEditor extends HTMLElement {
         //    this.wysimark.setMarkdown(textarea.value);
         //});
         
-        function debounce(func, timeout = 500) {
+        function debounce(func, timeout = 1000) {
             let timer;
             return (...args) => {
                 clearTimeout(timer);
@@ -262,8 +263,6 @@ class JournalEditor extends HTMLElement {
 
         const tags = this.shadowRoot.getElementById('journal-tags');
         tags.value = journal.tags.join(', ');
-      
-        this.path = journal.path;
     }
 
     /**
