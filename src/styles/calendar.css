@@ -1,3 +1,16 @@
+@font-face {
+    font-family: biski;
+    src: url("../public/fonts/biskitrialregular-l3jxg.otf") format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  * {
+    font-family: biski, serif;
+    
+    color:#594F4F;
+  }
+
 :root {
     --day-size: max(min(11vw, 11vh), 3em);
     --grid-gap: min(1vh, 1vw);

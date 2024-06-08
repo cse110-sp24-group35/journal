@@ -4,8 +4,8 @@ body {
     align-items: flex-start;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
-    padding-top: 100px;
+    background-color: #fff5ed;
+    
 }
 
 .container {
@@ -28,7 +28,7 @@ body {
     position: relative;
     border-radius: 10px;
     padding: 20px;
-    margin-right:5%;
+    margin-right:0;
 
 }
 
