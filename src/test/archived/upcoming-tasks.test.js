@@ -1,23 +1,45 @@
 import puppeteer from 'puppeteer';
+import Fastify from 'fastify';
+import staticPlugin from '@fastify/static';
+import path from 'path';
+
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 describe('Upcoming Tasks E2E Test', () => {
   let browser;
   let page;
 
-  beforeAll(async () => {
+  let server;
+
+  const fastify = Fastify();
+
+  beforeAll(async function () {
+    fastify.register(staticPlugin, {
+      root: path.join(__dirname, "../../") // Adjust the path to your project's root if needed
+    });
+
+    server = fastify;
+    await server.listen({
+      port: 5001
+    });
+
     browser = await puppeteer.launch({
-      headless: true, // Run in headless mode
-      args: ['--no-sandbox', '--disable-setuid-sandbox'] // Add these arguments to run as root
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
     page = await browser.newPage();
-    await page.goto('http://127.0.0.1:5500/src/upcoming-tasks.html'); // Replace with the correct URL
   }, 30000);
 
   afterAll(async () => {
     await browser.close();
+    await server.close();
   });
 
   test('Display upcoming tasks', async () => {
+    await page.goto('http://localhost:5001/index.html'); // Replace with the correct URL
+
     // Check if the upcoming tasks container exists
     const containerExists = await page.$('.upcoming-tasks-container') !== null;
     expect(containerExists).toBe(true);

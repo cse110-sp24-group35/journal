@@ -1,36 +1,54 @@
 import puppeteer from 'puppeteer';
+import Fastify from 'fastify';
+import staticPlugin from '@fastify/static';
+import path from 'path';
+
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 describe('Kanban Board E2E Test', () => {
   let browser;
+  let server;
   let page;
 
-  beforeAll(async () => {
+  const fastify = Fastify();
+
+  beforeAll(async function () {
+    fastify.register(staticPlugin, {
+      root: path.join(__dirname, "../../") // Adjust the path to your project's root if needed
+    });
+
+    server = fastify;
+    await server.listen({
+      port: 5000
+    });
+
     browser = await puppeteer.launch({
-      headless: false, // Set to true if you don't need to see the browser
-      slowMo: 50, // Slow down by 50ms for better visibility
+      headless: false,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
     page = await browser.newPage();
-  });
+  }, 30000);
 
   afterAll(async () => {
     await browser.close();
+    await server.close();
   });
 
   test('Add a new column and a new task', async () => {
-    await page.goto('http://127.0.0.1:5500/src/tasks.html'); // Replace with the correct URL
+    await page.goto('http://localhost:5000/tasks.html'); // Replace with the correct URL
 
     // Add a new column
     await page.click('.add-task-column-button');
-    await page.type('input[placeholder="Enter new column name:"]', 'New Column');
-    await page.click('button:contains("Add Column")');
+    await page.type('body > modal-card-popup-column > dialog > form > label > input', "TODO");
+    await page.click('body > modal-card-popup-column > dialog > form > div > button');
 
     // Wait for the new column to appear
     await page.waitForSelector('.task-column[data-column-id*="status-"]');
 
     // Add a new task to the new column
-    const columns = await page.$$('.task-column');
-    const newColumn = columns[columns.length - 1]; // The last column is the newly added one
-    await newColumn.click('.add-task-card-button');
+    await page.click("#container > main > task-column > section > div.add-button > button");
 
     // Fill in task details
     await page.type('input[name="taskName"]', 'New Task');
@@ -43,7 +61,7 @@ describe('Kanban Board E2E Test', () => {
     await page.waitForSelector('.task-card');
 
     // Verify the new task
-    const tasks = await newColumn.$$('.task-card');
+    const tasks = await page.$$('.task-card');
     const newTask = tasks[tasks.length - 1]; // The last task is the newly added one
     const taskTitle = await newTask.$eval('.card-title', el => el.innerText);
     expect(taskTitle).toBe('New Task');

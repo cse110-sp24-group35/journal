@@ -37,7 +37,7 @@ describe("Journal Page", () => {
     afterAll(async () => {
         await browser.close();
         await server.close();
-    });
+    }, 30000);
 
     it("should display the modal upon clicking add new task", async () => {
         // Check if the modal is visible

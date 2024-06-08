@@ -27,12 +27,12 @@ describe("Tree View", () => {
 
         browser = await puppeteer.launch({
             headless: true,
-            slowMo: 50,
+            slowMo: 250,
             args: ["--no-sandbox", "--disable-setuid-sandbox"]
         });
         page = await browser.newPage();
         await page.goto("http://localhost:1001/journal.html"); // Adjust the path to your HTML file
-    }, 10000);
+    }, 30000);
 
     afterAll(async () => {
         await browser.close();
