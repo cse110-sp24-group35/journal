@@ -14,8 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     prevMonthBtn = document.getElementById('prev-month');
     nextMonthBtn = document.getElementById('next-month');
 
-    //initializeTask(); //FAKE SET OF TASKS. REMOVE LATER
-
     renderCalendar();
     addMonthNavigationListeners();
 });
@@ -26,26 +24,6 @@ document.addEventListener('keydown', function(event) {
         unselectAllDays();
     }
 });
-
-/**
- * Initializes the task list with a set of sample tasks.
- * This function is for testing purposes and should be removed in production.
- */
-export function initializeTask() {
-    tasks.set([]);
-    createTask("1", "Sample Task", "This is a sample task", "High", "PLANNED", Date.now() + 1000 * 32 * 60);
-    createTask("2", "Sample 2", "This is a sample task", "High", "PLANNED", Date.now() + 2000 * 60 * 60);
-    createTask("3", "Sample 3", "This is a sample task", "High", "PLANNED", Date.now() + 700000 * 57 * 60);
-    createTask("4", "Sample 3", "This is a sample task", "High", "PLANNED", Date.now() + -100000 * 60 * 60);
-    createTask("5", "Sample 5", "This is a sample task", "High", "PLANNED", Date.now() + 2000 * 57 * 60);
-    createTask("6", "Sample 6", "This is a sample task", "High", "PLANNED", Date.now() + 3000 * 57 * 60);
-    createTask("7", "Sample 7", "This is a sample task", "High", "PLANNED", Date.now() + 2000 * 57 * 60);
-    createTask("8", "Sample 8", "This is a sample task", "High", "PLANNED", Date.now() + 3000 * 57 * 60);
-
-    for (let i = 0; i < 30; i++) {
-        createTask(`${i + 9}`, `SampleAMPLEMPAPEPAMPEAP WATCH K-ON!! ${i + 9}`, "This is a sample task", "High", "PLANNED", Date.now() + 1000 * 57 * 60);
-    }
-}
 
 /**
  * Renders the calendar for the current month.
@@ -167,6 +145,8 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
             // Set the button text content to the formatted time and task title
             taskItem.textContent = `${formattedTime} - ${task.title}`;
             if (appendedTasks < 3 || isSelected) { //Prevents more than 3 tasks from being shown in the non-expanded view
+                if(task.status == "COMPLETED")
+                    taskItem.style.textDecoration = "line-through";
                 taskList.appendChild(taskItem);
             }
 
