@@ -253,20 +253,19 @@ class ModalCardPopup extends HTMLElement {
         const tags = this.querySelector('[name="tags"]').value;
         const journal = this.querySelector('[name="journal"]').value;
 
-        // Convert date to UTC midnight
-        const dueDate = new Date(date);
-        dueDate.setUTCHours(0, 0, 0, 0);
+        // Convert date to local time midnight
+        const dueDate = new Date(date + 'T00:00:00');
 
         const newTask = {
             id: this.task.id || `task-${Date.now()}`,
             title,
             description,
-            date,
+            date, // Keep the local date string for display
             tags,
             journal,
             status: this.status.id, // Use the current status ID
             createdAt: this.task.createdAt || Date.now(),
-            dueAt: dueDate.getTime() // Convert the date to a timestamp
+            dueAt: dueDate.getTime() // Convert the date to a timestamp in local time
         };
 
         if (this.task.id) {
@@ -287,7 +286,7 @@ class TaskCard extends HTMLElement {
         super();
         this.task = task;
         // Convert timestamp to locale date string
-        const dueDate = new Date(task.dueAt).toLocaleDateString(undefined, { timeZone: 'UTC' });
+        const dueDate = new Date(task.dueAt).toLocaleDateString();
         this.innerHTML = `
             <div class="task-card" draggable="true" id="${task.id}">
                 <div class="card-content">
@@ -314,7 +313,6 @@ class TaskCard extends HTMLElement {
             this.editCard();
             box.style.display = "none";
             header.innerHTML = "Edit Task";
-
         });
 
         this.addEventListener('dragstart', (event) => this.dragStartHandler(event));

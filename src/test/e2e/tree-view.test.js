@@ -41,7 +41,6 @@ describe("Tree View", () => {
 
     it('should populate the tree view on load', async () => {
         let treeElements = await page.$$('#content > .tree-element');
-        console.log("Tree view should be empty if no journals exist");
         expect(treeElements.length).to.equal(0); // The tree view should be empty if no journals exist
         await page.evaluate(async () => {
             const helper = await import("./scripts/database/stores/journal.js");
@@ -49,7 +48,6 @@ describe("Tree View", () => {
         });
         await page.waitForSelector('#content > .tree-element');
         treeElements = await page.$$('#content > .tree-element');
-        console.log("Tree view should have one folder on the top level");
         expect(treeElements.length).to.equal(1);
     });
 
@@ -122,14 +120,12 @@ describe("Tree View", () => {
 
     it('should update tree view upon journal deletion', async () => {
         let treeElements = await page.$$('#content > .tree-element');
-        console.log("Tree view should have an element");
         expect(treeElements.length).to.equal(1);
         await page.evaluate(async () => {
             const helper = await import("./scripts/database/stores/journal.js");
             helper.deleteJournal("folder1/journal1");
         });
         treeElements = await page.$$('#content > .tree-element');
-        console.log("Tree view should be empty");
         expect(treeElements.length).to.equal(0);
     });
 });

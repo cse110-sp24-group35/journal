@@ -1,0 +1,196 @@
+:root {
+    --day-size: max(min(11vw, 11vh), 3em);
+    --grid-gap: min(1vh, 1vw);
+    --nav-button-bg: #007bff;
+    --nav-button-hover-bg: #0056b3;
+    --day-bg: #F3E2D5;
+    --day-hover-bg: #C3B2A5;
+    --calendar-bg: #FFF5ED;
+}
+
+body {
+    margin: 0;
+}
+
+.calendar-container {
+    background: var(--calendar-bg);
+    box-shadow: var(--calendar-box-shadow);
+    width: calc(85vw - 2em); /* Adjusted to account for padding x2. 115vw is to account for the sidebar. */
+    padding: 1em; /* Added padding for better spacing */
+    height: calc(100vh - 2em); /* Adjusted to account for padding x2 */
+    position: fixed;
+    right: 0;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-button {
+    background-color: var(--nav-button-bg);
+    color: #fff;
+    border: none;
+    padding: 0.75em;
+    border-radius: .5em;
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    background-color: var(--nav-button-hover-bg);
+}
+
+#month-year {
+    font-size: 2em;
+    margin: 0 1em; /* Add some space between the buttons and the text */
+    width: 7em; /* Set a fixed width to prevent text from moving */
+    text-align: center;
+}
+
+.calendar-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centering the grid */
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-items: center; /* Centering the labels */
+    grid-gap: var(--grid-gap);
+}
+
+.day-label {
+    width: var(--day-size);
+    text-align: center;
+    font-weight: bold;
+    line-height: var(--day-size);
+}
+
+.calendar-grid-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, var(--day-size));
+    grid-gap: var(--grid-gap);
+}
+
+/* Individual Day Box */
+.calendar-day {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: var(--day-size);
+    height: var(--day-size);
+    background-color: var(--day-bg);
+    border-radius: 1em;
+    padding-top: 0.25em; /* Add padding to ensure spacing */
+    box-sizing: border-box; /* Ensure padding is included in width/height */
+    overflow: hidden;
+    position: relative; /* Needed for absolute positioning of selected-day */
+}
+
+.calendar-day:hover {
+    background-color: var(--day-hover-bg);
+}
+
+/* Number inside each day box */
+.day-number {
+    font-weight: bold;
+    margin-bottom: 0.5em; /* Space between number and list */
+    align-self: center;
+}
+
+/* List of tasks within a day */
+.task-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+/* Boxes for days outside of the current month */
+.previous-month, .next-month {
+    opacity: 0.5;
+}
+
+/* Individual Task Within a Day */
+.day-task-item {
+    display: block; /* Ensure the button is a block element */
+    width: 100%; /* Make the button take the full width of the parent */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+    background: none; /* Remove default button styling */
+    border: none; /* Remove default button border */
+    align-self: left;
+    text-align: left;
+    cursor: pointer;
+    font-size: .6em;
+}
+
+.expanded-day-task-item {
+    display: block; /* Ensure the button is a block element */
+    width: 100%; /* Make the button take the full width of the parent */
+    white-space: normal; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+    background: none; /* Remove default button styling */
+    border: none; /* Remove default button border */
+    align-self: left;
+    text-align: left;
+    cursor: pointer;
+    max-height: 3.75em;
+    font-size: .8em;
+    margin-bottom: 0.3em;
+    word-break: break-all;
+}
+
+.day-task-item:hover, .expanded-day-task-item:hover {
+    text-decoration: underline;
+}
+
+/* SELECTED Day */
+.selected-day {
+    box-sizing: border-box;
+    padding-top: 0.5em;
+    background-color: #F3E2D5;
+    border-radius: 1em;
+    border: 0.25em solid #C3B2A5;
+    position:fixed;
+    text-align: center;
+    top: 0%;
+    left: 0%;
+    width: 15em;
+    height: 30em;
+    overflow-y:scroll;
+    scrollbar-width: none;
+}
+
+.selected-day > * {
+    margin-top: 1em;
+}
+
+.expanded-day {
+    display: none;
+}
+
+.selected-day .expanded-day {
+    display:inline;
+}
+
+.selected-day .shrunk-day {
+    display: none;
+}
+
+.more-text {
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 7.5% ;
+}
