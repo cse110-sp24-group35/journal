@@ -1,4 +1,4 @@
-import { tasks, createTask } from "../database/stores/task.js";
+import { tasks } from "../database/stores/task.js";
 
 tasks.listen(() => renderCalendar());
 
