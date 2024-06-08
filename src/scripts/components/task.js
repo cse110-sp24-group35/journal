@@ -24,8 +24,8 @@ function renderTaskPage() {
     main.innerHTML = ''; // Clear the board before re-rendering
 
     // Render task columns
-    statuses.get().forEach(status => {
-        const column = new TaskColumn(status);
+    statuses.get().forEach(category => {
+        const column = new TaskColumn(category);
         main.appendChild(column);
     });
 
@@ -35,15 +35,15 @@ function renderTaskPage() {
 
 // TaskColumn class
 class TaskColumn extends HTMLElement {
-    constructor(status) {
+    constructor(category) {
         super();
-        this.status = status;
-        this.columnId = status.id;
+        this.category = category;
+        this.columnId = category.id;
 
         this.innerHTML = `
             <section class="task-column" data-column-id="${this.columnId}">
                 <div class="task-column-header">
-                    <h2 class="column-title" name="task-column-title">${status.name}</h2>
+                    <h2 class="column-title" name="task-column-title">${category.name}</h2>
                 </div>
                 <button class="task-column-delete-button">X</button>
                 <div class="content">
@@ -68,7 +68,7 @@ class TaskColumn extends HTMLElement {
         const header = document.getElementById("header");
         const addCardButton = this.querySelector('.add-task-card-button');
         addCardButton.addEventListener('click', () => {
-            document.body.appendChild(new ModalCardPopup(this.status));
+            document.body.appendChild(new ModalCardPopup(this.category));
             box.style.display = "none";
             header.innerHTML = "Add a Task";
         });
@@ -99,7 +99,7 @@ class TaskColumn extends HTMLElement {
     moveCardToColumn(taskId, newColumnId) {
         const updatedTasks = tasks.get().map((task) => {
             if (task.id === taskId) {
-                return { ...task, status: newColumnId };
+                return { ...task, category: newColumnId };
             }
             return task;
         });
@@ -110,7 +110,7 @@ class TaskColumn extends HTMLElement {
         const cardContainer = this.querySelector('.task-card-container');
         cardContainer.innerHTML = '';
 
-        tasks.get().filter(task => task.status === this.columnId).forEach(task => {
+        tasks.get().filter(task => task.category === this.columnId).forEach(task => {
             const card = new TaskCard(task);
             cardContainer.appendChild(card);
         });
@@ -135,13 +135,13 @@ class TaskColumn extends HTMLElement {
         // Remove this specific column element from the DOM
         this.remove();
 
-        // Update statuses by filtering out the status of this column only once
+        // Update statuses by filtering out the category of this column only once
         let currentStatuses = statuses.get();
-        currentStatuses = currentStatuses.filter(status => status.id !== this.columnId);
+        currentStatuses = currentStatuses.filter(category => category.id !== this.columnId);
         statuses.set(currentStatuses);
 
         // Remove tasks associated with this column
-        const updatedTasks = tasks.get().filter(task => task.status !== this.columnId);
+        const updatedTasks = tasks.get().filter(task => task.category !== this.columnId);
         tasks.set(updatedTasks);
     }
 
@@ -245,7 +245,7 @@ class ModalCardPopupColumn extends HTMLElement {
 
         if (columnName) {
             const newStatus = {
-                id: `status-${Date.now()}`,
+                id: `category-${Date.now()}`,
                 name: columnName
             };
             const currentStatuses = statuses.get();
@@ -258,9 +258,9 @@ class ModalCardPopupColumn extends HTMLElement {
 
 // ModalCardPopup class
 class ModalCardPopup extends HTMLElement {
-    constructor(status, task = {}) {
+    constructor(category, task = {}) {
         super();
-        this.status = status;
+        this.category = category;
         this.task = task;
 
         const isEditing = !!task.id; // Determine if we are editing an existing task
@@ -345,7 +345,7 @@ class ModalCardPopup extends HTMLElement {
             date, // Keep the local date string for display
             tags,
             journal,
-            status: this.status.id, // Use the current status ID
+            category: this.category.id, // Use the current category ID
             createdAt: this.task.createdAt || Date.now(),
             dueAt: dueDate.getTime() // Convert the date to a timestamp in local time
         };
@@ -406,12 +406,12 @@ class TaskCard extends HTMLElement {
     }
 
     editCard() {
-        document.body.appendChild(new ModalCardPopup(statuses.get().find(status => status.id === this.task.status), this.task));
+        document.body.appendChild(new ModalCardPopup(statuses.get().find(category => category.id === this.task.category), this.task));
     }
 
     dragStartHandler(event) {
         event.dataTransfer.setData('application/card-id', this.task.id);
-        event.dataTransfer.setData('application/column-id', this.task.status);
+        event.dataTransfer.setData('application/column-id', this.task.category);
         event.dataTransfer.dropEffect = 'move';
     }
 }

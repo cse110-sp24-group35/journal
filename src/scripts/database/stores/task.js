@@ -8,6 +8,7 @@ import { persistentAtom } from '@nanostores/persistent';
  * @property {string} description - The task description
  * @property {string} priority - The task priority
  * @property {string} status - Task status, can be one of "PLANNED", "ONGOING", "COMPLETED", "ABANDONED"
+ * @property {string} category - The task category. Determines which category the task appears under
  * @property {number} createdAt - The timestamp when task has been created
  * @property {number} dueAt - The timestamp when a task is "due"
  */
@@ -61,10 +62,11 @@ export function deleteTask(id) {
  * @param {string} description - The task description
  * @param {string} priority - The task priority
  * @param {string} status - Task status, can be one of "PLANNED", "ONGOING", "COMPLETED", "ABANDONED"
+ * @param {string} category - The task category. Determines which category the task appears under
  * @param {number} dueAt - The timestamp when a task is "due"
  * @throws {Error} - When there is already a task with the specified ID
  */
-export function createTask(id, title, description, priority, status, dueAt) {
+export function createTask(id, title, description, priority, status, category, dueAt) {
     if (getTask(id)) throw new Error(`Task with ID ${id} already exists!`);
 
     const dueDate = new Date(dueAt); // This will parse the date as local time
@@ -76,6 +78,7 @@ export function createTask(id, title, description, priority, status, dueAt) {
         description,
         priority,
         status,
+        category,
         createdAt: Date.now(),
         dueAt: dueDate.getTime()
     };
@@ -92,13 +95,14 @@ export function createTask(id, title, description, priority, status, dueAt) {
  * @param {string} [modified.description] - The new task description (optional)
  * @param {string} [modified.priority] - The new task priority (optional)
  * @param {string} [modified.status] - The new task status (optional)
+ * @param {string} [modified.category] - The new task category (optional_
  * @param {number} [modified.dueAt] - The new due date timestamp (optional)
  * @returns {boolean} - Whether the task has been updated successfully or not (true / false)
  * @param id - The task ID
  * @param modified - The modified object
  */
 export function updateTask(id, modified) {
-    const { title, description, priority, status, dueAt } = modified;
+    const { title, description, priority, status, category, dueAt } = modified;
 
     let taskFound = false;
 
@@ -111,6 +115,7 @@ export function updateTask(id, modified) {
                 ...(description !== undefined && { description }),
                 ...(priority !== undefined && { priority }),
                 ...(status !== undefined && { status }),
+                ...(category !== undefined && { category }),
                 ...(dueAt !== undefined && { dueAt }),
             };
         }
