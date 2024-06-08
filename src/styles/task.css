@@ -1,45 +1,357 @@
-body {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
-    padding-top: 100px;
+@font-face {
+  font-family: biski;
+  src: url("../public/fonts/biskitrialregular-l3jxg.otf") format('opentype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-.container {
-    width: 600px;
-    max-height: 300px;
-    overflow-y: scroll;
-    background-color: #F3E2D5;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
-    padding: 20px;
-    position: absolute;
-    margin-right: auto;
-    margin-left: auto;
-
+* {
+  font-family: biski, serif;
+  background-color: #FFF5ED;
+  color:#594F4F;
 }
 
-.containerpie {
-    position: relative;
-    border-radius: 10px;
-    padding: 20px;
-    margin-left: 65%;
-
+h1 {
+  font-size: 60px;
+  text-align: center;
+  margin: auto;
 }
 
-.task {
-    display: flex;
-    align-items: center;
-    margin: 35px 0;
-    padding: 10px;
-    
+/* Container for boxes */
+#container {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  width: 90%;
+  height: 8 0%;
+  margin: auto;
+  white-space: nowrap;
 }
 
-.task.completed span {
-    text-decoration: line-through;
+::-webkit-scrollbar {
+  width: 3px;
+  height: 10px;
 }
 
+::-webkit-scrollbar-thumb {
+  background: orange; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: orange; 
+}
+
+p {
+  background-color: #F3E2D5;
+  margin: 15px;
+  border: 1px;
+}
+
+.content {
+  width: 320px;
+  height: 555px;
+  overflow: hidden scroll;
+  background-color: transparent;
+}
+
+/* x close button for modal box */
+
+.task-column {
+  border-radius: 40px;
+  padding: 20px;
+  background-color: #F3E2D5;
+  display: inline-block;
+  margin: 0 10px;
+  vertical-align: top;
+  height: 730px;
+  width: 325px;
+  position: relative;
+}
+
+.task-column-header {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  background-color: transparent;
+  padding: 10px;
+  border-radius: 3px 3px 0 0;
+}
+
+.add-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  background-color: transparent;
+}
+
+.add-task-card-button {
+  background-color: #F3E2D5;
+  font-size: 30px;
+  position: relative;
+  font-weight: 600;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 10px;
+  margin: 10px;
+}
+
+.add-task-column-button {
+  position: absolute;
+  background: #F3E2D5;
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  height: auto;
+  width: auto;
+  right: 20%;
+  top: 1.5%;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: 600;
+  border-radius: 25px;
+}
+
+/* Task Card */
+.task-card {
+  font-size:20px;
+  width: 240px;
+  height: 80px;
+  background: white;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  padding-left: 30px;
+  padding-top: 15px;
+  padding-bottom: 40px;
+  border-radius: 80px;
+}
+
+.card-title {
+  text-align: left;
+  position: relative;
+  background-color: white;
+  margin: 0;
+  width: 100px;
+}
+
+.card-description {
+  text-align: left;
+  position: relative;
+  background-color: white;
+  margin: 0;
+  width: 200px;
+}
+
+.due-date {
+  position: relative;
+  left: 60%;
+  text-align: right;
+  background-color: transparent;
+  width: 100px;
+  margin:0;
+  border: none;
+}
+
+.card-delete-button {
+  background-color: transparent;
+  font-size: 30px;
+  position: absolute;
+  left: 195px;
+  top: -5px;
+  border: none;
+  cursor: pointer;
+}
+
+.edit {
+  cursor: pointer;
+  background-color: transparent;
+  font-size: 25px;
+  position: absolute;
+  left: 188px;
+  bottom: -10px;
+  border: none;
+}
+
+.pencil {
+  background-color: transparent;
+  transform: scaleX(-1);
+}
+
+.card-content {
+  position: relative;
+  width: 100px;
+  height: 80px;
+  font-size:20px;
+  background: white;
+}
+
+.orange-blob {
+  left: 100px;
+  top: -15px;
+  position: absolute;
+  background-color: transparent;
+}
+
+.gray-blob {
+  position: absolute; 
+  background-color: transparent;
+  left: 13px;
+  bottom: -40px;
+}
+
+.task-card-container {
+  background-color: transparent;
+}
+
+/* Modal Box */
+label {
+  width: auto;
+  height: auto;
+  margin: 0;
+  background-color: transparent;
+}
+
+.inputs {
+  margin: 0 30px 0 50px;
+  width: 90%;
+  border:none;
+  font-size: 30px;
+  background:white;
+  line-height:normal;
+}
+
+.modal-card-popup {
+  position: absolute;
+  width: 60%;
+  height: 75%; 
+  border: none;
+  font-size: 30px;
+  border-radius: 75px;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+  padding: 40px 20px 20px;
+  background-color: #F3E2D5;
+  margin-bottom: 5%
+}
+
+.modal-card-popup-header > h2 {
+  background-color: #F3E2D5;
+}
+
+.modal-card-popup-header {
+  background-color: #F3E2D5;
+}
+
+.modal-card-popup-body {
+  background-color: transparent;
+  margin-left: 2%;
+}
+
+.modal-card-popup-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  background-color: transparent;
+}
+
+.modal-card-popup-close-button {
+  border: none;
+  background-color: transparent;
+  font-size: 50px;
+  height: auto;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 5px;
+  position: absolute;
+  top: 2%;
+  right: 4%;
+}
+
+.modal-card-popup-save-button{
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: 600;
+  width: 200px;
+  height:100px;
+  display: block;
+  margin: 0 auto;
+}
+
+button > img,
+button > span {
+vertical-align: middle;
+background-color: #F3E2D5;
+}
+
+#cat {
+  position: absolute;
+  background-color: transparent;
+  top: -7%;
+  right: 2%;
+}
+
+#orange-cat {
+  position: absolute;
+  background-color: transparent;
+  transform: scaleX(-1);
+  top: -7%;
+  left: 2%;
+}
+
+/* Add Task Button Modal box */
+#task-enter {
+  border: none;
+  background-color: #F3E2D5;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: 600;
+  width: 200px;
+  height:100px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Column */
+.task-column-delete-button {
+  border: none;
+  position:absolute;
+  background-color: transparent;
+  font-size: 40px;
+  top: 0;
+  right: 15px;
+}
+
+.task-card-placeholder {
+  background-color: transparent;
+  margin-top: 20%;
+  text-align: center;
+}
+
+
+.column-title {
+  font-size: 40px;
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  margin: 0;
+}
+
+.add-columns {
+  background-color: #F3E2D5;
+  position: absolute;
+  border: none;
+  height: auto;
+  width: auto;
+  right: 20%;
+  top: 3%;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: 600;
+  border-radius: 25px;
+}

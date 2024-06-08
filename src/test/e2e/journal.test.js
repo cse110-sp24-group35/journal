@@ -8,7 +8,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Tell linter these functions exist.
-/*global beforeAll, afterAll, expect*/
 describe("Journal Page", () => {
     let browser;
     let page;
@@ -37,7 +36,7 @@ describe("Journal Page", () => {
     afterAll(async () => {
         await browser.close();
         await server.close();
-    });
+    }, 30000);
 
     it("should display the modal upon clicking add new task", async () => {
         // Check if the modal is visible

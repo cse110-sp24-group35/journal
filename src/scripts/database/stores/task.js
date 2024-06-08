@@ -67,6 +67,9 @@ export function deleteTask(id) {
 export function createTask(id, title, description, priority, status, dueAt) {
     if (getTask(id)) throw new Error(`Task with ID ${id} already exists!`);
 
+    const dueDate = new Date(dueAt); // This will parse the date as local time
+    dueDate.setHours(0, 0, 0, 0);
+
     const task = {
         id,
         title,
@@ -74,7 +77,7 @@ export function createTask(id, title, description, priority, status, dueAt) {
         priority,
         status,
         createdAt: Date.now(),
-        dueAt
+        dueAt: dueDate.getTime()
     };
 
     tasks.set([

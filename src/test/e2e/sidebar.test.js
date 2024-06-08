@@ -30,8 +30,8 @@ describe('MySidebar E2E Tests', () => {
             args: ["--no-sandbox", "--disable-setuid-sandbox"]
         });
         page = await browser.newPage();
-        await page.goto("http://localhost:1002/index.html", { waitUntil: 'networkidle2' }); // Adjust the path to your HTML file
-    }, 10000);
+        await page.goto("http://localhost:1002/index.html"); // Adjust the path to your HTML file
+    }, 30000);
 
     afterAll(async () => {
         await browser.close();

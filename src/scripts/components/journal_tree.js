@@ -183,7 +183,6 @@ export function openFolder(folder) {
 
 // Function to set the journal viewer to display the journal with the given path
 export function setJournalViewer(path) {
-	console.log({path: path})
     document.querySelector('journal-editor').path = path;
 }
 
