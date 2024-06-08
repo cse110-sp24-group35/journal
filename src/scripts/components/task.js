@@ -16,6 +16,7 @@ function defineCustomElements() {
     customElements.define('task-card', TaskCard);
     customElements.define('add-task-column', AddTaskColumn);
     customElements.define('modal-card-popup', ModalCardPopup);
+    customElements.define('modal-card-popup-column', ModalCardPopupColumn);
 }
 
 function renderTaskPage() {
@@ -48,7 +49,7 @@ class TaskColumn extends HTMLElement {
                 <div class="content">
                     <div class="task-card-container"></div>
                 </div>
-                <div class="addBtn">
+                <div class="add-button">
                     <button class="add-task-card-button">
                         <img src="public/images/paw.png" alt="Cat Paw" width="30" height="30"> <span>Add a task</span>
                     </button>
@@ -165,18 +166,93 @@ class AddTaskColumn extends HTMLElement {
                 <img src="public/images/paw.png" alt="Cat Paw" width="30" height="30"><span>Add Column</span>
             </button>
         `;
+    }
 
-        this.addEventListener('click', () => {
-            const newStatusName = prompt("Enter new column name:");
-            if (newStatusName) {
-                const newStatus = {
-                    id: `status-${Date.now()}`,
-                    name: newStatusName
-                };
-                const currentStatuses = statuses.get();
-                statuses.set([...currentStatuses, newStatus]);
+    connectedCallback() {
+        const box = document.getElementById("container");
+        const header = document.getElementById("header");
+        const addCardButton = this.querySelector('.add-task-column-button');
+        addCardButton.addEventListener('click', () => {
+            document.body.appendChild(new ModalCardPopupColumn());
+            box.style.display = "none";
+            header.innerHTML = "Add a Column";
+        });
+    }
+}
+
+class ModalCardPopupColumn extends HTMLElement {
+    constructor() {
+        super();
+
+        this.innerHTML = `
+            <dialog class="modal-card-popup">
+                <div class="modal-card-popup-header">
+                    <button class="modal-card-popup-close-button">X</button>
+                </div>
+                <form class="modal-card-popup-body">
+                    <label for="columnName">Column Name<br>
+                        <input type="text" class="inputs" name="columnName" required/><br>
+                    </label>
+                    <div class="modal-card-popup-footer">
+                        <button type="submit" class="modal-card-popup-save-button">Add Column</button>
+                    </div>
+                </form>
+            </dialog>
+        `;
+
+        this.querySelector('dialog').show();
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        const box = document.getElementById("container");
+        const header = document.getElementById("header");
+        this.querySelector('.modal-card-popup-close-button').addEventListener('click', () => {
+            this.closePopup();
+            box.style.display = "flex";
+            header.innerHTML = "Task Lists";
+        });
+        this.querySelector('.modal-card-popup-save-button').addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default form submission
+            if (this.querySelector('form').checkValidity()) {
+                box.style.display = "flex";
+                header.innerHTML = "Task Lists";
+            } else {
+                this.querySelector('form').reportValidity(); // Show validation errors
             }
         });
+
+        this.querySelector('.modal-card-popup-close-button').addEventListener('click', () => {
+            this.closePopup();
+        });
+
+        this.querySelector('.modal-card-popup-save-button').addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default form submission
+            if (this.querySelector('form').checkValidity()) {
+                this.saveColumnName();
+            } else {
+                this.querySelector('form').reportValidity(); // Show validation errors
+            }
+        });
+    }
+
+    closePopup() {
+        this.remove();
+    }
+
+    saveColumnName() {
+        const columnName = this.querySelector('[name="columnName"]').value;
+
+        if (columnName) {
+            const newStatus = {
+                id: `status-${Date.now()}`,
+                name: columnName
+            };
+            const currentStatuses = statuses.get();
+            statuses.set([...currentStatuses, newStatus]);
+        }
+
+        this.closePopup();
     }
 }
 
@@ -225,17 +301,23 @@ class ModalCardPopup extends HTMLElement {
     addEventListeners() {
         const box = document.getElementById("container");
         const header = document.getElementById("header");
-        this.querySelector('.modal-card-popup-close-button').addEventListener('click', () => {
-            this.closePopup();
+
+        this.querySelector('.modal-card-popup-close-button').addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default form submission
             box.style.display = "flex";
-            header.innerHTML = "Task Lists";   
+            header.innerHTML = "Task Lists";
+
+            this.closePopup();
         });
+
         this.querySelector('.modal-card-popup-save-button').addEventListener('click', (event) => {
             event.preventDefault(); // Prevent default form submission
+
             if (this.querySelector('form').checkValidity()) {
                 this.saveCard();
                 box.style.display = "flex";
                 header.innerHTML = "Task Lists";
+                this.closePopup();
             } else {
                 this.querySelector('form').reportValidity(); // Show validation errors
             }
@@ -292,9 +374,9 @@ class TaskCard extends HTMLElement {
                 <div class="card-content">
                     <p class="card-title">${task.title}</p>
                     <p class="card-description">${task.description}</p>
-                    <p class="dueDate">Due ${dueDate}</p>
-                    <img class="orangeBlob" src="public/images/orangeBlob.png" alt="Orange Blob" width="65" height="40">
-                    <img class="grayBlob" src="public/images/grayBlob.png" alt="Gray Blob" width="50" height="45">
+                    <p class="due-date">Due ${dueDate}</p>
+                    <img class="orange-blob" src="public/images/orangeBlob.png" alt="Orange Blob" width="65" height="40">
+                    <img class="gray-blob" src="public/images/grayBlob.png" alt="Gray Blob" width="50" height="45">
                     <button class="card-delete-button">X</button>
                     <button class="edit">
                         <img class="pencil" src="public/images/pencil.png" alt="edit" width="30" height="30">

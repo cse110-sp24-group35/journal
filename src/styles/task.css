@@ -1,15 +1,14 @@
 @font-face {
-  font-family: "biski";
-  src: url(../public/fonts/biskitrialregular-l3jxg.otf) format('opentype');
+  font-family: biski;
+  src: url("../public/fonts/biskitrialregular-l3jxg.otf") format('opentype');
   font-weight: normal;
   font-style: normal;
 }
 
 * {
-  font-family: "biski"; 
+  font-family: biski, serif;
   background-color: #FFF5ED;
   color:#594F4F;
-
 }
 
 h1 {
@@ -18,7 +17,7 @@ h1 {
   margin: auto;
 }
 
-/*Container for boxes*/
+/* Container for boxes */
 #container {
   justify-content: center;
   display: flex;
@@ -53,12 +52,11 @@ p {
 .content {
   width: 320px;
   height: 555px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden scroll;
   background-color: transparent;
 }
 
-/*x close button for modal box*/
+/* x close button for modal box */
 
 .task-column {
   border-radius: 40px;
@@ -81,7 +79,7 @@ p {
   border-radius: 3px 3px 0 0;
 }
 
-.addBtn {
+.add-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,7 +89,6 @@ p {
 
 .add-task-card-button {
   background-color: #F3E2D5;
-  cursor: pointer;
   font-size: 30px;
   position: relative;
   font-weight: 600;
@@ -106,8 +103,6 @@ p {
   position: absolute;
   background: #F3E2D5;
   border: none;
-  border-radius: 3px;
-  cursor: pointer;
   padding: 10px;
   margin: 10px;
   height: auto;
@@ -120,7 +115,7 @@ p {
   border-radius: 25px;
 }
 
-/*Task Card*/
+/* Task Card */
 .task-card {
   font-size:20px;
   width: 240px;
@@ -151,7 +146,7 @@ p {
   width: 200px;
 }
 
-.dueDate {
+.due-date {
   position: relative;
   left: 60%;
   text-align: right;
@@ -194,14 +189,14 @@ p {
   background: white;
 }
 
-.orangeBlob{
+.orange-blob {
   left: 100px;
   top: -15px;
   position: absolute;
   background-color: transparent;
 }
 
-.grayBlob {
+.gray-blob {
   position: absolute; 
   background-color: transparent;
   left: 13px;
@@ -212,7 +207,7 @@ p {
   background-color: transparent;
 }
 
-/*Modal Box*/
+/* Modal Box */
 label {
   width: auto;
   height: auto;
@@ -221,7 +216,7 @@ label {
 }
 
 .inputs {
-  margin: 0px 30px 0px 50px;
+  margin: 0 30px 0 50px;
   width: 90%;
   border:none;
   font-size: 30px;
@@ -236,8 +231,8 @@ label {
   border: none;
   font-size: 30px;
   border-radius: 75px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  padding: 40px 20px 20px 20px;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+  padding: 40px 20px 20px;
   background-color: #F3E2D5;
   margin-bottom: 5%
 }
@@ -263,7 +258,6 @@ label {
 }
 
 .modal-card-popup-close-button {
-  cursor: pointer;
   border: none;
   background-color: transparent;
   font-size: 50px;
@@ -309,8 +303,8 @@ background-color: #F3E2D5;
   left: 2%;
 }
 
-/*Add Task Button Modal box*/
-#taskEnter{
+/* Add Task Button Modal box */
+#task-enter {
   border: none;
   background-color: #F3E2D5;
   cursor: pointer;
@@ -322,7 +316,7 @@ background-color: #F3E2D5;
   margin: 0 auto;
 }
 
-/*Column*/
+/* Column */
 .task-column-delete-button {
   border: none;
   position:absolute;
@@ -348,7 +342,7 @@ background-color: #F3E2D5;
   margin: 0;
 }
 
-.addColumns {
+.add-columns {
   background-color: #F3E2D5;
   position: absolute;
   border: none;

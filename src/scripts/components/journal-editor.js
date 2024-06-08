@@ -1,3 +1,5 @@
+import { marked } from 'marked';
+
 class JournalEditor extends HTMLElement {
     constructor() {
         super(); // Inherit everything from HTMLElement
@@ -8,40 +10,34 @@ class JournalEditor extends HTMLElement {
         <form>
             <input id="journal-title" type="text" placeholder="Title" autofocus/>
             <input id="journal-tags" type="text" placeholder="Tags"/>
-            <input id="journal-side-view" type="button" value="Toggle Side View"/>
+            <input id="show-preview" type="button" value="Show live preview"/>
             <div id="journal-content">
-                <!--<div id="markdown-editor"></div>-->
                 <textarea id="text-editor" rows=16></textarea>
+                <div id="markdown-preview" class="preview"></div>
             </div>
         </form>
         `
-
-        // Load Javascript script for Markdown editor
-        //    (lets us use `createWysimark`)
-        //const script = document.createElement('script');
-        //script.src = "https://www.unpkg.com/wysimark-standalone/dist/javascript/index.cjs.js";
-        //script.onload = () => {
-        //    this.setupMarkdownEditor();
-        //};
-        //shadow.appendChild(script);
 
         const style = document.createElement('style');
         style.innerHTML = `
         form {
             display: flex;
-            gap: 0.5rem;
             flex-direction: column;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        form > * {
-            color: black;
-        }
-
-        #journal-title,
-        #journal-tags,
-        #journal-deadline {
-            background-color: #00000010;
-            border: none;
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
         }
 
         #journal-title {
@@ -49,32 +45,51 @@ class JournalEditor extends HTMLElement {
             text-align: center;
         }
 
-        #journal-tags,
-        #journal-deadline {
-            font-size: 1.0rem;
+        #journal-tags {
+            font-size: 1rem;
             text-align: center;
         }
 
-        /* Toggle Side View Button */
-        #journal-side-view {
-            width: fit-content;
-            align-self: end;
-            background-color: transparent;
+        /* Show Live Preview Button */
+        #show-preview {
+            align-self: flex-end;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        #show-preview:hover {
+            background-color: #0056b3;
         }
 
         /***** Journal Content *****/
 
         #journal-content {
-        	display: flex;
-        }
-
-        #markdown-editor {
-        	width: 100%;
+            display: flex;
+            gap: 1rem;
         }
 
         #text-editor {
-        /* Width is 100% for now, while not using markdown editor */
-        	width: 100%;
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: width 0.3s ease;
+        }
+
+        #markdown-preview {
+            width: 50%;
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow-y: auto;
+            transition: width 0.3s ease;
         }
         `;
         shadow.appendChild(style);
@@ -82,30 +97,18 @@ class JournalEditor extends HTMLElement {
         // Editor starts out with invalid path,
         //   so that a message can be displayed
         this.path = null;
-    }
 
-    connectedCallback() {
-        //const shadow = this.shadowRoot;
+        // Add event listener for live preview button
+        const showPreviewButton = shadow.getElementById('show-preview');
+        showPreviewButton.addEventListener('click', () => {
+            this.togglePreview();
+        });
 
-        // Side View Button functionality
-        //const button = shadow.getElementById('journal-side-view');
-        //const textarea = shadow.getElementById('text-editor');
-        //button.addEventListener('click', () => {
-        //    const editor = shadow.getElementById('markdown-editor');
-        //    if (this.sideBySide) {
-        //        textarea.hidden = true;
-        //        editor.style.width = "100%";
-        //    } else {
-        //        textarea.hidden = false;
-        //        editor.style.width = "50%";
-        //    }
-        //    this.sideBySide = !this.sideBySide;
-        //});
-
-        // Keep markdown editor in sync with textarea
-        //textarea.addEventListener('input', () => {
-        //    this.wysimark.setMarkdown(textarea.value);
-        //});
+        // Add event listener for live preview
+        const textarea = shadow.getElementById('text-editor');
+        textarea.addEventListener('input', () => {
+            this.updatePreview(textarea.value);
+        });
     }
 
     /**
@@ -120,18 +123,25 @@ class JournalEditor extends HTMLElement {
         const hide = !path;
         
         form.childNodes.forEach(element => {
-            element.hidden = hide;
+            if (element.nodeType === Node.ELEMENT_NODE) {
+                element.hidden = hide;
+            }
         });
-        
+
         this.shadowRoot.getElementById("text-editor").hidden = hide;
+        this.shadowRoot.getElementById("markdown-preview").hidden = hide;
 
         if (hide) {
-            const message = document.createElement('p');
-            message.innerText = "No journal selected";
-            this.shadowRoot.appendChild(message);
-        }
-        else {
-            const message = this.shadowRoot.querySelector("p");
+            if (!this.shadowRoot.querySelector('#no-journal-message')) {
+                form.style.display = 'none';
+                const message = document.createElement('p');
+                message.id = 'no-journal-message';
+                message.innerText = "No journal selected";
+                this.shadowRoot.appendChild(message);
+            }
+        } else {
+            form.style.display = 'flex';
+            const message = this.shadowRoot.querySelector("#no-journal-message");
             if (message) {
                 this.shadowRoot.removeChild(message);
             }
@@ -145,7 +155,7 @@ class JournalEditor extends HTMLElement {
     set data(journal) {
         const textarea = this.shadowRoot.getElementById('text-editor');
         textarea.value = journal.content;
-        //this.wysimark.setMarkdown(journal.content);
+        this.updatePreview(journal.content);
 
         const title = this.shadowRoot.getElementById("journal-title");
         title.value = journal.title;
@@ -180,25 +190,25 @@ class JournalEditor extends HTMLElement {
      */
     get content() {
         return this.shadowRoot.getElementById('text-editor').value;
-        //return this.wysimark.getMarkdown();
     }
 
-    /**
-     * Sets up Wysimark markdown editor
-     */
-    setupMarkdownEditor() {
-        const container = this.shadowRoot.getElementById('markdown-editor');
+    updatePreview(markdown) {
+        const preview = this.shadowRoot.getElementById('markdown-preview');
+        preview.innerHTML = marked(markdown);
+    }
 
-        // Tell linter that this function will be available.
-        /*global createWysimark*/
-
-        this.wysimark = createWysimark(container, {
-            initialMarkdown: "",
-            onChange: (markdown) => {
-                const textarea = document.getElementById('text-editor');
-                textarea.value = markdown;
-            },
-        });
+    togglePreview() {
+        const preview = this.shadowRoot.getElementById('markdown-preview');
+        const textarea = this.shadowRoot.getElementById('text-editor');
+        if (preview.hidden) {
+            preview.hidden = false;
+            textarea.style.width = "50%";
+            this.shadowRoot.getElementById('show-preview').value = "Hide live preview";
+        } else {
+            preview.hidden = true;
+            textarea.style.width = "100%";
+            this.shadowRoot.getElementById('show-preview').value = "Show live preview";
+        }
     }
 
     /**
