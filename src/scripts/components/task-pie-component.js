@@ -44,6 +44,7 @@ class TaskPieComponent extends HTMLElement{
         const chartContext = this.shadowRoot.getElementById('pieChart').getContext('2d');
         const { completed, total } = this.statsGetter();
 
+        /* global Chart */
         this.chart = new Chart(chartContext, {
             type: 'pie',
             data: {
