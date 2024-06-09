@@ -68,7 +68,7 @@ describe("Calendar View", () => {
 
         await page.evaluate(async () => {
             const helper = await import("./scripts/database/stores/task.js");
-            helper.createTask("myID", "myTitle", "myDescription", "High", "PLANNED", Date.now());
+            helper.createTask("myID", "myTitle", "myDescription", "High", "PLANNED", "SomeCategory", Date.now());
         });
 
         dayTaskItems = await page.$$('.day-task-item');
@@ -81,10 +81,10 @@ describe("Calendar View", () => {
 
         await page.evaluate(async () => {
             const helper = await import("./scripts/database/stores/task.js");
-            helper.createTask("myID2", "myTitle", "myDescription", "High", "PLANNED", Date.now());
-            helper.createTask("myID3", "myTitle", "myDescription", "High", "PLANNED", Date.now());
-            helper.createTask("myID4", "myTitle", "myDescription", "High", "PLANNED", Date.now());
-            helper.createTask("myID5", "myTitle", "myDescription", "High", "PLANNED", Date.now());
+            helper.createTask("myID2", "myTitle", "myDescription", "High", "PLANNED", "SomeCategory", Date.now());
+            helper.createTask("myID3", "myTitle", "myDescription", "High", "PLANNED", "SomeCategory", Date.now());
+            helper.createTask("myID4", "myTitle", "myDescription", "High", "PLANNED", "SomeCategory", Date.now());
+            helper.createTask("myID5", "myTitle", "myDescription", "High", "PLANNED", "SomeCategory", Date.now());
         });
 
         let dayTaskItems = await page.$$('.day-task-item');
