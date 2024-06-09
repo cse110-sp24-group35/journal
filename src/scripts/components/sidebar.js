@@ -31,11 +31,13 @@ class MySidebar extends HTMLElement {
             const button = document.createElement('button');
             const buttonText = document.createElement('span');
             buttonText.textContent = name; // Set button text to the current name
+            buttonText.setAttribute('id', `${name.toLowerCase()}-label`); // Set an ID for the span element
             button.classList.add('sidebar-button'); // Add 'sidebar-button' class to the button
 
             // Create SVG icon for the button
             const icon = document.createElement('img');
             icon.src = this.svgIcons[name];
+            icon.setAttribute('aria-labelledby', `${name.toLowerCase()}-label`); // Link the icon to the span element
             icon.classList.add('sidebar-icon');
 
             button.appendChild(icon); // Append the SVG icon to the button
