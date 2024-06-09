@@ -15,7 +15,7 @@ body{
 
 .grid {
     display:grid;
-    grid-template-columns: 20vw 20vw 20vw 10vw;
+    grid-template-columns: 20vw 20vw 30vw;
     grid-template-rows: 20vh 40vh 40vh;
     justify-content: left;
     align-items: flex-start;
@@ -48,10 +48,10 @@ h1{
 .containerpie {
     align-content: center;
     grid-column-start: 5;
-    grid-row-start: 2;
+    grid-row-start: 1;
     height:33vh;
     width: 20vw;
-    
+    text-align: center;
     
 }
 
@@ -72,9 +72,9 @@ h1{
     border-radius: 30px;
     padding: 20px;
     color: #594F4F;
-    grid-column-start: 2;
-    height: 25vh;
-    width: 75vw;
+    grid-column: 2/ span 2;
+    height: 30vh;
+    width: 70vw;
 }
 
 .upcoming-task-date {
