@@ -1,5 +1,5 @@
 
-  * {
+* {
     font-family: 'JetBrains Mono', monospace;
     
     color:#594F4F;
@@ -15,15 +15,15 @@ body{
 }
 .grid {
     display:grid;
-    grid-template-columns: 15vw repeat(2, 42.5vw);
+    grid-template-columns: 20vw 20vw 20vw 10vw;
     grid-template-rows: 20vh 40vh 40vh;
     
-    justify-content: center;
+    justify-content: left;
     align-items: flex-start;
     padding: 0;
     margin: 0;
     background-color: #fff5ed;
-    place-items: center;
+    place-items: left;
 }
 h1{
     text-align: center;
@@ -31,7 +31,7 @@ h1{
     font-size: 5vh;
 }
 .container {
-    width: 75vw;
+    width: 40vw;
     height: 25vh;
     overflow-y: scroll;
     background-color: #F3E2D5;
@@ -39,15 +39,17 @@ h1{
     border-radius: 10px;
     box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
     padding: 20px;
-    grid-column: 2/ span 2;
-    grid-row: 2/span 1;
+    grid-column-start: 2;
+    grid-row-start: 2;
+
 
 }
 
 .containerpie {
     align-content: center;
-    grid-column: 3/ span 1;
-    grid-column: 3/ span 1;
+    grid-column-start: 5;
+    grid-row-start: 2;
+
     height:33vh;
     width: 20vw;
     
@@ -72,8 +74,7 @@ h1{
     border-radius: 30px;
     padding: 20px;
     color: #594F4F;
-    grid-column: 2/ span 2;
-    grid-column: 2/ span 2;
+    grid-column-start: 2;
     height: 25vh;
     width: 75vw;
 }
@@ -98,3 +99,4 @@ h1{
     font-family: Arial, sans-serif;
     color: #333;
 }
+
