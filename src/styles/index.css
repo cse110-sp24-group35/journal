@@ -41,6 +41,7 @@ h1{
     padding: 20px;
     grid-column-start: 2;
     grid-row-start: 2;
+    grid-row-end: 3;
 
 
 }
@@ -97,7 +98,17 @@ h1{
     font-family: Arial, sans-serif;
     color: #333;
 }
-
+@media screen and (max-width: 900px){
+    .percentage-container {
+        display:none;
+    }
+    .containerpie{
+        display: none;
+    }
+    .container{
+        width:70vw
+    }
+}
 .percentage-container {
     
     margin-top: 10px;
@@ -105,4 +116,5 @@ h1{
     font-weight: bold;
     grid-column-start: 5;
 }
+
 
