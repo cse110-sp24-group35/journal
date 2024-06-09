@@ -23,7 +23,6 @@ export function loadTreeView() {
     collapseButton.addEventListener('click', () => collapseTreeView(treeViewer, journalViewer, collapseButton, expandButton));
     expandButton.addEventListener('click', () => expandTreeView(treeViewer, journalViewer, collapseButton, expandButton));
     // Buttons to create/delete journals (fake journals for now)
-    createJournalButton.addEventListener('click', createFakeJournals); // Creates fake journals for now
     deleteJournalButton.addEventListener('click', deleteSelectedJournal); // Deletes selected journal
     deleteAllJournalsButton.addEventListener('click', () => journals.set([])); // Deletes all journals (Will remove later probably)
    
@@ -40,25 +39,6 @@ export function deleteSelectedJournal() {
         deleteJournal(selected.id.slice(5)); //Slices the tree/ from the id to get the path
     }
     journalViewer.appendChild(newJournalEditor); // Add the new journal editor to the journal viewer
-}
-
-//Temporary function to create fake journals. Will be removed when "create journal" button is peroperly implemented.
-export function createFakeJournals() {
-    journals.set([]);
-    deleteJournal("hello/world");
-    createJournal("Hello World", "hello/world", "Hello World", ["Hello", "World"]);
-    deleteJournal("hello/planet");
-    createJournal("Hello Planet", "hello/planet", "Hello Planet", ["Hello", "Planet"]);
-    deleteJournal("hello/far/away/world");
-    createJournal("Hello Far Away World", "hello/far/away/world", "Hello Far Away World", ["Hello", "Far", "Away", "World"]);
-    deleteJournal("goodbye/world");
-    createJournal("Goodbye World", "goodbye/world", "Goodbye World", ["Goodbye", "World"]);
-    deleteJournal("world");
-    createJournal("World", "world", "World", ["World"]);
-    for (let i = 0; i < 100; i++) {
-        deleteJournal("entity" + i);
-        createJournal("entity " + i, "entity" + i, "entity " + i, ["entity", i]);
-    }
 }
 
 // Function populates entire tree-view without any arguments.
@@ -196,7 +176,7 @@ export function populateButtons(parentChildren, parentElement, treePath, journal
         if (treePath !== "tree") // IF THIS FILE IS NOT AT THE TOPMOST LAYER
             fileDiv.classList.add("parent-folder-closed"); // Make this element hidden initially
         if (parentChildren[i].children) { // If the path has children, it is a folder
-            fileButton.innerHTML = "+ " + parentChildren[i].name; // + indicates a closed folder
+            fileButton.innerHTML = `${"+ " + `<img src="/public/icons/journal/folder.svg" alt="Folder"/> ` + parentChildren[i].name}`; // + indicates a closed folder
             fileDiv.classList.add("folder"); // Folders are put into the folder class for CSS
 
             // WHEN THIS BUTTON IS CLICKED
@@ -210,7 +190,7 @@ export function populateButtons(parentChildren, parentElement, treePath, journal
                 }
             });
         } else { // If the path has no children, the file is a journal not a folder.
-            fileButton.innerHTML = "JOURNAL - " + parentChildren[i].name; // Distinctly marks journal buttons (Probably will change later)
+            fileButton.innerHTML = `${`<img src="/public/icons/journal/text.svg" alt="file"/> ` + parentChildren[i].name}`; // Distinctly marks journal buttons (Probably will change later)
 
             fileButton.classList.add("journal-button"); // Marks journal buttons as journal-button for CSS
             fileButton.addEventListener('click', () => { // When a JOURNAL button is clicked

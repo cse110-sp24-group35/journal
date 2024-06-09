@@ -141,7 +141,10 @@
     padding: 0.5em;
 }
 
-.journal-button { /* The styling for the journal button (not the div) */
+.journal-button {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
 }
 
 .selected { /* The selected JOURNAL in the tree view */

@@ -1,3 +1,7 @@
+import { tasks } from '../database/stores/task.js';
+import { createJournal } from '../database/stores/journal.js';
+import { linkTaskToJournal } from '../database/stores/relation.js';
+
 class ModalJournal extends HTMLElement {
     constructor() {
         super();
@@ -111,8 +115,14 @@ class ModalJournal extends HTMLElement {
         form.innerHTML = `
             <label for="title">Title:</label>
             <input type="text" id="title" name="title">
+            <label for="path">Path:</label>
+            <input type="text" id="path" name="path">
             <label for="tasks">Tasks:</label>
-            <select id="tasks" name="tasks" multiple></select>
+            <select id="tasks" name="tasks" multiple>
+                 ${tasks.get().map(task => {
+                    return `<option value=${task.id}>${task.title}</option>`
+                })}
+            </select>
             <label for="tags">Tags:</label>
             <input type="text" id="tags" name="tags">
             <input type="submit" value="Create">
@@ -131,21 +141,29 @@ class ModalJournal extends HTMLElement {
         modalWrapper.appendChild(modalContent);
         shadow.appendChild(style);
         shadow.appendChild(modalWrapper);
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const title = form.querySelector('#title').value;
+            const path = form.querySelector('#path').value;
+            const tags = form.querySelector('#tags').value.split(',').map(tag => tag.trim());
+            const selectedTasks = Array.from(
+                form.querySelector('#tasks').selectedOptions
+            ).map(option => option.value);
+
+            try {
+                const journal = createJournal(title, path, "", tags);
+
+                for (let task of selectedTasks) {
+                    linkTaskToJournal(task, journal.path);
+                }
+
+                modalWrapper.style.display = "none";
+            } catch (error) {
+                alert(error.message);
+            }
+        });
     }
 }
 
 customElements.define('modal-journal', ModalJournal);
-
-
-/** 
- * Creates a new journal modal to be edited 
- *  
- */
-
-export function createJournalModal(){
-
-}
-/**
- * createModalButton is the 'create journal button' in journal.html
- * it will be called createModalButton b/c it creates a modal journal first
- */
