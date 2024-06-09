@@ -114,7 +114,7 @@ describe("Calendar View", () => {
         });
 
         let taskItem = await page.$$('.day-task-item');
-        await taskItem.click();
+        await taskItem[0].click();
 
         const modal = await page.$('task-modal');
         const modalStyle = await page.evaluate(modal => {
@@ -146,7 +146,7 @@ describe("Calendar View", () => {
         });
 
         const taskItem = await page.$$('.day-task-item');
-        await taskItem.click();
+        await taskItem[0].click();
 
         const modal = await page.$('task-modal');
 
@@ -172,7 +172,7 @@ describe("Calendar View", () => {
         });
 
         let taskItem = await page.$$('.day-task-item');
-        await taskItem.click();
+        await taskItem[0].click();
 
         const modal = await page.$('task-modal');
 
