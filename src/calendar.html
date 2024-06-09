@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal | Calendar </title>
     <link rel="stylesheet" href="styles/calendar.css">
+    <link rel="stylesheet" href="styles/main.css">
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -19,16 +20,21 @@
         }
     </script>
     <!-- Polyfill end -->
-    <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
+
+    <!-- Container for the calendar, including the navigation buttons and the grid for the days of the month. -->
     <div class="calendar-container">
+
+        <!-- Calendar Header, including navigation buttons -->
         <div class="calendar-header">
             <button id="prev-month" class="nav-button">&lt;</button>
             <span id="month-year"></span>
             <button id="next-month" class="nav-button">&gt;</button>
         </div>
+
+        <!-- Calendar Body, including the grid for the days of the month -->
         <div class="calendar-body">
             <div class="calendar-days">
                 <div class="day-label">Sun</div>
@@ -43,14 +49,18 @@
                 <div id="calendar-grid" class="calendar-grid"></div>
             </div>
         </div>
+        
     </div>
     <div>
         <task-modal></task-modal>
     </div>
+
+    <!-- Global Sidebar -->
+    <my-sidebar></my-sidebar>
     
+    <!-- Scripts -->
     <script type="module" src="scripts/components/calendar-view.js"></script>
     <script type="module" src="scripts/components/task-pop-up.js"></script>
-    <my-sidebar></my-sidebar>
     <script src="scripts/components/sidebar.js"></script>
 
 </body>
