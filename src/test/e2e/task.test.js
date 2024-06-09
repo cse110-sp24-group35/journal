@@ -45,7 +45,7 @@ describe('Kanban Board E2E Test', () => {
     await page.click('body > modal-card-popup-column > dialog > form > div > button');
 
     // Wait for the new column to appear
-    await page.waitForSelector('.task-column[data-column-id*="status-"]');
+    await page.waitForSelector('.task-column[data-column-id*="category-"]');
 
     // Add a new task to the new column
     await page.click("#container > main > task-column > section > div.add-button > button");
