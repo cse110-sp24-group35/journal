@@ -26,7 +26,7 @@ describe("Calendar View", () => {
         });
 
         browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             slowMo: 50,
             args: ["--no-sandbox", "--disable-setuid-sandbox"]
         });
