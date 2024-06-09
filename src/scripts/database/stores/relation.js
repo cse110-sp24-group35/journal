@@ -1,6 +1,6 @@
 import { persistentAtom } from '@nanostores/persistent';
-import { getTask } from './task';
-import { getJournal } from './journal';
+import { getTask } from './task.js';
+import { getJournal } from './journal.js';
 
 /**
  * @typedef Mapping

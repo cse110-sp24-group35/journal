@@ -15,14 +15,15 @@ h1 {
 
 /* Container for boxes */
 #container {
-  justify-content: inherit;
+  justify-content: left;
   display: flex;
   flex-direction: row;
   overflow-x: scroll;
-  
-  height: 75%;
-  margin-right: 0;
-  margin-left: 15vw;
+  width: 82%;
+  height: 80%;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 17%;
   white-space: nowrap;
 }
 
