@@ -52,6 +52,7 @@ h1{
     height:33vh;
     width: 20vw;
     text-align: center;
+    grid-row-start: 2;
     
     
 }

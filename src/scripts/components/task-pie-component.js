@@ -5,9 +5,20 @@ class TaskPieComponent extends HTMLElement{
         super();
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.innerHTML = `<canvas id="pieChart"></canvas>
+<<<<<<< HEAD
 
         <link rel="stylesheet" href="styles/index.css">
      
+=======
+        <style>
+        .percentage-container {
+            align-content: center;
+            margin-top: 10px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        </style>
+>>>>>>> ab2db05 (pie chart position fix)
         <div id="percentage" class="percentage-container"></div>
         `;
         this.chart = null;
