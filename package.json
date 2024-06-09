@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "dev": "node server.js",
     "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage \"src/test/unit/*\"",
     "coverage:codecov": "codecov",
     "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js \"src/test/unit/*\"",
