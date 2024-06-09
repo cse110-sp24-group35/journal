@@ -161,7 +161,9 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
 
             // Alert w/ task info. REPLACE WITH TASK POP-UP MODAL
             taskItem.addEventListener('click', () => {
-                alert(`Task: ${task.title}\nDescription: ${task.description}\nPriority: ${task.priority}\nStatus: ${task.status}\nDue At: ${formattedTime}`); // Replace with modal
+                //alert(`Task: ${task.title}\nDescription: ${task.description}\nPriority: ${task.priority}\nStatus: ${task.status}\nDue At: ${formattedTime}`); // Replace with modal
+                const taskModal = document.querySelector('task-modal');
+                taskModal.openModal(task);
             });
 
             // Set the button text content to the formatted time and task title
