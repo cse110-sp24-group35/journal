@@ -1,3 +1,4 @@
+import { task } from "nanostores";
 import { tasks } from "../database/stores/task.js";
 
 tasks.listen(() => renderCalendar());
@@ -29,15 +30,20 @@ document.addEventListener('keydown', function(event) {
 // Adds event listener to close the selected day when the user clicks outside of the selected day
 let primedToDeselect = false;
 document.addEventListener('click', function(event) {
-    const selectedDay = document.querySelector('.selected-day');
-    if(primedToDeselect) {
-        if (selectedDay && !selectedDay.contains(event.target)) {
-            primedToDeselect = false;
-            unselectAllDays();
+    const modal = document.querySelector('task-modal');
+    const taskModal = modal.shadowRoot.getElementById('taskModal');
+    //alert(taskModal.style.display);
+    if (!taskModal.style.display || taskModal.style.display == 'none') {
+        const selectedDay = document.querySelector('.selected-day');
+        if(primedToDeselect) {
+            if (selectedDay && !selectedDay.contains(event.target)) {
+                primedToDeselect = false;
+                unselectAllDays();
+            }
         }
-    }
-    else {
-        primedToDeselect = true;
+        else {
+            primedToDeselect = true;
+        }
     }
 });
 
