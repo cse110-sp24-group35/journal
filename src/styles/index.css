@@ -48,10 +48,10 @@ h1{
 .containerpie {
     align-content: center;
     grid-column-start: 5;
-    grid-row-start: 1;
     height:33vh;
     width: 20vw;
     text-align: center;
+    grid-row-start: 2;
     
 }
 
@@ -96,5 +96,13 @@ h1{
     z-index: 1000;
     font-family: Arial, sans-serif;
     color: #333;
+}
+
+.percentage-container {
+    
+    margin-top: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    grid-column-start: 5;
 }
 
