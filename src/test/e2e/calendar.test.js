@@ -71,6 +71,9 @@ describe("Calendar View", () => {
             helper.createTask("myID", "myTitle", "myDescription", "High", "PLANNED", Date.now());
         });
 
+        let taskItem = await page.$('.day-task-item');
+        await taskItem.click();
+
         dayTaskItems = await page.$$('.day-task-item');
         expect(dayTaskItems.length).to.eq(1); //There should be one task now
     });
