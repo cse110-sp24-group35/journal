@@ -1,8 +1,8 @@
 :root {
     --day-size: max(min(11vw, 11vh), 3em);
     --grid-gap: min(1vh, 1vw);
-    --nav-button-bg: #007bff;
-    --nav-button-hover-bg: #0056b3;
+    --nav-button-bg: #FF914D;
+    --nav-button-hover-bg: #DF611D;
     --day-bg: #F3E2D5;
     --day-hover-bg: #C3B2A5;
     --calendar-bg: #FFF5ED;
@@ -174,7 +174,6 @@ body {
 
 .hovered-day {
     pointer-events: none;
-    opacity: 0.75;
 }
 
 .selected-day > *, .hovered-day > * {
