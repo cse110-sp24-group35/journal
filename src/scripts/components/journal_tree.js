@@ -178,7 +178,6 @@ export function populateButtons(parentChildren, parentElement, treePath, journal
         if (parentChildren[i].children) { // If the path has children, it is a folder
             fileButton.innerHTML = `${"+ " + `<img src="/public/icons/journal/folder.svg" alt="Folder"/> ` + parentChildren[i].name}`; // + indicates a closed folder
             fileDiv.classList.add("folder"); // Folders are put into the folder class for CSS
-            fileButton.classList.add("journal-button"); // Marks journal buttons as journal-button for CSS
 
             // WHEN THIS BUTTON IS CLICKED
             fileButton.addEventListener('click', () => {
