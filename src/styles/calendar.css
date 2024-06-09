@@ -1,12 +1,5 @@
-@font-face {
-    font-family: biski;
-    src: url("../public/fonts/biskitrialregular-l3jxg.otf") format('opentype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  * {
-    font-family: biski, serif;
+* {
+    font-family: 'JetBrains Mono', monospace;
     
     color:#594F4F;
   }

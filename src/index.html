@@ -31,21 +31,24 @@
     <script type="module" src="scripts/components/task-component.js"></script>
     <script type="module" src="scripts/components/task-pie-component.js"></script>
 
-    <h1>Overview</h1>
-           
+    <div class="grid">
+    <h1>Task<br>Overview</h1>
+    <div class="containerpie">
+        <task-pie-component></task-pie-component>
+    </div>       
     
+
     <my-sidebar></my-sidebar>
     <div class="container">
+        Task Checklist:<br><br>
         <task-list></task-list>
     </div>
     
     <!-- Add the container and popup elements directly to the HTML -->
     <div class="upcoming-tasks-container"></div>
     <div class="task-popup" style="display: none;"></div>
-
-    <div class="containerpie">
-        <task-pie-component></task-pie-component>
     </div>
+    
 
     
     
