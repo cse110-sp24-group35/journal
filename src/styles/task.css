@@ -19,14 +19,15 @@ h1 {
 
 /* Container for boxes */
 #container {
-  justify-content: center;
+  justify-content: left;
   display: flex;
   flex-direction: row;
   overflow-x: scroll;
-  width: 90%;
+  width: 65%;
   height: 80%;
-  margin-right: 0;
-  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 20%;
   white-space: nowrap;
 }
 
