@@ -78,9 +78,9 @@ class TaskColumn extends HTMLElement {
             this.updateStatus(event.target.value);
         });
 
-        const cardContainer = this.querySelector('.task-card-container');
-        cardContainer.addEventListener('dragover', (event) => this.dragOverHandler(event));
-        cardContainer.addEventListener('drop', (event) => this.dropHandler(event));
+        const columnSection = this.querySelector('.task-column');
+        columnSection.addEventListener('dragover', (event) => this.dragOverHandler(event));
+        columnSection.addEventListener('drop', (event) => this.dropHandler(event));
 
         this.updatePlaceholder();
     }
@@ -93,7 +93,9 @@ class TaskColumn extends HTMLElement {
     dropHandler(event) {
         event.preventDefault();
         const taskId = event.dataTransfer.getData('application/card-id');
-        this.moveCardToColumn(taskId, this.columnId);
+        if (taskId) {
+            this.moveCardToColumn(taskId, this.columnId);
+        }
     }
 
     moveCardToColumn(taskId, newColumnId) {
