@@ -7,9 +7,9 @@ class TaskPieComponent extends HTMLElement{
         this.shadowRoot.innerHTML = `<canvas id="pieChart"></canvas>
         <style>
         .percentage-container {
-            display: flex;
-            justify-content: center;
+            align-content: center;
             margin-top: 10px;
+            margin-left: 115px;
             font-size: 1em;
             font-weight: bold;
         }
