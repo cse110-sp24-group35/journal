@@ -19,7 +19,7 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: Run Linters
         run: pnpm run lint
   unit-tests:
@@ -32,7 +32,9 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
+      - name: Unit Test & Coverage
+        run: pnpm i -D lcov && pnpm run coverage
       - name: Unit Test
         run: pnpm run test:unit
       - name: Install LCov
@@ -41,11 +43,16 @@ jobs:
         uses: paambaati/codeclimate-action@v6.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
         with:
-          coverageCommand: pnpm run coverage:ci
+          token: ${{ secrets.CODECOV_TOKEN }}
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/puppeteer/puppeteer:latest
+      options: --user root
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
@@ -53,7 +60,7 @@ jobs:
         with:
           version: 9
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: E2E Test
         run: pnpm run test:e2e
         env:

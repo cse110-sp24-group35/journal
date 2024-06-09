@@ -2,9 +2,64 @@
 <html lang="en">
 <head>
     <title>Journal | Overview</title>
+    <link rel="stylesheet" href="styles/main.css"/>
+    <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
+    <script>
+        window.process = { browser: true, env: { NODE_ENV: "production" } };
+    </script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "nanostores": "https://unpkg.com/nanostores@0.10.3/index.js",
+                "@nanostores/persistent": "https://unpkg.com/@nanostores/persistent@0.10.1/index.js",
+                "marked": "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js"
+            }
+        }
+    </script>
+    <!-- Polyfill end -->
+
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/journal.css">
 </head>
 
 <body>
-This is a test page
+    <script src="scripts/components/sidebar.js"></script>
+    <script src="scripts/components/journal_tree.js" type="module"></script>
+    <script src="scripts/components/journal-editor.js" type="module"></script>
+
+    <!-- Include the JavaScript file defining the Web Component -->
+    <script src="scripts/components/modal-journal.js" type="module"></script>
+    <script src="scripts/components/journal-main.js" type="module"></script>
+
+    <!-- Use the custom Web Component here -->
+    <!-- <modal-journal></modal-journal> -->
+    <div style="display: flex; flex-direction: column; position:relative;">
+        <my-sidebar id="sidebar"></my-sidebar>
+        
+    </div>
+
+    <div id="resizable-box">
+        <button id="create-journal">+</button>
+        <button id="delete-journal">-</button>
+        <button id="delete-all-journals">DELETE ALL</button>
+        <div id="content">
+            <!-- Folders and Files -->
+        </div>
+        <div id="resizer"></div>
+        <button id="collapse-button" class="collapse">&lt;&lt;</button>
+        
+    </div>
+
+    <div id="journal-view">
+        <journal-editor></journal-editor>
+    </div>
+
+    <button id="expand-button" class="expand">&gt;&gt;</button>
 </body>
 </html>
+
+
+
+
+
