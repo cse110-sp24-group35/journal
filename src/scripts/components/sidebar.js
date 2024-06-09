@@ -6,13 +6,20 @@ class MySidebar extends HTMLElement {
         const container = document.createElement('div'); // Create a container div
         container.setAttribute('class', 'sidebar'); // Set the class of the container to 'sidebar'
 
-        // Define button names and corresponding actions (URLs)
+        // Define button names, corresponding actions (URLs), and SVG icons
         const buttonNames = ['Overview', 'Calendar', 'Tasks', 'Journal'];
         this.buttonActions = {
             'Overview': 'index.html',
             'Calendar': 'calendar.html',
             'Tasks': 'tasks.html',
             'Journal': 'journal.html'
+        };
+
+        this.svgIcons = {
+            'Overview': 'public/icons/overview-icon.svg',
+            'Calendar': 'public/icons/calender-icon.svg',
+            'Tasks': 'public/icons/tasks-icon.svg',
+            'Journal': 'public/icons/journal-icon.svg'
         };
 
         this.buttons = {}; // Object to store references to the buttons
@@ -22,8 +29,20 @@ class MySidebar extends HTMLElement {
         // Create buttons for each name in buttonNames
         buttonNames.forEach(name => {
             const button = document.createElement('button');
-            button.textContent = name; // Set button text to the current name
+            const buttonText = document.createElement('span');
+            buttonText.textContent = name; // Set button text to the current name
+            buttonText.setAttribute('id', `${name.toLowerCase()}-label`); // Set an ID for the span element
             button.classList.add('sidebar-button'); // Add 'sidebar-button' class to the button
+
+            // Create SVG icon for the button
+            const icon = document.createElement('img');
+            icon.src = this.svgIcons[name];
+            icon.setAttribute('aria-labelledby', `${name.toLowerCase()}-label`); // Link the icon to the span element
+            icon.classList.add('sidebar-icon');
+
+            button.appendChild(icon); // Append the SVG icon to the button
+            button.appendChild(buttonText); // Append the text span to the button
+
             // Add click event listener to the button
             button.addEventListener('click', () => this.handleButtonClick(name));
             this.buttons[name] = button; // Store reference to the button
@@ -31,7 +50,7 @@ class MySidebar extends HTMLElement {
         });
 
         const style = document.createElement('style'); // Create a style element
-        // Set the CSS styles for the sidebar and buttons
+        // Set the CSS styles for the sidebar, buttons, and icons
         style.textContent = `
             .sidebar {
                 position: fixed;
@@ -55,6 +74,8 @@ class MySidebar extends HTMLElement {
                 text-align: left;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
+                display: flex;
+                align-items: center;
             }
             .sidebar-button:hover {
                 background-color: #ddd;
@@ -62,6 +83,28 @@ class MySidebar extends HTMLElement {
             .sidebar-button.active {
                 background-color: #ccc;
                 cursor: default;
+            }
+            .sidebar-icon {
+                display: none;
+                width: 24px;
+                height: 24px;
+                margin-right: 10px;
+            }
+            @media (max-width: 700px) {
+                .sidebar {
+                    width: 80px;
+                }
+                .sidebar-button {
+                    justify-content: center;
+                    padding: 10px 0;
+                }
+                .sidebar-button img {
+                    display: block;
+                    margin: 0 auto;
+                }
+                .sidebar-button span {
+                    display: none;
+                }
             }
         `;
 
