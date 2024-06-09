@@ -113,8 +113,7 @@ describe("Calendar View", () => {
             helper.createTask("modalTestID", "Test Task", "Test Description", "High", "PLANNED", Date.now());
         });
 
-        await page.waitForSelector('.day-task-item'); // Wait for the task item to appear
-        const taskItem = await page.$('.day-task-item'); // Get a single task item
+        let taskItem = await page.$$('.day-task-item');
         await taskItem.click();
 
         const modal = await page.$('task-modal');
@@ -146,8 +145,7 @@ describe("Calendar View", () => {
             helper.createTask("modalTestID3", "Test Task 3", "Test Description 3", "High", "PLANNED", Date.now());
         });
 
-        await page.waitForSelector('.day-task-item'); // Wait for the task item to appear
-        const taskItem = await page.$('.day-task-item'); // Get a single task item
+        const taskItem = await page.$$('.day-task-item');
         await taskItem.click();
 
         const modal = await page.$('task-modal');
@@ -173,8 +171,7 @@ describe("Calendar View", () => {
             helper.createTask("modalTestID2", "Test Task 2", "Test Description 2", "High", "PLANNED", Date.now());
         });
 
-        await page.waitForSelector('.day-task-item'); // Wait for the task item to appear
-        const taskItem = await page.$('.day-task-item'); // Get a single task item
+        let taskItem = await page.$$('.day-task-item');
         await taskItem.click();
 
         const modal = await page.$('task-modal');
