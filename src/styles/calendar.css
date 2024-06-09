@@ -156,7 +156,7 @@ body {
 }
 
 /* SELECTED Day */
-.selected-day {
+.selected-day, .hovered-day {
     box-sizing: border-box;
     padding-top: 0.5em;
     background-color: #F3E2D5;
@@ -172,7 +172,12 @@ body {
     scrollbar-width: none;
 }
 
-.selected-day > * {
+.hovered-day {
+    pointer-events: none;
+    opacity: 0.75;
+}
+
+.selected-day > *, .hovered-day > * {
     margin-top: 1em;
 }
 
@@ -180,11 +185,11 @@ body {
     display: none;
 }
 
-.selected-day .expanded-day {
+.selected-day .expanded-day, .hovered-day .expanded-day{
     display:inline;
 }
 
-.selected-day .shrunk-day {
+.selected-day .shrunk-day, .hovered-day .shrunk-day{
     display: none;
 }
 
