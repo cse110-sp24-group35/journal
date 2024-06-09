@@ -113,7 +113,7 @@ describe("Calendar View", () => {
             helper.createTask("modalTestID", "Test Task", "Test Description", "High", "PLANNED", Date.now());
         });
 
-        let taskItem = await page.$('day-task-item');
+        let taskItem = await page.$('.day-task-item');
         await taskItem.click();
 
         const modal = await page.$('task-modal');
