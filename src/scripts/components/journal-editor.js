@@ -1,5 +1,11 @@
 import { journals, getJournal } from '../database/stores/journal.js';
 import { marked } from 'marked';
+import { tasks } from '../database/stores/task.js';
+import {
+    getTasksForJournal,
+    linkTaskToJournal, unlinkTaskFromJournal
+} from '../database/stores/relation.js';
+import { formatDate } from '../helper.js';
 
 class JournalEditor extends HTMLElement {
     constructor() {
@@ -11,10 +17,20 @@ class JournalEditor extends HTMLElement {
         <form>
             <input id="journal-title" type="text" placeholder="Title" autofocus/>
             <input id="journal-tags" type="text" placeholder="Tags"/>
+            <label for="tasks">Linked Tasks:</label>
+            <select id="tasks" name="tasks" multiple>
+                 ${tasks.get().map(task => {
+                    return `<option value=${task.id}>${task.title}</option>`
+                })}
+            </select>
             <input id="show-preview" type="button" value="Show live preview"/>
             <div id="journal-content">
                 <textarea id="text-editor" rows=16></textarea>
                 <div id="markdown-preview" class="preview"></div>
+            </div>
+            
+            <div id="saving-status">
+                <p>Auto Save Enabled</p>
             </div>
         </form>
         `
@@ -30,15 +46,18 @@ class JournalEditor extends HTMLElement {
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 100%;
         }
 
         input[type="text"], textarea {
-            width: 100%;
             padding: 10px;
-            margin: 5px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
+        }
+        
+        #saving-status {
+            text-align: right;
         }
 
         #journal-title {
@@ -124,8 +143,8 @@ class JournalEditor extends HTMLElement {
             return;
         }
 
-        console.log('Saving journal');
-        
+        const savingStatus = shadow.getElementById("saving-status");
+
         // Use get() so we have an array to set as the new journal
         //    after we have done our changes.
         const journalArray = journals.get();
@@ -137,8 +156,23 @@ class JournalEditor extends HTMLElement {
         const tags = shadow.getElementById('journal-tags');
         entry.tags = tags.value.split(',').map(str => str.trim());
         entry.modifiedAt = Date.now();
-        
+
+        const selectedTasks = Array.from(
+            shadow.getElementById("tasks").selectedOptions
+        ).map(option => option.value);
+
+        // Force unlink all tasks from this journal first, then link only ones selected
+        for (let task of tasks.get()) {
+            unlinkTaskFromJournal(task, entry.path);
+        }
+
+        for (let task of selectedTasks) {
+            linkTaskToJournal(task, entry.path);
+        }
+
         journals.set(journalArray);
+
+        savingStatus.innerHTML = `<p>Saved At: ${formatDate(new Date(entry.modifiedAt))}</p>`;
     }
 
     connectedCallback() {
@@ -176,6 +210,7 @@ class JournalEditor extends HTMLElement {
             shadow.getElementById('text-editor'),
             shadow.getElementById('journal-title'),
             shadow.getElementById('journal-tags'),
+            shadow.getElementById("tasks")
         ];
         
         const processChange = debounce(() => this.save());
@@ -263,6 +298,16 @@ class JournalEditor extends HTMLElement {
 
         const tags = this.shadowRoot.getElementById('journal-tags');
         tags.value = journal.tags.join(', ');
+
+        const linkedTasks = getTasksForJournal(journal.path);
+        const tasksDropdown = this.shadowRoot.getElementById('tasks');
+
+        // Iterate over the options and set the selected attribute for matching values
+        Array.from(tasksDropdown.options).forEach(option => {
+            if (linkedTasks.find(task => task.id === option.value)) {
+                option.selected = true;
+            }
+        });
     }
 
     /**
