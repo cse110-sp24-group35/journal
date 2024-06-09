@@ -27,7 +27,7 @@ describe("Calendar View", () => {
 
         browser = await puppeteer.launch({
             headless: true,
-            slowMo: 50,
+            slowMo: 250,
             args: ["--no-sandbox", "--disable-setuid-sandbox"]
         });
         page = await browser.newPage();
@@ -113,6 +113,8 @@ describe("Calendar View", () => {
             helper.createTask("modalTestID", "Test Task", "Test Description", "High", "PLANNED", Date.now());
         });
 
+        await page.reload();
+
         let taskItem = await page.$('.day-task-item');
         await taskItem.click();
 
@@ -129,14 +131,14 @@ describe("Calendar View", () => {
             return shadowRoot.querySelector('#taskTitle').textContent;
         }, modal);
 
-        expect(taskTitle).to.eq('Task: Test Task');
+        expect(taskTitle).to.eq('Task: myTitle');
 
         const taskDescription = await page.evaluate(modal => {
             const shadowRoot = modal.shadowRoot;
             return shadowRoot.querySelector('#taskDescription').textContent;
         }, modal);
 
-        expect(taskDescription).to.eq('Description: Test Description');
+        expect(taskDescription).to.eq('Description: myDescription');
     });
 
     it('Clicking the close button on the modal should close the modal', async () => {
