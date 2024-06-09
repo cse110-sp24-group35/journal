@@ -140,13 +140,22 @@ describe("Calendar View", () => {
     });
 
     it('Clicking the close button on the modal should close the modal', async () => {
-        const modal = await page.$('task-modal');
-        let closeButton = await page.evaluate(modal => {
-            const shadowRoot = modal.shadowRoot;
-            return shadowRoot.querySelector('.close');
-        }, modal);
+        await page.evaluate(async () => {
+            const helper = await import("./scripts/database/stores/task.js");
+            helper.createTask("modalTestID3", "Test Task 3", "Test Description 3", "High", "PLANNED", Date.now());
+        });
 
-        await closeButton.click();
+        const taskItem = await page.$('.day-task-item');
+        await taskItem.click();
+
+        const modal = await page.$('task-modal');
+
+        // Click the close button inside the modal's shadow DOM
+        await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            const closeButton = shadowRoot.querySelector('.close');
+            closeButton.click();
+        }, modal);
 
         const modalStyle = await page.evaluate(modal => {
             const shadowRoot = modal.shadowRoot;
@@ -162,7 +171,7 @@ describe("Calendar View", () => {
             helper.createTask("modalTestID2", "Test Task 2", "Test Description 2", "High", "PLANNED", Date.now());
         });
 
-        let taskItem = await page.$('.day-task-item');
+        let taskItem = await page.$$('.day-task-item');
         await taskItem.click();
 
         const modal = await page.$('task-modal');
