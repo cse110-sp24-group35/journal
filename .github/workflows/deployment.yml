@@ -43,8 +43,13 @@ jobs:
         uses: andstor/jsdoc-action@v1
         with:
           source_dir: ./src
-          output_dir: ./src/documentation
+          recurse: true
+          output_dir: ./docs
+          front_page: README.md
           template: minami
+      - name: Move Documentation Artifacts
+        run: |
+          mv ./docs ./src/docs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -27,7 +27,7 @@ describe("Calendar View", () => {
 
         browser = await puppeteer.launch({
             headless: true,
-            slowMo: 50,
+            slowMo: 250,
             args: ["--no-sandbox", "--disable-setuid-sandbox"]
         });
         page = await browser.newPage();
@@ -107,4 +107,84 @@ describe("Calendar View", () => {
         expect(monthYearTextInitial).to.not.eq(monthYearTextAfter); //There should not be a button to show more tasks
     });
 
+    it('Clicking on a task should open the modal with the correct task details', async () => {
+        await page.evaluate(async () => {
+            const helper = await import("./scripts/database/stores/task.js");
+            helper.createTask("modalTestID", "Test Task", "Test Description", "High", "PLANNED", Date.now());
+        });
+
+        await page.reload();
+
+        let taskItem = await page.$('.day-task-item');
+        await taskItem.click();
+
+        const modal = await page.$('task-modal');
+        const modalStyle = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return window.getComputedStyle(shadowRoot.querySelector('.modal')).display;
+        }, modal);
+
+        expect(modalStyle).to.eq('block'); // Modal should be visible
+
+        const taskTitle = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return shadowRoot.querySelector('#taskTitle').textContent;
+        }, modal);
+
+        expect(taskTitle).to.eq('Task: myTitle');
+
+        const taskDescription = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return shadowRoot.querySelector('#taskDescription').textContent;
+        }, modal);
+
+        expect(taskDescription).to.eq('Description: myDescription');
+    });
+
+    it('Clicking the close button on the modal should close the modal', async () => {
+        await page.evaluate(async () => {
+            const helper = await import("./scripts/database/stores/task.js");
+            helper.createTask("modalTestID3", "Test Task 3", "Test Description 3", "High", "PLANNED", Date.now());
+        });
+
+        const taskItem = await page.$('.day-task-item');
+        await taskItem.click();
+
+        const modal = await page.$('task-modal');
+
+        // Click the close button inside the modal's shadow DOM
+        await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            const closeButton = shadowRoot.querySelector('.close');
+            closeButton.click();
+        }, modal);
+
+        const modalStyle = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return window.getComputedStyle(shadowRoot.querySelector('.modal')).display;
+        }, modal);
+
+        expect(modalStyle).to.eq('none'); // Modal should be hidden
+    });
+
+    it('Clicking outside the modal should also close the modal', async () => {
+        await page.evaluate(async () => {
+            const helper = await import("./scripts/database/stores/task.js");
+            helper.createTask("modalTestID2", "Test Task 2", "Test Description 2", "High", "PLANNED", Date.now());
+        });
+
+        let taskItem = await page.$('.day-task-item');
+        await taskItem.click();
+
+        const modal = await page.$('task-modal');
+
+        await page.mouse.click(10, 10); // Click outside the modal
+
+        const modalStyle = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return window.getComputedStyle(shadowRoot.querySelector('.modal')).display;
+        }, modal);
+
+        expect(modalStyle).to.eq('none'); // Modal should be hidden
+    });
 });

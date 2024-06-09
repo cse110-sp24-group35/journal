@@ -18,10 +18,10 @@ h1 {
   display: flex;
   flex-direction: row;
   overflow-x: scroll;
-  width: 85%;
-  height: 8 0%;
-  margin-left: 15%;
-  
+  width: 90%;
+  height: 80%;
+  margin-right: 0;
+  margin-left: auto;
   white-space: nowrap;
 }
 
