@@ -1,4 +1,3 @@
-import { task } from "nanostores";
 import { tasks } from "../database/stores/task.js";
 
 tasks.listen(() => renderCalendar());
