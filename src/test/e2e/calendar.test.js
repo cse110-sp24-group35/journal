@@ -113,7 +113,7 @@ describe("Calendar View", () => {
             helper.createTask("modalTestID", "Test Task", "Test Description", "High", "PLANNED", Date.now());
         });
 
-        const taskItem = await page.$('.day-task-item');
+        let taskItem = await page.$$('.day-task-item');
         await taskItem.click();
 
         const modal = await page.$('task-modal');
@@ -141,7 +141,7 @@ describe("Calendar View", () => {
 
     it('Clicking the close button on the modal should close the modal', async () => {
         const modal = await page.$('task-modal');
-        const closeButton = await page.evaluate(modal => {
+        let closeButton = await page.evaluate(modal => {
             const shadowRoot = modal.shadowRoot;
             return shadowRoot.querySelector('.close');
         }, modal);
@@ -162,7 +162,7 @@ describe("Calendar View", () => {
             helper.createTask("modalTestID2", "Test Task 2", "Test Description 2", "High", "PLANNED", Date.now());
         });
 
-        const taskItem = await page.$('.day-task-item');
+        let taskItem = await page.$('.day-task-item');
         await taskItem.click();
 
         const modal = await page.$('task-modal');
