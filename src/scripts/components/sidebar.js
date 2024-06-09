@@ -33,7 +33,6 @@ class MySidebar extends HTMLElement {
             buttonText.textContent = name; // Set button text to the current name
             buttonText.setAttribute('id', `${name.toLowerCase()}-label`); // Set an ID for the span element
             button.classList.add('sidebar-button'); // Add 'sidebar-button' class to the button
-
             // Create SVG icon for the button
             const icon = document.createElement('img');
             icon.src = this.svgIcons[name];
@@ -66,7 +65,7 @@ class MySidebar extends HTMLElement {
                 box-sizing: border-box;
             }
             .sidebar-button {
-                background-color: #fff ;
+                background-color: #fff;
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 margin: 5px 0;
@@ -77,6 +76,8 @@ class MySidebar extends HTMLElement {
                 text-color: black;
                 display: flex;
                 align-items: center;
+                background-color: #F3E2D5;
+                color: #594F4F;
             }
             .sidebar-button:hover {
                 background-color: #ddd;
@@ -84,6 +85,7 @@ class MySidebar extends HTMLElement {
             .sidebar-button.active {
                 background-color: #FF914D;
                 cursor: default;
+                color: black;
             }
             .sidebar-icon {
                 display: none;
