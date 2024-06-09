@@ -114,7 +114,7 @@ describe("Calendar View", () => {
         });
 
         let taskItem = await page.$("[type='button']");
-        await taskItem[0].click();
+        await taskItem.click();
 
         const modal = await page.$('task-modal');
         const modalStyle = await page.evaluate(modal => {
