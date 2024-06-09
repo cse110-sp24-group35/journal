@@ -69,7 +69,7 @@ class TaskModal extends HTMLElement {
         this.shadowRoot.getElementById('taskDescription').textContent = `Description: ${task.description}`;
         this.shadowRoot.getElementById('taskPriority').textContent = `Priority: ${task.priority}`;
         this.shadowRoot.getElementById('taskStatus').textContent = `Status: ${task.status}`;
-        this.shadowRoot.getElementById('taskDueAt').textContent = `Due At: ${task.dueAt}`;
+        this.shadowRoot.getElementById('taskDueAt').textContent = `Due At: ${new Date(task.dueAt)}`;
         this.shadowRoot.getElementById('taskModal').style.display = 'block';
     }
 

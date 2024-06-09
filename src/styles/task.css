@@ -24,8 +24,9 @@ h1 {
   flex-direction: row;
   overflow-x: scroll;
   width: 90%;
-  height: 8 0%;
-  margin: auto;
+  height: 80%;
+  margin-right: 0;
+  margin-left: auto;
   white-space: nowrap;
 }
 
