@@ -107,4 +107,73 @@ describe("Calendar View", () => {
         expect(monthYearTextInitial).to.not.eq(monthYearTextAfter); //There should not be a button to show more tasks
     });
 
+    it('Clicking on a task should open the modal with the correct task details', async () => {
+        await page.evaluate(async () => {
+            const helper = await import("./scripts/database/stores/task.js");
+            helper.createTask("modalTestID", "Test Task", "Test Description", "High", "PLANNED", Date.now());
+        });
+
+        const taskItem = await page.$('.day-task-item');
+        await taskItem.click();
+
+        const modal = await page.$('task-modal');
+        const modalStyle = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return window.getComputedStyle(shadowRoot.querySelector('.modal')).display;
+        }, modal);
+
+        expect(modalStyle).to.eq('block'); // Modal should be visible
+
+        const taskTitle = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return shadowRoot.querySelector('#taskTitle').textContent;
+        }, modal);
+
+        expect(taskTitle).to.eq('Task: Test Task');
+
+        const taskDescription = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return shadowRoot.querySelector('#taskDescription').textContent;
+        }, modal);
+
+        expect(taskDescription).to.eq('Description: Test Description');
+    });
+
+    it('Clicking the close button on the modal should close the modal', async () => {
+        const modal = await page.$('task-modal');
+        const closeButton = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return shadowRoot.querySelector('.close');
+        }, modal);
+
+        await closeButton.click();
+
+        const modalStyle = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return window.getComputedStyle(shadowRoot.querySelector('.modal')).display;
+        }, modal);
+
+        expect(modalStyle).to.eq('none'); // Modal should be hidden
+    });
+
+    it('Clicking outside the modal should also close the modal', async () => {
+        await page.evaluate(async () => {
+            const helper = await import("./scripts/database/stores/task.js");
+            helper.createTask("modalTestID2", "Test Task 2", "Test Description 2", "High", "PLANNED", Date.now());
+        });
+
+        const taskItem = await page.$('.day-task-item');
+        await taskItem.click();
+
+        const modal = await page.$('task-modal');
+
+        await page.mouse.click(10, 10); // Click outside the modal
+
+        const modalStyle = await page.evaluate(modal => {
+            const shadowRoot = modal.shadowRoot;
+            return window.getComputedStyle(shadowRoot.querySelector('.modal')).display;
+        }, modal);
+
+        expect(modalStyle).to.eq('none'); // Modal should be hidden
+    });
 });
