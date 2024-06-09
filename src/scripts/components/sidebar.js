@@ -16,10 +16,10 @@ class MySidebar extends HTMLElement {
         };
 
         this.svgIcons = {
-            'Overview': 'scripts/public/icons/overview-icon.svg',
-            'Calendar': 'scripts/public/icons/calender-icon.svg',
-            'Tasks': 'scripts/public/icons/tasks-icon.svg',
-            'Journal': 'scripts/public/icons/journal-icon.svg'
+            'Overview': 'public/icons/overview-icon.svg',
+            'Calendar': 'public/icons/calender-icon.svg',
+            'Tasks': 'public/icons/tasks-icon.svg',
+            'Journal': 'public/icons/journal-icon.svg'
         };
 
         this.buttons = {}; // Object to store references to the buttons
