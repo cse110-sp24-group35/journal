@@ -39,13 +39,19 @@ describe('Kanban Board E2E Test', () => {
   test('Add a new column and a new task', async () => {
     await page.goto('http://localhost:5000/tasks.html'); // Replace with the correct URL
 
+    // For E2E test only, default to no column
+    await page.evaluate(async () => {
+      const helper = await import("./scripts/database/stores/kanban.js");
+      helper.statuses.set([]);
+    });
+
     // Add a new column
     await page.click('.add-task-column-button');
     await page.type('body > modal-card-popup-column > dialog > form > label > input', "TODO");
     await page.click('body > modal-card-popup-column > dialog > form > div > button');
 
     // Wait for the new column to appear
-    await page.waitForSelector('.task-column[data-column-id*="status-"]');
+    await page.waitForSelector('.task-column[data-column-id*="TODO"]');
 
     // Add a new task to the new column
     await page.click("#container > main > task-column > section > div.add-button > button");
