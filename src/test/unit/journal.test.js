@@ -31,7 +31,7 @@ describe("Journal Stores", () => {
 
         const content = journals.get();
 
-        expect(content.length).to.equal(1);
+        expect(content.length).to.equal(2);
 
         const journal = content[0];
         expect(journal.path).to.equal("hello/world");
@@ -39,7 +39,7 @@ describe("Journal Stores", () => {
         createJournal("Another Journal", "///another/path", "Content", ["Tag1", "Tag2"]);
 
         const anotherContent = journals.get();
-        expect(anotherContent.length).to.equal(2);
+        expect(anotherContent.length).to.equal(3);
 
         const anotherJournal = anotherContent[1];
         expect(anotherJournal.path).to.equal("another/path");
