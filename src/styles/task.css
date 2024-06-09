@@ -1,3 +1,4 @@
+/* 2:48 P.M.*/
 @font-face {
   font-family: biski;
   src: url("../public/fonts/biskitrialregular-l3jxg.otf") format('opentype');
@@ -65,7 +66,7 @@ p {
   padding: 20px;
   background-color: #F3E2D5;
   display: inline-block;
-  margin: 0 10px;
+  margin: 0 20px;
   vertical-align: top;
   height: 730px;
   width: 325px;
@@ -224,6 +225,19 @@ label {
   font-size: 30px;
   background:white;
   line-height:normal;
+}
+
+.modal-column-popup{
+  position: absolute;
+  width: 40%;
+  height: 25%; 
+  border: none;
+  font-size: 30px;
+  border-radius: 75px;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+  padding: 40px 20px 20px;
+  background-color: #F3E2D5;
+  margin-bottom: 5%
 }
 
 .modal-card-popup {

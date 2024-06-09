@@ -37,12 +37,13 @@ function renderTaskPage() {
 class TaskColumn extends HTMLElement {
     constructor(status) {
         super();
-        this.status = this.columnId = status;
+        this.status = status;
+        this.columnId = status.id;
 
         this.innerHTML = `
-            <section class="task-column" data-column-id="${this.status}">
+            <section class="task-column" data-column-id="${this.columnId}">
                 <div class="task-column-header">
-                    <h2 class="column-title" name="task-column-title">${this.status}</h2>
+                    <h2 class="column-title" name="task-column-title">${status.name}</h2>
                 </div>
                 <button class="task-column-delete-button">X</button>
                 <div class="content">
@@ -138,7 +139,7 @@ class TaskColumn extends HTMLElement {
 
         // Update statuses by filtering out the status of this column only once
         let currentStatuses = statuses.get();
-        currentStatuses = currentStatuses.filter(status => status !== this.columnId);
+        currentStatuses = currentStatuses.filter(status => status.id !== this.columnId);
         statuses.set(currentStatuses);
 
         // Remove tasks associated with this column
@@ -186,7 +187,7 @@ class ModalCardPopupColumn extends HTMLElement {
         super();
 
         this.innerHTML = `
-            <dialog class="modal-card-popup">
+            <dialog class="modal-column-popup">
                 <div class="modal-card-popup-header">
                     <button class="modal-card-popup-close-button">X</button>
                 </div>
@@ -245,8 +246,12 @@ class ModalCardPopupColumn extends HTMLElement {
         const columnName = this.querySelector('[name="columnName"]').value;
 
         if (columnName) {
+            const newStatus = {
+                id: `status-${Date.now()}`,
+                name: columnName
+            };
             const currentStatuses = statuses.get();
-            statuses.set([...currentStatuses, columnName]);
+            statuses.set([...currentStatuses, newStatus]);
         }
 
         this.closePopup();
@@ -285,7 +290,7 @@ class ModalCardPopup extends HTMLElement {
                         <input type="text" class="inputs" name="tags" value="${task.tags || ''}" required/><br>
                     </label>
                     <div class="modal-card-popup-footer">
-                        <button type="submit" class="modal-card-popup-save-button" id="saveButton">${isEditing ? 'Edit Task' : 'Add Task'}</button>
+                        <button type="submit" class="modal-card-popup-save-button" id="saveButton">${isEditing ? 'Save Task' : 'Add Task'}</button>
                     </div>
                 </form>
             </dialog>
@@ -342,7 +347,7 @@ class ModalCardPopup extends HTMLElement {
             date, // Keep the local date string for display
             tags,
             journal,
-            status: this.status, // Use the current status ID
+            status: this.status.id, // Use the current status ID
             createdAt: this.task.createdAt || Date.now(),
             dueAt: dueDate.getTime() // Convert the date to a timestamp in local time
         };
@@ -403,7 +408,7 @@ class TaskCard extends HTMLElement {
     }
 
     editCard() {
-        document.body.appendChild(new ModalCardPopup(statuses.get().find(status => status === this.task.status), this.task));
+        document.body.appendChild(new ModalCardPopup(statuses.get().find(status => status.id === this.task.status), this.task));
     }
 
     dragStartHandler(event) {
