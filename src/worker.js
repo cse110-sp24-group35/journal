@@ -49,7 +49,8 @@ const CACHE_DERIVES = {
         "styles/main.css",
         "styles/task.css",
         "styles/task-component.css",
-        "styles/upcoming-tasks.css"
+        "styles/upcoming-tasks.css",
+        "styles/common.css"
     ],
 
     vendors: [
