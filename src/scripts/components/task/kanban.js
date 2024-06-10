@@ -264,7 +264,7 @@ class ModalCardPopup extends HTMLElement {
 
         this.innerHTML = `
             <dialog class="modal-card-popup">
-                ${isEditing ? '<img id="orange-cat" src="public/images/orange_cat.png" alt="cat sitting" width="140" height="110">' : '<img id="cat" src="public/images/cat.png" alt="cat sitting" width="140" height="110">'}
+                ${isEditing ? '<img id="orange-cat" src="public/images/orange-cat.png" alt="cat sitting" width="140" height="110">' : '<img id="cat" src="public/images/cat.png" alt="cat sitting" width="140" height="110">'}
                 <div class="modal-card-popup-header">
                     <button class="modal-card-popup-close-button">X</button>
                 </div>
