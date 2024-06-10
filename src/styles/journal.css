@@ -1,8 +1,8 @@
-/* Team Font
-*{
+* {
     font-family: 'JetBrains Mono', monospace;
-}
-*/
+    color:#594F4F;
+    background-color: #FFF5ED;
+  }
 
 /* Dummy sidebar */
 #sidebar {
@@ -11,7 +11,7 @@
     position: sticky;
     top: 0;
     left: 0;
-    background-color: #0F0; 
+    background-color: #FFF5ED; 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -38,35 +38,41 @@
     overflow: scroll;
     margin-top: 3.5em;
     scrollbar-width: none; /* HIDE scroll bar */
-    border-top: 0.5em solid #000;
+    border-top: 0.3em solid #F3e2d5;
 }
 
 #create-journal { /* The plus button on the top-right of the tree view */
-    background-color: #0F0;
+    background-color: rgb(221, 255, 159);
     position:absolute;
     width: 2em;
     height: 2em;
     right: 0%;
     margin:1em;
+    border-radius: 10px;
+    border: 0.2em solid #F3e2d5;
 }
 
 #delete-journal { /* The minus button on the top-left of the tree view */
-    background-color: #F00;
+    background-color: rgb(255, 175, 159);
     position:absolute;
     width: 2em;
     height: 2em;
     left: 0%;
     margin:1em;
+    border-radius: 10px;
+    border: 0.2em solid #F3e2d5;
 }
 
 #delete-all-journals { /* The minus button on the top-left of the tree view */
-    background-color: #F00;
+    background-color: rgb(255, 175, 159);
     position: absolute;
     top: 2em;
     width: min(calc(100% - 6em), 8em);
     left: 50%;
     transform: translate(-50%, -50%);
     overflow: hidden;
+    border-radius: 10px;
+    border: 0.2em solid #F3e2d5;
 }
 
 #journal-view{ /* The section to the right of the tree-view */
@@ -82,9 +88,9 @@
 
 /* Bar to the right of the tree-view. Allows drag to resize */
 #resizer {
-    width: 0.5em;
+    width: 0.3em;
     height: inherit;
-    background-color: black;
+    background-color: #F3e2d5;
     cursor: ew-resize;
     position: absolute;
     top: 0;
@@ -125,9 +131,6 @@
     padding-left: 0.01em;
 }
 
-.folder{ /* The div for each folder button. Probably don't need this */
-    /* background-color: #FFF5ED; */
-}
 
 #content button{
     font-size: medium;
