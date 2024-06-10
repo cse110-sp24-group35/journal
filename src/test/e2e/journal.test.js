@@ -31,6 +31,11 @@ describe("Journal Page", () => {
         });
         page = await browser.newPage();
         await page.goto("http://localhost:6790/journal.html"); // Adjust the path to your HTML file
+
+        await page.evaluate(async () => {
+            const helper = await import("./scripts/database/stores/journal.js");
+            helper.createJournal("Hello World", "hello/world", "Hello World", ["tag1"]);
+        });
     }, 30000);
 
     afterAll(async () => {
@@ -62,7 +67,7 @@ describe("Journal Page", () => {
         // Check that no journal is displayed
         const noJournalMessage = await page.evaluate(() => {
             const editor = document.querySelector("journal-editor");
-            const message = editor.shadowRoot.querySelector('p');
+            const message = editor.shadowRoot.querySelector('#no-journal-message');
             return message.innerText == 'No journal selected';
         });
 
@@ -71,10 +76,6 @@ describe("Journal Page", () => {
     
     test("should open editor when selected in tree view", async () => {
         // Click on a journal entry
-        // !NOTE: this depends on create-journal button creating a hello world entry
-        await page.$('button#create-journal'  )?.then(button => button.click());
-        await page.$('button[id="tree/hello"]')?.then(button => button.click());
-
         const openEditor = await page.evaluate(() => {
             document.getElementById('tree/hello/world').click();
             

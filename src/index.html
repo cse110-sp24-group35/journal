@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/public/icons/favicon/favicon.ico">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal | Overview</title>
-    <link rel="stylesheet" href="styles/journal.css">
-    <link rel="stylesheet" href="styles/task-component.css">
-    <link rel="stylesheet" href="styles/upcoming-tasks.css">
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="styles/index.css">
+   
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -22,29 +24,42 @@
         }
     </script>
     <!-- Polyfill end -->
-    <link rel="stylesheet" href="styles/main.css">
+    <script src="scripts/sw/loader.js"></script>
+
+    <link rel="stylesheet" href="styles/common.css">
 </head>
 
 <body>
+    <script type="module" src="scripts/components/task/upcoming-tasks.js"></script>
+    <script src="scripts/components/layout/sidebar.js"></script>
+    <script type="module" src="scripts/components/task/view.js"></script>
+    <script type="module" src="scripts/components/task/pie-chart.js"></script>
 
-    <my-sidebar></my-sidebar>
+    <noscript>
+        Please turn on JavaScript to use this application properly!
+    </noscript>
+    <div id="script-container">
+        <div class="grid">
+            <h1>Task<br>Overview</h1>
+            <div class="containerpie">
+                <task-pie-component></task-pie-component>
+            </div>
 
-    <div class="container">
-        <task-list></task-list>
+            <!-- Global Sidebar -->
+            <sidebar-layout></sidebar-layout>
+            <div class="container">
+                Task Checklist:<br><br>
+                <task-list></task-list>
+            </div>
+
+            <!-- Add the container and popup elements directly to the HTML -->
+            <div class="upcoming-tasks-container"></div>
+            <div class="task-popup" style="display: none;"></div>
+        </div>
     </div>
-    
-    <!-- Add the container and popup elements directly to the HTML -->
-    <div class="upcoming-tasks-container"></div>
-    <div class="task-popup" style="display: none;"></div>
 
-    <div class="containerpie">
-        <task-pie-component></task-pie-component>
-    </div>
-
-    <script type="module" src="scripts/components/upcoming-tasks.js"></script>
-    <script src="scripts/components/sidebar.js"></script>
-    <script src="scripts/components/modal-journal.js"></script>
-    <script type="module" src="scripts/components/task-component.js"></script>
-    <script type="module" src="scripts/components/task-pie-component.js"></script>
+    <script>
+        document.getElementById("script-container").style.display = "block";
+    </script>
 </body>
 </html>

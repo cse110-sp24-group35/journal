@@ -1,8 +1,13 @@
+* {
+    font-family: 'JetBrains Mono', monospace;
+    color:#594F4F;
+  }
+
 :root {
     --day-size: max(min(11vw, 11vh), 3em);
     --grid-gap: min(1vh, 1vw);
-    --nav-button-bg: #007bff;
-    --nav-button-hover-bg: #0056b3;
+    --nav-button-bg: #ff9146;
+    --nav-button-hover-bg: #e78442;
     --day-bg: #F3E2D5;
     --day-hover-bg: #C3B2A5;
     --calendar-bg: #FFF5ED;
@@ -156,7 +161,7 @@ body {
 }
 
 /* SELECTED Day */
-.selected-day {
+.selected-day, .hovered-day {
     box-sizing: border-box;
     padding-top: 0.5em;
     background-color: #F3E2D5;
@@ -172,7 +177,11 @@ body {
     scrollbar-width: none;
 }
 
-.selected-day > * {
+.hovered-day {
+    pointer-events: none;
+}
+
+.selected-day > *, .hovered-day > * {
     margin-top: 1em;
 }
 
@@ -180,11 +189,11 @@ body {
     display: none;
 }
 
-.selected-day .expanded-day {
+.selected-day .expanded-day, .hovered-day .expanded-day{
     display:inline;
 }
 
-.selected-day .shrunk-day {
+.selected-day .shrunk-day, .hovered-day .shrunk-day{
     display: none;
 }
 

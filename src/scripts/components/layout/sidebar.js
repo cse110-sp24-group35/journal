@@ -1,4 +1,4 @@
-class MySidebar extends HTMLElement {
+class SidebarLayout extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' }); // Attach a shadow DOM to this element
@@ -33,7 +33,6 @@ class MySidebar extends HTMLElement {
             buttonText.textContent = name; // Set button text to the current name
             buttonText.setAttribute('id', `${name.toLowerCase()}-label`); // Set an ID for the span element
             button.classList.add('sidebar-button'); // Add 'sidebar-button' class to the button
-
             // Create SVG icon for the button
             const icon = document.createElement('img');
             icon.src = this.svgIcons[name];
@@ -58,7 +57,7 @@ class MySidebar extends HTMLElement {
                 left: 0;
                 width: 15%;
                 height: 100%;
-                background-color: #f4f4f4;
+                background-color: #FFF5ED;
                 box-shadow: 2px 0 5px rgba(0,0,0,0.1);
                 display: flex;
                 flex-direction: column;
@@ -66,7 +65,7 @@ class MySidebar extends HTMLElement {
                 box-sizing: border-box;
             }
             .sidebar-button {
-                background-color: #ffffff;
+                background-color: #fff;
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 margin: 5px 0;
@@ -74,15 +73,19 @@ class MySidebar extends HTMLElement {
                 text-align: left;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
+                text-color: black;
                 display: flex;
                 align-items: center;
+                background-color: #F3E2D5;
+                color: #594F4F;
             }
             .sidebar-button:hover {
                 background-color: #ddd;
             }
             .sidebar-button.active {
-                background-color: #ccc;
+                background-color: #FF914D;
                 cursor: default;
+                color: black;
             }
             .sidebar-icon {
                 display: none;
@@ -142,4 +145,4 @@ class MySidebar extends HTMLElement {
 }
 
 // Define the custom element
-customElements.define('my-sidebar', MySidebar);
+customElements.define('sidebar-layout', SidebarLayout);

@@ -1,4 +1,4 @@
-import { tasks } from "../database/stores/task.js";
+import { tasks } from "../../database/stores/task.js";
 
 tasks.listen(() => renderCalendar());
 
@@ -22,6 +22,30 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape' || event.key === 'Esc') {
         unselectAllDays();
+    }
+});
+
+            
+// Adds event listener to close the selected day when the user clicks outside of the selected day
+let primedToDeselect = false;
+document.addEventListener('click', function(event) {
+    const modal = document.querySelector('task-modal');
+    const taskModal = modal.shadowRoot.getElementById('taskModal');
+    //alert(taskModal.style.display);
+    if (!taskModal.style.display || taskModal.style.display == 'none') {
+        const selectedDay = document.querySelector('.selected-day');
+        if(primedToDeselect) {
+            if (selectedDay && !selectedDay.contains(event.target)) {
+                primedToDeselect = false;
+                unselectAllDays();
+            }
+        }
+        else {
+            primedToDeselect = true;
+        }
+    }
+    else {
+        primedToDeselect = false;
     }
 });
 
@@ -93,8 +117,7 @@ export function unselectAllDays() {
  * @param {Array<Object>} allTasks - The list of all tasks.
  */
 export function addTasksToDay(dayDiv, year, month, day, allTasks) {
-    const isSelected = dayDiv.classList.contains('selected-day'); // Checks if the day is selected (expanded)
-    const calendarContainer = document.querySelector('.calendar-container'); // Gets the calendar container
+    const isSelected = (dayDiv.classList.contains('selected-day') || dayDiv.classList.contains('hovered-day')); // Checks if the day is selected (expanded)
 
     // If the day is selected, show the day's name on top of the number
     if (isSelected) {
@@ -167,35 +190,61 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
     // Creates the expanded day view upon clicking a day
     if (!isSelected) { // Prevents reselecting a selected day
         dayDiv.addEventListener('click', () => {
+            primedToDeselect = false;
             unselectAllDays(); 
 
-            // Creates a clone of the dayDiv and adds it to the calendar container
-            const dayDivClone = dayDiv.cloneNode(true);
-            dayDivClone.classList.add('selected-day');
-            dayDivClone.classList.remove('calendar-day', 'previous-month', 'next-month');
-            dayDivClone.innerHTML = '';
-            addTasksToDay(dayDivClone, year, month, day, allTasks);
+            hoverOrSelectDay(false,dayDiv, year, month, day, allTasks);
+        });
 
-            // Makes sure that the positioning of the expanded day view is initially correct
-            const dayDivRect = dayDiv.getBoundingClientRect();
-            dayDivClone.style.left = `${dayDivRect.left}px`;
-            dayDivClone.style.top = `${dayDivRect.top}px`;
+        dayDiv.addEventListener('mouseenter', () => {
+            hoverOrSelectDay(true,dayDiv, year, month, day, allTasks);
+        });
 
-            // Adds event listener to remove the expanded day view when the mouse leaves the day
-            dayDivClone.addEventListener('mouseleave', () => {
-                dayDivClone.remove();
-            });
-            calendarContainer.appendChild(dayDivClone);
-
-            // Adjusts the position of the expanded day view to be centered on the day and within the window
-            const dayDivCloneRect = dayDivClone.getBoundingClientRect();
-            dayDivClone.style.left = `${dayDivRect.left - (dayDivCloneRect.width - dayDivRect.width) / 2}px`;
-            dayDivClone.style.top = `${dayDivRect.top - (dayDivCloneRect.height - dayDivRect.height) / 2}px`;
-            adjustPosition(dayDivClone);
+        dayDiv.addEventListener('mouseleave', () => {
+            const hoveredDays = document.querySelectorAll('.hovered-day');
+            for (let i = 0; i < hoveredDays.length; i++) {
+                hoveredDays[i].remove();
+            }
         });
     }
 
     dayDiv.appendChild(taskList);
+}
+
+/**
+ * Handles creating an expanded view when hovering over or selecting a day.
+ * 
+ * @param {boolean} hover - Whether the day is being hovered over.
+ * @param {HTMLElement} dayDiv - The div element representing the day.
+ * @param {number} year - The year of the day.
+ * @param {number} month - The month of the day (0-indexed).
+ * @param {number} day - The day of the month.
+ * @param {Array<Object>} allTasks - The list of all tasks.
+ */
+export function hoverOrSelectDay(hover,dayDiv, year, month, day, allTasks) {
+    const calendarContainer = document.querySelector('.calendar-container'); // Gets the calendar container
+
+    // Creates a clone of the dayDiv and adds it to the calendar container
+    const dayDivClone = dayDiv.cloneNode(true);
+    if(hover)
+        dayDivClone.classList.add('hovered-day');
+    else
+        dayDivClone.classList.add('selected-day');
+    dayDivClone.classList.remove('calendar-day', 'previous-month', 'next-month');
+    dayDivClone.innerHTML = '';
+    addTasksToDay(dayDivClone, year, month, day, allTasks);
+
+    // Makes sure that the positioning of the expanded day view is initially correct
+    const dayDivRect = dayDiv.getBoundingClientRect();
+    dayDivClone.style.left = `${dayDivRect.left}px`;
+    dayDivClone.style.top = `${dayDivRect.top}px`;
+    calendarContainer.appendChild(dayDivClone);
+
+    // Adjusts the position of the expanded day view to be centered on the day and within the window
+    const dayDivCloneRect = dayDivClone.getBoundingClientRect();
+    dayDivClone.style.left = `${dayDivRect.left - (dayDivCloneRect.width - dayDivRect.width) / 2}px`;
+    dayDivClone.style.top = `${dayDivRect.top - (dayDivCloneRect.height - dayDivRect.height) / 2}px`;
+    adjustPosition(dayDivClone);
 }
 
 /**

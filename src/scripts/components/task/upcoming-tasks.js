@@ -1,4 +1,4 @@
-import { tasks } from '../database/stores/task.js';
+import { tasks } from '../../database/stores/task.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const container = document.querySelector('.upcoming-tasks-container');

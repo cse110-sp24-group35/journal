@@ -63,5 +63,3 @@ jobs:
         run: pnpm install --no-frozen-lockfile
       - name: E2E Test
         run: pnpm run test:e2e
-        env:
-          MOCHA_REPORTER: mocha-reporter-gha

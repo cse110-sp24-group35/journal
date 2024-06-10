@@ -1,0 +1,18 @@
+noscript {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem; /* Adjust this value for the desired text size */
+    text-align: center;
+    background-color: #f0f0f0; /* Optional: for better visibility */
+    color: #333; /* Optional: for better visibility */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#script-container {
+    display: none;
+}

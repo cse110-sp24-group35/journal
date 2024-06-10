@@ -47,6 +47,21 @@ jobs:
           output_dir: ./docs
           front_page: README.md
           template: minami
+      - uses: pnpm/action-setup@v4
+        name: Setup PNPM
+        with:
+          version: 9
+      - name: Install minifiers
+        run: |
+          pnpm install -g terser
+          pnpm install -g csso-cli
+          pnpm install -g html-minifier
+      - run: terser ./src/scripts/*.js --compress --mangle -o ./src/scripts/*.js
+      - run: csso ./src/styles/*.css -o ./src/styles/*.css
+      - run: html-minifier --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o src/index.html src/index.html
+      - run: html-minifier --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o src/journal.html src/tasks.html
+      - run: html-minifier --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o src/calendar.html src/calendar.html
+      - run: html-minifier --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o src/journal.html src/journal.html
       - name: Move Documentation Artifacts
         run: |
           mv ./docs ./src/docs

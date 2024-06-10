@@ -1,5 +1,5 @@
-import { statuses } from '../database/stores/kanban.js';
-import { tasks } from '../database/stores/task.js';
+import { statuses } from '../../database/stores/kanban.js';
+import { tasks } from '../../database/stores/task.js';
 
 // Listen for changes to the statuses and tasks
 statuses.listen(() => renderTaskPage());

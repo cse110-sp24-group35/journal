@@ -2,6 +2,9 @@
 <html lang="en">
     <head>
         <title>Journal | Tasks</title>
+        <link rel="icon" type="image/x-icon" href="/public/icons/favicon/favicon.ico">
+        <meta charset="UTF-8">
+        <link rel="manifest" href="manifest.json" />
         <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
         <script>
             window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -14,33 +17,36 @@
                 }
             }
         </script>
-        
         <!-- Polyfill end -->
-
         <link rel="stylesheet" href="styles/task.css">
+        <link rel="stylesheet" href="styles/common.css">
+        <script src="scripts/sw/loader.js"></script>
     </head>
 
     <body>
-        <div>
-            <h1 id="header">Task Lists</h1>
+        <noscript>
+            Please turn on JavaScript to use this application properly!
+        </noscript>
+        <div id="script-container">
+            <div>
+                <h1 id="header">Task Lists</h1>
+            </div>
+            <div style="display: flex; flex-direction: column; position:relative;">
+                <!-- Global Sidebar -->
+                <sidebar-layout id="sidebar"></sidebar-layout>
+            </div>
+            <!-- Columns -->
+            <div id="container" class="boxes">
+                <!-- Where Columns will go-->
+                <main></main>
+                <!--Add a Column Box-->
+            </div>
         </div>
-        <script src="scripts/components/sidebar.js"></script>
-        <div style="display: flex; flex-direction: column; position:relative;">
-            <my-sidebar id="sidebar"></my-sidebar>    
-        </div>
-    
 
-        
-        <!-- Columns -->
-        <div id="container" class="boxes">
-
-            <!-- Where Columns will go-->
-            <main></main>
-            
-            <!--Add a Column Box-->
-            
-        </div>
-
-        <script type="module" src="scripts/components/task.js"></script>
+        <script>
+            document.getElementById("script-container").style.display = "block";
+        </script>
+        <script type="module" src="scripts/components/task/kanban.js"></script>
+        <script src="scripts/components/layout/sidebar.js"></script>
     </body>
 </html>

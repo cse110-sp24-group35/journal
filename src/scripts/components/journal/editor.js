@@ -1,5 +1,11 @@
-import { journals, getJournal } from '../database/stores/journal.js';
+import { journals, getJournal } from '../../database/stores/journal.js';
 import { marked } from 'marked';
+import { tasks } from '../../database/stores/task.js';
+import {
+    getTasksForJournal,
+    linkTaskToJournal, unlinkTaskFromJournal
+} from '../../database/stores/relation.js';
+import { formatDate } from '../../helper.js';
 
 class JournalEditor extends HTMLElement {
     constructor() {
@@ -11,10 +17,20 @@ class JournalEditor extends HTMLElement {
         <form>
             <input id="journal-title" type="text" placeholder="Title" autofocus/>
             <input id="journal-tags" type="text" placeholder="Tags"/>
+            <label for="tasks">Linked Tasks:</label>
+            <select id="tasks" name="tasks" multiple>
+                 ${tasks.get().map(task => {
+            return `<option value=${task.id}>${task.title}</option>`
+        })}
+            </select>
             <input id="show-preview" type="button" value="Show live preview"/>
             <div id="journal-content">
                 <textarea id="text-editor" rows=16></textarea>
                 <div id="markdown-preview" class="preview"></div>
+            </div>
+            
+            <div id="saving-status">
+                <p>Auto Save Enabled</p>
             </div>
         </form>
         `
@@ -26,22 +42,27 @@ class JournalEditor extends HTMLElement {
             flex-direction: column;
             gap: 1rem;
             padding: 1rem;
-            background-color: #f9f9f9;
+            background-color: #FFF5ED;
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 100%;
         }
 
         input[type="text"], textarea {
-            width: 100%;
+            background-color: #F3E2D5;
             padding: 10px;
-            margin: 5px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
         }
+        
+        #saving-status {
+            text-align: right;
+        }
 
         #journal-title {
+            background-color: #F3E2D5;
             font-size: 2.5rem;
             text-align: center;
         }
@@ -51,20 +72,28 @@ class JournalEditor extends HTMLElement {
             text-align: center;
         }
 
+        #tasks {
+            background-color: #F3E2D5;
+        }
+
         /* Show Live Preview Button */
         #show-preview {
             align-self: flex-end;
             padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
+            background-color: #F3E2D5;
+            color: #594F4F;
+            border: 1px solid #ccc;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1rem;
         }
 
         #show-preview:hover {
-            background-color: #0056b3;
+            background-color: #ddd;
+        }
+            
+        #show-preview:active {
+            background-color: #ccc;
         }
 
         /***** Journal Content *****/
@@ -78,22 +107,23 @@ class JournalEditor extends HTMLElement {
         }
 
         #text-editor {
-            width: 50%;
+            background-color: #F3E2D5;
+            width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
-            transition: width 0.3s ease;
+            transition: 0.3s ease;
         }
 
         #markdown-preview {
-            width: 50%;
-            background-color: #f4f4f4;
+            width: 100%;
+            background-color: #F3E2D5;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             overflow-y: auto;
-            transition: width 0.3s ease;
+            transition: 0.3s ease;
         }
         `;
         shadow.appendChild(style);
@@ -101,44 +131,6 @@ class JournalEditor extends HTMLElement {
         // Editor starts out with invalid path,
         //   so that a message can be displayed
         this.path = null;
-    }
-
-    /**
-     * Checks if the editor is currently editing a journal.
-     *
-     * @returns {boolean} True if the editor has a journal being edited, otherwise false.
-     */
-    hasJournal() {
-        return this.shadowRoot.path !== null;
-    }
-    
-    /**
-     * Saves current journal to local storage.
-     */
-    save() {
-        const shadow = this.shadowRoot;
-        
-        // sanity check
-        if (this.shadowRoot.path === null) {
-            console.warn("Unable to save: no journal is selected");
-            return;
-        }
-
-        console.log('Saving journal');
-        
-        // Use get() so we have an array to set as the new journal
-        //    after we have done our changes.
-        const journalArray = journals.get();
-        const journalIndex = journalArray.findIndex(j => j.path === shadow.path);
-        const entry = journalArray[journalIndex];
-
-        entry.title   = shadow.getElementById('journal-title').value;
-        entry.content = shadow.getElementById('text-editor').value;
-        const tags = shadow.getElementById('journal-tags');
-        entry.tags = tags.value.split(',').map(str => str.trim());
-        entry.modifiedAt = Date.now();
-        
-        journals.set(journalArray);
     }
 
     connectedCallback() {
@@ -163,7 +155,7 @@ class JournalEditor extends HTMLElement {
         //textarea.addEventListener('input', () => {
         //    this.wysimark.setMarkdown(textarea.value);
         //});
-        
+
         function debounce(func, timeout = 1000) {
             let timer;
             return (...args) => {
@@ -171,13 +163,15 @@ class JournalEditor extends HTMLElement {
                 timer = setTimeout(() => { func.apply(this, args); }, timeout);
             };
         }
-        
+
         const inputElements = [
             shadow.getElementById('text-editor'),
             shadow.getElementById('journal-title'),
             shadow.getElementById('journal-tags'),
+            shadow.getElementById("tasks")
         ];
-        
+
+        // Add event listener for auto-saving
         const processChange = debounce(() => this.save());
         for (let element of inputElements) {
             element.addEventListener('input', processChange);
@@ -193,12 +187,70 @@ class JournalEditor extends HTMLElement {
         textarea.addEventListener('input', () => {
             this.updatePreview(textarea.value);
         });
+
+        // Initialize flex direction
+        this.updateFlexDirection();
+        // Add event listener for flex direction of journal content
+        window.addEventListener('resize', () => this.updateFlexDirection());
+    }
+
+    /**
+     * Checks if the editor is currently editing a journal.
+     *
+     * @returns {boolean} True if the editor has a journal being edited, otherwise false.
+     */
+    hasJournal() {
+        return this.shadowRoot.path !== null;
+    }
+
+    /**
+     * Saves current journal to local storage.
+     */
+    save() {
+        const shadow = this.shadowRoot;
+
+        // sanity check
+        if (this.shadowRoot.path === null) {
+            console.warn("Unable to save: no journal is selected");
+            return;
+        }
+
+        const savingStatus = shadow.getElementById("saving-status");
+
+        // Use get() so we have an array to set as the new journal
+        //    after we have done our changes.
+        const journalArray = journals.get();
+        const journalIndex = journalArray.findIndex(j => j.path === shadow.path);
+        const entry = journalArray[journalIndex];
+
+        entry.title   = shadow.getElementById('journal-title').value;
+        entry.content = shadow.getElementById('text-editor').value;
+        const tags = shadow.getElementById('journal-tags');
+        entry.tags = tags.value.split(',').map(str => str.trim());
+        entry.modifiedAt = Date.now();
+
+        const selectedTasks = Array.from(
+            shadow.getElementById("tasks").selectedOptions
+        ).map(option => option.value);
+
+        // Force unlink all tasks from this journal first, then link only ones selected
+        for (let task of tasks.get()) {
+            unlinkTaskFromJournal(task, entry.path);
+        }
+
+        for (let task of selectedTasks) {
+            linkTaskToJournal(task, entry.path);
+        }
+
+        journals.set(journalArray);
+
+        savingStatus.innerHTML = `<p>Saved At: ${formatDate(new Date(entry.modifiedAt))}</p>`;
     }
 
     /**
      * Sets journal path of journal being edited
      * (controls whether editor is hidden or not)
-    * @param {string} path - journal path
+     * @param {string} path - journal path
      */
     set path(path) {
         const entry = getJournal(path);
@@ -212,7 +264,7 @@ class JournalEditor extends HTMLElement {
         if (validPath) {
             this.setData(entry);
         }
-        
+
         // Hide all the input stuff if we have an invalid path
         this.changeInputVisibility(!validPath);
     }
@@ -238,6 +290,8 @@ class JournalEditor extends HTMLElement {
                 const message = document.createElement('p');
                 message.id = 'no-journal-message';
                 message.innerText = "No journal selected";
+                message.style.fontSize = '3em';
+                message.    style.textAlign = 'center';
                 this.shadowRoot.appendChild(message);
             }
         } else {
@@ -246,6 +300,18 @@ class JournalEditor extends HTMLElement {
             if (message) {
                 this.shadowRoot.removeChild(message);
             }
+        }
+    }
+
+    /**
+     * Update the flex direction of journal content
+     */
+    updateFlexDirection() {
+        const content = this.shadowRoot.getElementById('journal-content');
+        if (window.innerWidth < 800) {
+            content.style.flexDirection = 'column';
+        } else {
+            content.style.flexDirection = 'row';
         }
     }
 
@@ -263,6 +329,16 @@ class JournalEditor extends HTMLElement {
 
         const tags = this.shadowRoot.getElementById('journal-tags');
         tags.value = journal.tags.join(', ');
+
+        const linkedTasks = getTasksForJournal(journal.path);
+        const tasksDropdown = this.shadowRoot.getElementById('tasks');
+
+        // Iterate over the options and set the selected attribute for matching values
+        Array.from(tasksDropdown.options).forEach(option => {
+            if (linkedTasks.find(task => task.id === option.value)) {
+                option.selected = true;
+            }
+        });
     }
 
     /**
@@ -298,40 +374,13 @@ class JournalEditor extends HTMLElement {
 
     togglePreview() {
         const preview = this.shadowRoot.getElementById('markdown-preview');
-        const textarea = this.shadowRoot.getElementById('text-editor');
         if (preview.hidden) {
             preview.hidden = false;
-            textarea.style.width = "50%";
             this.shadowRoot.getElementById('show-preview').value = "Hide live preview";
         } else {
             preview.hidden = true;
-            textarea.style.width = "100%";
             this.shadowRoot.getElementById('show-preview').value = "Show live preview";
         }
-    }
-
-    /**
-     * Hack to get the styles to show up while using Shadow DOM.
-     */
-    hack() {
-        this.styleObserver = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.type === "childList") {
-                    mutation.addedNodes.forEach(node => {
-                        if (node?.getAttribute?.('data-emotion')) {
-                            this.shadowRoot.appendChild(node.cloneNode(true));
-                        }
-                    })
-                }
-            })
-        })
-
-        this.styleObserver.observe(document.head, {
-            attributes: true,
-            childList: true,
-            subtree: false,
-            attributeFilter: ['data-emotion']
-        });
     }
 }
 
