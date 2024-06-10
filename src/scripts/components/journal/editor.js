@@ -7,7 +7,7 @@ import {
 } from '../../database/stores/relation.js';
 import { formatDate } from '../../helper.js';
 
-class Editor extends HTMLElement {
+class JournalEditor extends HTMLElement {
     constructor() {
         super(); // Inherit everything from HTMLElement
 
@@ -20,8 +20,8 @@ class Editor extends HTMLElement {
             <label for="tasks">Linked Tasks:</label>
             <select id="tasks" name="tasks" multiple>
                  ${tasks.get().map(task => {
-                    return `<option value=${task.id}>${task.title}</option>`
-                })}
+            return `<option value=${task.id}>${task.title}</option>`
+        })}
             </select>
             <input id="show-preview" type="button" value="Show live preview"/>
             <div id="journal-content">
@@ -42,7 +42,7 @@ class Editor extends HTMLElement {
             flex-direction: column;
             gap: 1rem;
             padding: 1rem;
-            background-color: #f9f9f9;
+            background-color: #FFF5ED;
             border: 1px solid #ddd;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -50,6 +50,7 @@ class Editor extends HTMLElement {
         }
 
         input[type="text"], textarea {
+            background-color: #F3E2D5;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -61,6 +62,7 @@ class Editor extends HTMLElement {
         }
 
         #journal-title {
+            background-color: #F3E2D5;
             font-size: 2.5rem;
             text-align: center;
         }
@@ -70,20 +72,28 @@ class Editor extends HTMLElement {
             text-align: center;
         }
 
+        #tasks {
+            background-color: #F3E2D5;
+        }
+
         /* Show Live Preview Button */
         #show-preview {
             align-self: flex-end;
             padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
+            background-color: #F3E2D5;
+            color: #594F4F;
+            border: 1px solid #ccc;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1rem;
         }
 
         #show-preview:hover {
-            background-color: #0056b3;
+            background-color: #ddd;
+        }
+            
+        #show-preview:active {
+            background-color: #ccc;
         }
 
         /***** Journal Content *****/
@@ -97,22 +107,23 @@ class Editor extends HTMLElement {
         }
 
         #text-editor {
-            width: 50%;
+            background-color: #F3E2D5;
+            width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
-            transition: width 0.3s ease;
+            transition: 0.3s ease;
         }
 
         #markdown-preview {
-            width: 50%;
-            background-color: #f4f4f4;
+            width: 100%;
+            background-color: #F3E2D5;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             overflow-y: auto;
-            transition: width 0.3s ease;
+            transition: 0.3s ease;
         }
         `;
         shadow.appendChild(style);
@@ -120,6 +131,67 @@ class Editor extends HTMLElement {
         // Editor starts out with invalid path,
         //   so that a message can be displayed
         this.path = null;
+    }
+
+    connectedCallback() {
+        const shadow = this.shadowRoot;
+
+        // Side View Button functionality
+        //const button = shadow.getElementById('journal-side-view');
+        //const textarea = shadow.getElementById('text-editor');
+        //button.addEventListener('click', () => {
+        //    const editor = shadow.getElementById('markdown-editor');
+        //    if (this.sideBySide) {
+        //        textarea.hidden = true;
+        //        editor.style.width = "100%";
+        //    } else {
+        //        textarea.hidden = false;
+        //        editor.style.width = "50%";
+        //    }
+        //    this.sideBySide = !this.sideBySide;
+        //});
+
+        // Keep markdown editor in sync with textarea
+        //textarea.addEventListener('input', () => {
+        //    this.wysimark.setMarkdown(textarea.value);
+        //});
+
+        function debounce(func, timeout = 1000) {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        }
+
+        const inputElements = [
+            shadow.getElementById('text-editor'),
+            shadow.getElementById('journal-title'),
+            shadow.getElementById('journal-tags'),
+            shadow.getElementById("tasks")
+        ];
+
+        // Add event listener for auto-saving
+        const processChange = debounce(() => this.save());
+        for (let element of inputElements) {
+            element.addEventListener('input', processChange);
+        }
+        // Add event listener for live preview button
+        const showPreviewButton = shadow.getElementById('show-preview');
+        showPreviewButton.addEventListener('click', () => {
+            this.togglePreview();
+        });
+
+        // Add event listener for live preview
+        const textarea = shadow.getElementById('text-editor');
+        textarea.addEventListener('input', () => {
+            this.updatePreview(textarea.value);
+        });
+
+        // Initialize flex direction
+        this.updateFlexDirection();
+        // Add event listener for flex direction of journal content
+        window.addEventListener('resize', () => this.updateFlexDirection());
     }
 
     /**
@@ -130,13 +202,13 @@ class Editor extends HTMLElement {
     hasJournal() {
         return this.shadowRoot.path !== null;
     }
-    
+
     /**
      * Saves current journal to local storage.
      */
     save() {
         const shadow = this.shadowRoot;
-        
+
         // sanity check
         if (this.shadowRoot.path === null) {
             console.warn("Unable to save: no journal is selected");
@@ -175,65 +247,10 @@ class Editor extends HTMLElement {
         savingStatus.innerHTML = `<p>Saved At: ${formatDate(new Date(entry.modifiedAt))}</p>`;
     }
 
-    connectedCallback() {
-        const shadow = this.shadowRoot;
-
-        // Side View Button functionality
-        //const button = shadow.getElementById('journal-side-view');
-        //const textarea = shadow.getElementById('text-editor');
-        //button.addEventListener('click', () => {
-        //    const editor = shadow.getElementById('markdown-editor');
-        //    if (this.sideBySide) {
-        //        textarea.hidden = true;
-        //        editor.style.width = "100%";
-        //    } else {
-        //        textarea.hidden = false;
-        //        editor.style.width = "50%";
-        //    }
-        //    this.sideBySide = !this.sideBySide;
-        //});
-
-        // Keep markdown editor in sync with textarea
-        //textarea.addEventListener('input', () => {
-        //    this.wysimark.setMarkdown(textarea.value);
-        //});
-        
-        function debounce(func, timeout = 1000) {
-            let timer;
-            return (...args) => {
-                clearTimeout(timer);
-                timer = setTimeout(() => { func.apply(this, args); }, timeout);
-            };
-        }
-        
-        const inputElements = [
-            shadow.getElementById('text-editor'),
-            shadow.getElementById('journal-title'),
-            shadow.getElementById('journal-tags'),
-            shadow.getElementById("tasks")
-        ];
-        
-        const processChange = debounce(() => this.save());
-        for (let element of inputElements) {
-            element.addEventListener('input', processChange);
-        }
-        // Add event listener for live preview button
-        const showPreviewButton = shadow.getElementById('show-preview');
-        showPreviewButton.addEventListener('click', () => {
-            this.togglePreview();
-        });
-
-        // Add event listener for live preview
-        const textarea = shadow.getElementById('text-editor');
-        textarea.addEventListener('input', () => {
-            this.updatePreview(textarea.value);
-        });
-    }
-
     /**
      * Sets journal path of journal being edited
      * (controls whether editor is hidden or not)
-    * @param {string} path - journal path
+     * @param {string} path - journal path
      */
     set path(path) {
         const entry = getJournal(path);
@@ -247,7 +264,7 @@ class Editor extends HTMLElement {
         if (validPath) {
             this.setData(entry);
         }
-        
+
         // Hide all the input stuff if we have an invalid path
         this.changeInputVisibility(!validPath);
     }
@@ -273,8 +290,8 @@ class Editor extends HTMLElement {
                 const message = document.createElement('p');
                 message.id = 'no-journal-message';
                 message.innerText = "No journal selected";
-                message.style.fontSize = '3em';  
-    message.    style.textAlign = 'center';
+                message.style.fontSize = '3em';
+                message.    style.textAlign = 'center';
                 this.shadowRoot.appendChild(message);
             }
         } else {
@@ -283,6 +300,18 @@ class Editor extends HTMLElement {
             if (message) {
                 this.shadowRoot.removeChild(message);
             }
+        }
+    }
+
+    /**
+     * Update the flex direction of journal content
+     */
+    updateFlexDirection() {
+        const content = this.shadowRoot.getElementById('journal-content');
+        if (window.innerWidth < 800) {
+            content.style.flexDirection = 'column';
+        } else {
+            content.style.flexDirection = 'row';
         }
     }
 
@@ -310,9 +339,6 @@ class Editor extends HTMLElement {
                 option.selected = true;
             }
         });
-
-        const savingStatus = this.shadowRoot.getElementById("saving-status");
-        savingStatus.innerHTML = `<p>Auto Save Enabled</p>`;
     }
 
     /**
@@ -348,41 +374,14 @@ class Editor extends HTMLElement {
 
     togglePreview() {
         const preview = this.shadowRoot.getElementById('markdown-preview');
-        const textarea = this.shadowRoot.getElementById('text-editor');
         if (preview.hidden) {
             preview.hidden = false;
-            textarea.style.width = "50%";
             this.shadowRoot.getElementById('show-preview').value = "Hide live preview";
         } else {
             preview.hidden = true;
-            textarea.style.width = "100%";
             this.shadowRoot.getElementById('show-preview').value = "Show live preview";
         }
     }
-
-    /**
-     * Hack to get the styles to show up while using Shadow DOM.
-     */
-    hack() {
-        this.styleObserver = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.type === "childList") {
-                    mutation.addedNodes.forEach(node => {
-                        if (node?.getAttribute?.('data-emotion')) {
-                            this.shadowRoot.appendChild(node.cloneNode(true));
-                        }
-                    })
-                }
-            })
-        })
-
-        this.styleObserver.observe(document.head, {
-            attributes: true,
-            childList: true,
-            subtree: false,
-            attributeFilter: ['data-emotion']
-        });
-    }
 }
 
-customElements.define("journal-editor", Editor);
+customElements.define("journal-editor", JournalEditor);
