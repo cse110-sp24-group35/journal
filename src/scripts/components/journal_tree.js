@@ -1,4 +1,4 @@
-import { journals, createJournal, deleteJournal } from '../database/stores/journal.js';
+import { journals, deleteJournal } from '../database/stores/journal.js';
 
 journals.listen(() => populateTreeView());
 
@@ -13,7 +13,6 @@ export function loadTreeView() {
     const collapseButton = document.getElementById('collapse-button'); // Button in the center of the resizer
     const expandButton = document.getElementById('expand-button'); // Also button in the center of the resizer
     const sidebar = document.getElementById('sidebar'); // PLACEHOLDER menu (left of tree-view)
-    const createJournalButton = document.getElementById('create-journal'); // Button to create a journal
     const deleteJournalButton = document.getElementById('delete-journal'); // Button to delete a journal
     const deleteAllJournalsButton = document.getElementById('delete-all-journals'); // Button to delete all journals
 
