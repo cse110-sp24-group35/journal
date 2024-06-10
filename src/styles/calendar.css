@@ -179,7 +179,6 @@ body {
 
 .hovered-day {
     pointer-events: none;
-    opacity: 0.75;
 }
 
 .selected-day > *, .hovered-day > * {
