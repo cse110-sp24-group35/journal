@@ -62,6 +62,11 @@ class TaskModal extends HTMLElement {
                 this.closeModal();
             }
         });
+        this.shadowRoot.getElementById('taskModal').addEventListener('click', (event) => {
+            if (event.target === this.shadowRoot.getElementById('taskModal')) {
+                this.closeModal();
+            }
+        });
     }
 
     openModal(task) {
