@@ -58,7 +58,7 @@ class TaskPieChart extends HTMLElement{
                             size: 24
                         }
                     }
-                },
+                }
             }
         });
 

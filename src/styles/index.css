@@ -76,6 +76,7 @@ h1{
     grid-column: 2/ span 2;
     height: 30vh;
     width: 70vw;
+    margin-top: 10%;
 }
 
 .upcoming-task-date {
