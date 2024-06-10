@@ -1,7 +1,7 @@
-import * as taskStore from '../database/stores/task.js';
-import { updateTask } from '../database/stores/task.js';
+import * as taskStore from '../../database/stores/task.js';
+import { updateTask } from '../../database/stores/task.js';
 
-class TaskComponent extends HTMLElement {
+class TaskView extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });        
@@ -101,5 +101,5 @@ class TaskList extends HTMLElement {
         });
     }
 }
-customElements.define('task-component', TaskComponent);
+customElements.define('task-component', TaskView);
 customElements.define('task-list', TaskList);

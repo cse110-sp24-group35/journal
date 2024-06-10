@@ -2,7 +2,7 @@
  * Imports the required functions and variables from the journal database.
  * @module journal
  */
-import { journals, deleteJournal } from '../database/stores/journal.js';
+import { journals, deleteJournal } from '../../database/stores/journal.js';
 
 journals.listen(() => populateTreeView());
 

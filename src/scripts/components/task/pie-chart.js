@@ -1,6 +1,6 @@
-import * as taskStore from '../database/stores/task.js';
+import * as taskStore from '../../database/stores/task.js';
 
-class TaskPieComponent extends HTMLElement{
+class TaskPieChart extends HTMLElement{
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -80,4 +80,4 @@ class TaskPieComponent extends HTMLElement{
     
 
 }
-customElements.define('task-pie-component', TaskPieComponent);
+customElements.define('task-pie-component', TaskPieChart);

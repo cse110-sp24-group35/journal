@@ -1,13 +1,13 @@
-import { journals, getJournal } from '../database/stores/journal.js';
+import { journals, getJournal } from '../../database/stores/journal.js';
 import { marked } from 'marked';
-import { tasks } from '../database/stores/task.js';
+import { tasks } from '../../database/stores/task.js';
 import {
     getTasksForJournal,
     linkTaskToJournal, unlinkTaskFromJournal
-} from '../database/stores/relation.js';
-import { formatDate } from '../helper.js';
+} from '../../database/stores/relation.js';
+import { formatDate } from '../../helper.js';
 
-class JournalEditor extends HTMLElement {
+class Editor extends HTMLElement {
     constructor() {
         super(); // Inherit everything from HTMLElement
 
@@ -385,4 +385,4 @@ class JournalEditor extends HTMLElement {
     }
 }
 
-customElements.define("journal-editor", JournalEditor);
+customElements.define("journal-editor", Editor);

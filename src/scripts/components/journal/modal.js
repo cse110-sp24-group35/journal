@@ -1,8 +1,8 @@
-import { tasks } from '../database/stores/task.js';
-import { createJournal } from '../database/stores/journal.js';
-import { linkTaskToJournal } from '../database/stores/relation.js';
+import { tasks } from '../../database/stores/task.js';
+import { createJournal } from '../../database/stores/journal.js';
+import { linkTaskToJournal } from '../../database/stores/relation.js';
 
-class ModalJournal extends HTMLElement {
+class Modal extends HTMLElement {
     constructor() {
         super();
         const shadow = this.attachShadow({ mode: 'open' });
@@ -166,4 +166,4 @@ class ModalJournal extends HTMLElement {
     }
 }
 
-customElements.define('modal-journal', ModalJournal);
+customElements.define('modal-journal', Modal);
