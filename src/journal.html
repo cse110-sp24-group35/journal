@@ -23,6 +23,7 @@
     <!-- Polyfill end -->
 
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/common.css">
     <link rel="stylesheet" href="styles/journal.css">
     <script src="scripts/sw/loader.js"></script>
 </head>
@@ -36,29 +37,37 @@
     <script src="scripts/components/journal/modal.js" type="module"></script>
     <script src="scripts/components/journal/view.js" type="module"></script>
 
-    <!-- Use the custom Web Component here -->
-    <!-- <modal-journal></modal-journal> -->
-    <div style="display: flex; flex-direction: column; position:relative;">
-        <my-sidebar id="sidebar"></my-sidebar>
-        
-    </div>
-
-    <div id="resizable-box">
-        <button id="create-journal">+</button>
-        <button id="delete-journal">-</button>
-        <div id="content">
-            <!-- Folders and Files -->
+    <noscript>
+        Please turn on JavaScript to use this application properly!
+    </noscript>
+    <div id="script-container">
+        <!-- Use the custom Web Component here -->
+        <div style="display: flex; flex-direction: column; position:relative;">
+            <!-- Global Sidebar -->
+            <sidebar id="sidebar"></sidebar>
         </div>
-        <div id="resizer"></div>
-        <button id="collapse-button" class="collapse">&lt;&lt;</button>
-        
+
+        <div id="resizable-box">
+            <button id="create-journal">+</button>
+            <button id="delete-journal">-</button>
+            <div id="content">
+                <!-- Folders and Files -->
+            </div>
+            <div id="resizer"></div>
+            <button id="collapse-button" class="collapse">&lt;&lt;</button>
+
+        </div>
+
+        <div id="journal-view">
+            <journal-editor></journal-editor>
+        </div>
+
+        <button id="expand-button" class="expand">&gt;&gt;</button>
     </div>
 
-    <div id="journal-view">
-        <journal-editor></journal-editor>
-    </div>
-
-    <button id="expand-button" class="expand">&gt;&gt;</button>
+    <script>
+        document.getElementById("script-container").style.display = "block";
+    </script>
 </body>
 </html>
 

@@ -23,43 +23,52 @@
     </script>
     <!-- Polyfill end -->
     <script src="scripts/sw/loader.js"></script>
+    <link rel="stylesheet" href="styles/common.css">
 </head>
 
 <body>
+    <noscript>
+        Please turn on JavaScript to use this application properly!
+    </noscript>
+    <div id="script-container">
+        <!-- Container for the calendar, including the navigation buttons and the grid for the days of the month. -->
+        <div class="calendar-container">
 
-    <!-- Container for the calendar, including the navigation buttons and the grid for the days of the month. -->
-    <div class="calendar-container">
+            <!-- Calendar Header, including navigation buttons -->
+            <div class="calendar-header">
+                <button id="prev-month" class="nav-button">&lt;</button>
+                <span id="month-year"></span>
+                <button id="next-month" class="nav-button">&gt;</button>
+            </div>
 
-        <!-- Calendar Header, including navigation buttons -->
-        <div class="calendar-header">
-            <button id="prev-month" class="nav-button">&lt;</button>
-            <span id="month-year"></span>
-            <button id="next-month" class="nav-button">&gt;</button>
+            <!-- Calendar Body, including the grid for the days of the month -->
+            <div class="calendar-body">
+                <div class="calendar-days">
+                    <div class="day-label">Sun</div>
+                    <div class="day-label">Mon</div>
+                    <div class="day-label">Tue</div>
+                    <div class="day-label">Wed</div>
+                    <div class="day-label">Thu</div>
+                    <div class="day-label">Fri</div>
+                    <div class="day-label">Sat</div>
+                </div>
+                <div class="calendar-grid-wrapper">
+                    <div id="calendar-grid" class="calendar-grid"></div>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <task-modal></task-modal>
         </div>
 
-        <!-- Calendar Body, including the grid for the days of the month -->
-        <div class="calendar-body">
-            <div class="calendar-days">
-                <div class="day-label">Sun</div>
-                <div class="day-label">Mon</div>
-                <div class="day-label">Tue</div>
-                <div class="day-label">Wed</div>
-                <div class="day-label">Thu</div>
-                <div class="day-label">Fri</div>
-                <div class="day-label">Sat</div>
-            </div>
-            <div class="calendar-grid-wrapper">
-                <div id="calendar-grid" class="calendar-grid"></div>
-            </div>
-        </div>
-
-    </div>
-    <div>
-        <task-modal></task-modal>
+        <!-- Global Sidebar -->
+        <sidebar></sidebar>
     </div>
 
-    <!-- Global Sidebar -->
-    <my-sidebar></my-sidebar>
+    <script>
+        document.getElementById("script-container").style.display = "block";
+    </script>
     
     <!-- Scripts -->
     <script type="module" src="scripts/components/calendar/view.js"></script>
