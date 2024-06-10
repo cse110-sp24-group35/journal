@@ -42,7 +42,7 @@
 }
 
 #create-journal { /* The plus button on the top-right of the tree view */
-    background-color: rgb(221, 255, 159);
+    background-color: rgb(221 255 159);
     position:absolute;
     width: 2em;
     height: 2em;
@@ -53,7 +53,7 @@
 }
 
 #delete-journal { /* The minus button on the top-left of the tree view */
-    background-color: rgb(255, 175, 159);
+    background-color: rgb(255 175 159);
     position:absolute;
     width: 2em;
     height: 2em;
@@ -64,7 +64,7 @@
 }
 
 #delete-all-journals { /* The minus button on the top-left of the tree view */
-    background-color: rgb(255, 175, 159);
+    background-color: rgb(255 175 159);
     position: absolute;
     top: 2em;
     width: min(calc(100% - 6em), 8em);
