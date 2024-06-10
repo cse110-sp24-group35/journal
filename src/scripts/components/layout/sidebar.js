@@ -1,4 +1,4 @@
-class MySidebar extends HTMLElement {
+class SidebarLayout extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' }); // Attach a shadow DOM to this element
@@ -145,4 +145,4 @@ class MySidebar extends HTMLElement {
 }
 
 // Define the custom element
-customElements.define('my-sidebar', MySidebar);
+customElements.define('sidebar-layout', SidebarLayout);
