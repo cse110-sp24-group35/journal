@@ -310,6 +310,9 @@ class JournalEditor extends HTMLElement {
                 option.selected = true;
             }
         });
+
+        const savingStatus = this.shadowRoot.getElementById("saving-status");
+        savingStatus.innerHTML = `<p>Auto Save Enabled</p>`;
     }
 
     /**

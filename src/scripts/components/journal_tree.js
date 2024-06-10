@@ -23,7 +23,6 @@ export function loadTreeView() {
     const expandButton = document.getElementById('expand-button'); // Also button in the center of the resizer
     const sidebar = document.getElementById('sidebar'); // PLACEHOLDER menu (left of tree-view)
     const deleteJournalButton = document.getElementById('delete-journal'); // Button to delete a journal
-    const deleteAllJournalsButton = document.getElementById('delete-all-journals'); // Button to delete all journals
 
     // Calls the functions for resizing the tree-view width
     resizer.addEventListener('mousedown', (e) => startResize(e, treeViewer, journalViewer, sidebar));
@@ -32,8 +31,7 @@ export function loadTreeView() {
     expandButton.addEventListener('click', () => expandTreeView(treeViewer, journalViewer, collapseButton, expandButton));
     // Buttons to create/delete journals (fake journals for now)
     deleteJournalButton.addEventListener('click', deleteSelectedJournal); // Deletes selected journal
-    deleteAllJournalsButton.addEventListener('click', () => journals.set([])); // Deletes all journals (Will remove later probably)
-   
+
     populateTreeView(); // Populates the tree view with all journals on load
 }
 
