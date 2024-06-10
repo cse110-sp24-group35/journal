@@ -279,6 +279,8 @@ class JournalEditor extends HTMLElement {
                 const message = document.createElement('p');
                 message.id = 'no-journal-message';
                 message.innerText = "No journal selected";
+                message.style.fontSize = '3em';  
+    message.    style.textAlign = 'center';
                 this.shadowRoot.appendChild(message);
             }
         } else {
