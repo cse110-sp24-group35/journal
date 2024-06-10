@@ -213,24 +213,20 @@ class ModalCardPopupColumn extends HTMLElement {
             box.style.display = "flex";
             header.innerHTML = "Task Lists";
         });
-        this.querySelector('.modal-card-popup-save-button').addEventListener('click', (event) => {
-            event.preventDefault(); // Prevent default form submission
-            if (this.querySelector('form').checkValidity()) {
-                box.style.display = "flex";
-                header.innerHTML = "Task Lists";
-            } else {
-                this.querySelector('form').reportValidity(); // Show validation errors
-            }
-        });
-
-        this.querySelector('.modal-card-popup-close-button').addEventListener('click', () => {
-            this.closePopup();
-        });
 
         this.querySelector('.modal-card-popup-save-button').addEventListener('click', (event) => {
             event.preventDefault(); // Prevent default form submission
+
             if (this.querySelector('form').checkValidity()) {
-                this.saveColumnName();
+                const columnName = this.querySelector('[name="columnName"]').value;
+
+                if (statuses.get().includes(columnName)) {
+                    alert("There is already a column with same name! Please pick a different name :)");
+                } else {
+                    this.saveColumnName();
+                    box.style.display = "flex";
+                    header.innerHTML = "Task Lists";
+                }
             } else {
                 this.querySelector('form').reportValidity(); // Show validation errors
             }
