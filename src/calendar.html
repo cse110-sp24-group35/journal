@@ -7,6 +7,7 @@
     <title>Journal | Calendar </title>
     <link rel="stylesheet" href="styles/calendar.css">
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="manifest" href="manifest.json" />
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -21,6 +22,7 @@
         }
     </script>
     <!-- Polyfill end -->
+    <script src="scripts/sw/loader.js"></script>
 </head>
 
 <body>
@@ -50,7 +52,7 @@
                 <div id="calendar-grid" class="calendar-grid"></div>
             </div>
         </div>
-        
+
     </div>
     <div>
         <task-modal></task-modal>

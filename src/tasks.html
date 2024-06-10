@@ -4,6 +4,7 @@
         <title>Journal | Tasks</title>
         <link rel="icon" type="image/x-icon" href="/public/icons/favicon/favicon.ico">
         <meta charset="UTF-8">
+        <link rel="manifest" href="manifest.json" />
         <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
         <script>
             window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -18,6 +19,7 @@
         </script>
         <!-- Polyfill end -->
         <link rel="stylesheet" href="styles/task.css">
+        <script src="scripts/sw/loader.js"></script>
     </head>
 
     <body>
