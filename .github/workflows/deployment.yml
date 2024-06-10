@@ -56,12 +56,24 @@ jobs:
           pnpm install -g terser
           pnpm install -g csso-cli
           pnpm install -g html-minifier
-      - run: terser ./src/scripts/*.js --compress --mangle -o ./src/scripts/*.js
-      - run: csso ./src/styles/*.css -o ./src/styles/*.css
-      - run: html-minifier --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o src/index.html src/index.html
-      - run: html-minifier --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o src/journal.html src/tasks.html
-      - run: html-minifier --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o src/calendar.html src/calendar.html
-      - run: html-minifier --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o src/journal.html src/journal.html
+      - name: Compress JavaScript files
+        run: |
+          find ./src/scripts -name "*.js" -type f | while read -r file; do
+            echo "Compressing $file..."
+            terser "$file" --compress --mangle -o "$file"
+          done
+      - name: Compress CSS files
+        run: |
+          find ./src/styles -name "*.css" -type f | while read -r file; do
+            echo "Compressing $file..."
+            csso "$file" -o "$file"
+          done
+      - name: Compress HTML files
+        run: |
+          find ./src -name "*.html" -type f | while read -r file; do
+            echo "Compressing $file..."
+            html-minifier --collapse-boolean-attributes --collapse-whitespace --minify-css --minify-js --minify-urls --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace --use-short-doctype -o "$file" $file
+          done
       - name: Move Documentation Artifacts
         run: |
           mv ./docs ./src/docs
