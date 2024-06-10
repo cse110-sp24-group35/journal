@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journal | Overview</title>
-    <link rel="stylesheet" href="styles/journal.css">
-    <link rel="stylesheet" href="styles/task-component.css">
-    <link rel="stylesheet" href="styles/upcoming-tasks.css">
+    <link rel="stylesheet" href="styles/index.css">
+   
     <!-- Polyfill start - we can utilize importmap to elegantly import external vendors / libraries -->
     <script>
         window.process = { browser: true, env: { NODE_ENV: "production" } };
@@ -22,29 +21,36 @@
         }
     </script>
     <!-- Polyfill end -->
-    <link rel="stylesheet" href="styles/main.css">
+    
 </head>
 
 <body>
+    <script type="module" src="scripts/components/upcoming-tasks.js"></script>
+    <script src="scripts/components/sidebar.js"></script>
+    <script src="scripts/components/modal-journal.js"></script>
+    <script type="module" src="scripts/components/task-component.js"></script>
+    <script type="module" src="scripts/components/task-pie-component.js"></script>
+
+    <div class="grid">
+    <h1>Task<br>Overview</h1>
+    <div class="containerpie">
+        <task-pie-component></task-pie-component>
+    </div>       
+    
 
     <my-sidebar></my-sidebar>
-
     <div class="container">
+        Task Checklist:<br><br>
         <task-list></task-list>
     </div>
     
     <!-- Add the container and popup elements directly to the HTML -->
     <div class="upcoming-tasks-container"></div>
     <div class="task-popup" style="display: none;"></div>
-
-    <div class="containerpie">
-        <task-pie-component></task-pie-component>
     </div>
+    
 
-    <script type="module" src="scripts/components/upcoming-tasks.js"></script>
-    <script src="scripts/components/sidebar.js"></script>
-    <script src="scripts/components/modal-journal.js"></script>
-    <script type="module" src="scripts/components/task-component.js"></script>
-    <script type="module" src="scripts/components/task-pie-component.js"></script>
+    
+    
 </body>
 </html>

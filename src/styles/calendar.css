@@ -1,8 +1,13 @@
+* {
+    font-family: 'JetBrains Mono', monospace;
+    color:#594F4F;
+  }
+
 :root {
     --day-size: max(min(11vw, 11vh), 3em);
     --grid-gap: min(1vh, 1vw);
-    --nav-button-bg: #FF914D;
-    --nav-button-hover-bg: #DF611D;
+    --nav-button-bg: #ff9146;
+    --nav-button-hover-bg: #e78442;
     --day-bg: #F3E2D5;
     --day-hover-bg: #C3B2A5;
     --calendar-bg: #FFF5ED;

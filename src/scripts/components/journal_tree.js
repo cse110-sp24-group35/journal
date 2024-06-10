@@ -1,3 +1,7 @@
+/**
+ * Imports the required functions and variables from the journal database.
+ * @module journal
+ */
 import { journals, deleteJournal } from '../database/stores/journal.js';
 
 journals.listen(() => populateTreeView());
@@ -6,6 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
     loadTreeView();
 });
 
+/**
+ * Loads and sets up the tree view with event listeners for resizing, collapsing, and expanding the tree view.
+ * Also initializes buttons for creating and deleting journals.
+ * @function
+ */
 export function loadTreeView() {
     const resizer = document.getElementById('resizer'); // Black bar on the right of the tree-view window. Can be dragged.
     const treeViewer = document.getElementById('resizable-box'); // Tree view window container
@@ -28,7 +37,10 @@ export function loadTreeView() {
     populateTreeView(); // Populates the tree view with all journals on load
 }
 
-//Function that deletes selected journal
+/**
+ * Deletes the selected journal and clears the journal viewer.
+ * @function
+ */
 export function deleteSelectedJournal() {
     const selected = document.querySelector('.selected > button'); //Selected journal (if any)
     const journalViewer = document.getElementById('journal-view'); // Journal view (Right of tree-view)
@@ -40,9 +52,11 @@ export function deleteSelectedJournal() {
     journalViewer.appendChild(newJournalEditor); // Add the new journal editor to the journal viewer
 }
 
-// Function populates entire tree-view without any arguments.
+/**
+ * Populates the entire tree-view with all journals.
+ * @function
+ */
 export function populateTreeView() {
-    
     const contentContainer = document.getElementById('content'); // Container for individual items of the tree
     contentContainer.innerHTML = ""; // CLEARS tree view before loading it in again.
     const journalViewer = document.getElementById('journal-view'); // Journal view (Right of tree-view)
@@ -53,10 +67,16 @@ export function populateTreeView() {
     const treeArray = convertTreeToArray(tree);
 
     populateButtons(treeArray, contentContainer, "tree", journalViewer);
-
 }
 
-// Function called when dragging the resize bar on the tree-view
+/**
+ * Handles the start of the resizing event for the tree-view.
+ * @function
+ * @param {MouseEvent} e - The mousedown event.
+ * @param {HTMLElement} treeViewer - The tree view element.
+ * @param {HTMLElement} journalViewer - The journal view element.
+ * @param {HTMLElement} sidebar - The sidebar element.
+ */
 export function startResize(e, treeViewer, journalViewer, sidebar) {
     e.preventDefault(); // Prevent text from being selected while mouse is held down to resize tree-view
     if (!treeViewer.classList.contains('collapsed')) { // Makes sure that you can't drag to resize while the tree view is collapsed
@@ -67,7 +87,14 @@ export function startResize(e, treeViewer, journalViewer, sidebar) {
     }
 }
 
-// Function called to resize the tree-view
+/**
+ * Resizes the tree-view based on the mouse position.
+ * @function
+ * @param {MouseEvent} e - The mousemove event.
+ * @param {HTMLElement} treeViewer - The tree view element.
+ * @param {HTMLElement} journalViewer - The journal view element.
+ * @param {HTMLElement} sidebar - The sidebar element.
+ */
 export function resize(e, treeViewer, journalViewer, sidebar) {
     let sidebarWidth = sidebar.offsetWidth; // INEFFICIENT? (Accounts for window-width changing)
     const newWidth = e.clientX - sidebarWidth; // Subtract sidebar width from calculation
@@ -87,14 +114,26 @@ export function resize(e, treeViewer, journalViewer, sidebar) {
     }
 }
 
-// Function to stop resizing
+/**
+ * Stops the resizing of the tree-view.
+ * @function
+ * @param {Function} resizeListener - The resize event listener.
+ * @param {Function} stopResizeListener - The stop resize event listener.
+ */
 export function stopResize(resizeListener, stopResizeListener) {
     document.removeEventListener('mousemove', resizeListener); // Calculates where the bar should be every time the mouse moves while the bar is clicked down
     document.removeEventListener('mouseup', stopResizeListener);
     document.body.style.userSelect = ''; // Allow text to be selected again when resizing ends
 }
 
-// Function to collapse the tree-view
+/**
+ * Collapses the tree-view to a width of 0%.
+ * @function
+ * @param {HTMLElement} treeViewer - The tree view element.
+ * @param {HTMLElement} journalViewer - The journal view element.
+ * @param {HTMLElement} collapseButton - The collapse button element.
+ * @param {HTMLElement} expandButton - The expand button element.
+ */
 export function collapseTreeView(treeViewer, journalViewer, collapseButton, expandButton) {
     treeViewer.style.width = '0%'; // Change width to 0% when collapsed
     journalViewer.style.left = '15%'; // Makes the journal viewer take up the space the tree view was using
@@ -103,7 +142,14 @@ export function collapseTreeView(treeViewer, journalViewer, collapseButton, expa
     expandButton.style.display = 'block'; // Shows the expand button (>>)
 }
 
-// Function to expand the tree-view
+/**
+ * Expands the tree-view to its default width of 15%.
+ * @function
+ * @param {HTMLElement} treeViewer - The tree view element.
+ * @param {HTMLElement} journalViewer - The journal view element.
+ * @param {HTMLElement} collapseButton - The collapse button element.
+ * @param {HTMLElement} expandButton - The expand button element.
+ */
 export function expandTreeView(treeViewer, journalViewer, collapseButton, expandButton) {
     treeViewer.style.width = '15%'; // Makes the treeViewer take up its default (15%) portion of the window
     journalViewer.style.left = (30) + '%'; // Makes the journal viewer change its width accordingly
@@ -112,12 +158,22 @@ export function expandTreeView(treeViewer, journalViewer, collapseButton, expand
     expandButton.style.display = 'none'; // Hides the expand button (>>)
 }
 
-// Function to parse individual path into an array
+/**
+ * Splits a journal path into an array of its components.
+ * @function
+ * @param {string} path - The journal path.
+ * @returns {string[]} An array of path components.
+ */
 export function splitPath(path) {
     return path.split('/');
 }
 
-// Function to build tree from path array
+/**
+ * Builds a tree structure from an array of paths.
+ * @function
+ * @param {string[]} paths - An array of journal paths.
+ * @returns {Object} A tree structure representing the paths.
+ */
 export function buildTree(paths) {
     const tree = {};
 
@@ -136,7 +192,12 @@ export function buildTree(paths) {
     return tree;
 }
 
-// Function to convert tree to array
+/**
+ * Converts a tree structure into an array.
+ * @function
+ * @param {Object} tree - The tree structure.
+ * @returns {Object[]} An array representation of the tree.
+ */
 export function convertTreeToArray(tree) {
     function traverse(node) {
         const children = Object.values(node.children).map(traverse);
@@ -148,24 +209,43 @@ export function convertTreeToArray(tree) {
     return Object.values(tree).map(traverse);
 }
 
-// Function to hide the display of all files inside the folder
+/**
+ * Hides the display of all files inside the folder.
+ * @function
+ * @param {HTMLElement} folder - The folder element.
+ */
 export function closeFolder(folder) {
     for (let i = 1; i < folder.children.length; i++)
         folder.children[i].classList.add("parent-folder-closed");
 }
 
-// Function to show the display of all files inside the folder
+/**
+ * Shows the display of all files inside the folder.
+ * @function
+ * @param {HTMLElement} folder - The folder element.
+ */
 export function openFolder(folder) {
     for (let i = 1; i < folder.children.length; i++)
         folder.children[i].classList.remove("parent-folder-closed");
 }
 
-// Function to set the journal viewer to display the journal with the given path
+/**
+ * Sets the journal viewer to display the journal with the given path.
+ * @function
+ * @param {string} path - The path of the journal to display.
+ */
 export function setJournalViewer(path) {
     document.querySelector('journal-editor').path = path;
 }
 
-// Function to recursively load all files into the HTML
+/**
+ * Recursively loads all files into the HTML as buttons in the tree-view.
+ * @function
+ * @param {Object[]} parentChildren - An array of child elements of the parent path.
+ * @param {HTMLElement} parentElement - The parent element to append the buttons to.
+ * @param {string} treePath - The current path in the tree.
+ * @param {HTMLElement} journalViewer - The journal view element.
+ */
 export function populateButtons(parentChildren, parentElement, treePath, journalViewer) {
     for (let i = 0; i < parentChildren.length; i++) { // For each direct child of the parent path
         const fileDiv = document.createElement("div"); // Container for the button. Path children are appended to this

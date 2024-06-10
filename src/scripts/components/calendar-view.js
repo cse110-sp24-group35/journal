@@ -44,6 +44,9 @@ document.addEventListener('click', function(event) {
             primedToDeselect = true;
         }
     }
+    else {
+        primedToDeselect = false;
+    }
 });
 
 /**
