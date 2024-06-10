@@ -370,30 +370,6 @@ class JournalEditor extends HTMLElement {
             this.shadowRoot.getElementById('show-preview').value = "Show live preview";
         }
     }
-
-    /**
-     * Hack to get the styles to show up while using Shadow DOM.
-     */
-    hack() {
-        this.styleObserver = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.type === "childList") {
-                    mutation.addedNodes.forEach(node => {
-                        if (node?.getAttribute?.('data-emotion')) {
-                            this.shadowRoot.appendChild(node.cloneNode(true));
-                        }
-                    })
-                }
-            })
-        })
-
-        this.styleObserver.observe(document.head, {
-            attributes: true,
-            childList: true,
-            subtree: false,
-            attributeFilter: ['data-emotion']
-        });
-    }
 }
 
 customElements.define("journal-editor", JournalEditor);
