@@ -128,14 +128,24 @@ self.addEventListener("activate", event => {
 // ideally this would not be needed but who knows what can happen in real life lol
 // better safe than sorry
 self.addEventListener('fetch', function (event) {
-    event.respondWith(caches.open(CACHE_NAME).then((cache) => {
-        // Respond with the image from the cache or from the network
-        return cache.match(event.request).then((cachedResponse) => {
-            return cachedResponse || fetch(event.request.url).then((fetchedResponse) => {
-                cache.put(event.request, fetchedResponse.clone());
+    // URL to avoid caching, /docs is a bit special since it's not a part of our application
+    const noCacheUrl = 'https://cse110-sp24-group35.github.io/journal/docs';
 
-                return fetchedResponse;
-            });
-        });
-    }));
+    if (event.request.url.startsWith(noCacheUrl)) {
+        // If the URL starts with the noCacheUrl, just fetch it from the network
+        event.respondWith(fetch(event.request, {
+            redirect: "follow"
+        }));
+    } else {
+        event.respondWith(
+            caches.open(CACHE_NAME).then((cache) => {
+                return cache.match(event.request).then((cachedResponse) => {
+                    return cachedResponse || fetch(event.request.url).then((fetchedResponse) => {
+                        cache.put(event.request, fetchedResponse.clone());
+                        return fetchedResponse;
+                    });
+                });
+            })
+        );
+    }
 });
