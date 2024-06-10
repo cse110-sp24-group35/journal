@@ -47,6 +47,7 @@ describe('Sidebar E2E Tests', () => {
 
     test('should navigate to calendar page and highlight the calendar button', async () => {
         await page.click('sidebar-layout >>> button:nth-of-type(2)');
+        await page.waitForSelector('.calendar-container', { visible: true, timeout: 0 });
         //await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
 
         const url = await page.url();
@@ -61,6 +62,7 @@ describe('Sidebar E2E Tests', () => {
 
     test('should navigate to tasks page and highlight the tasks button', async () => {
         await page.click('sidebar-layout >>> button:nth-of-type(3)');
+        await page.waitForSelector('#container', { visible: true, timeout: 0 });
         //await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
 
         const url = await page.url();
@@ -75,6 +77,7 @@ describe('Sidebar E2E Tests', () => {
 
     test('should navigate to journal page and highlight the journal button', async () => {
         await page.click('sidebar-layout >>> button:nth-of-type(4)');
+        await page.waitForSelector('#resizable-box', { visible: true, timeout: 0 });
         //await page.waitForNavigation({ waitUntil: 'networkidle2',  timeout: 3000 });
 
         const url = await page.url();
