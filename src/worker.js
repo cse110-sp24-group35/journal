@@ -53,6 +53,35 @@ const CACHE_DERIVES = {
         "styles/common.css"
     ],
 
+    static: [
+        "public/favicon/favicon.ico",
+        "public/icons/journal/folder.svg",
+        "public/icons/journal/text.svg",
+        "public/icons/calendar-icon.svg",
+        "public/icons/journal-icon.svg",
+        "public/icons/overview-icon.svg",
+        "public/icons/tasks-icon.svg",
+
+        "public/images/calendar-active.svg",
+        "public/images/calendar-gray.svg",
+        "public/images/cat.png",
+        "public/images/close.jpg",
+        "public/images/gray-blob.png",
+        "public/images/journal-active.svg",
+        "public/images/journal-gray.svg",
+        "public/images/login.png",
+        "public/images/nav-bar.png",
+        "public/images/navigation.png",
+        "public/images/orange-blob.png",
+        "public/images/orange-cat.png",
+        "public/images/overview-active.svg",
+        "public/images/overview-gray.svg",
+        "public/images/paw.png",
+        "public/images/pencil.png",
+        "public/images/tasks-active.svg",
+        "public/images/tasks-gray.svg"
+    ],
+
     vendors: [
         "https://unpkg.com/nanostores@0.10.3/index.js",
         "https://unpkg.com/@nanostores/persistent@0.10.1/index.js",
