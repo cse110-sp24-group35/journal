@@ -97,22 +97,22 @@ class JournalEditor extends HTMLElement {
         }
 
         #text-editor {
-            width: 50%;
+            width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
-            transition: width 0.3s ease;
+            transition: 0.3s ease;
         }
 
         #markdown-preview {
-            width: 50%;
+            width: 100%;
             background-color: #f4f4f4;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             overflow-y: auto;
-            transition: width 0.3s ease;
+            transition: 0.3s ease;
         }
         `;
         shadow.appendChild(style);
@@ -121,6 +121,67 @@ class JournalEditor extends HTMLElement {
         //   so that a message can be displayed
         this.path = null;
     }
+
+	connectedCallback() {
+		const shadow = this.shadowRoot;
+
+		// Side View Button functionality
+		//const button = shadow.getElementById('journal-side-view');
+		//const textarea = shadow.getElementById('text-editor');
+		//button.addEventListener('click', () => {
+		//    const editor = shadow.getElementById('markdown-editor');
+		//    if (this.sideBySide) {
+		//        textarea.hidden = true;
+		//        editor.style.width = "100%";
+		//    } else {
+		//        textarea.hidden = false;
+		//        editor.style.width = "50%";
+		//    }
+		//    this.sideBySide = !this.sideBySide;
+		//});
+
+		// Keep markdown editor in sync with textarea
+		//textarea.addEventListener('input', () => {
+		//    this.wysimark.setMarkdown(textarea.value);
+		//});
+		
+		function debounce(func, timeout = 1000) {
+			let timer;
+			return (...args) => {
+				clearTimeout(timer);
+				timer = setTimeout(() => { func.apply(this, args); }, timeout);
+			};
+		}
+		
+		const inputElements = [
+			shadow.getElementById('text-editor'),
+			shadow.getElementById('journal-title'),
+			shadow.getElementById('journal-tags'),
+			shadow.getElementById("tasks")
+		];
+		
+		// Add event listener for auto-saving
+		const processChange = debounce(() => this.save());
+		for (let element of inputElements) {
+			element.addEventListener('input', processChange);
+		}
+		// Add event listener for live preview button
+		const showPreviewButton = shadow.getElementById('show-preview');
+		showPreviewButton.addEventListener('click', () => {
+			this.togglePreview();
+		});
+
+		// Add event listener for live preview
+		const textarea = shadow.getElementById('text-editor');
+		textarea.addEventListener('input', () => {
+			this.updatePreview(textarea.value);
+		});
+
+		// Initialize flex direction
+		this.updateFlexDirection();
+		// Add event listener for flex direction of journal content
+		window.addEventListener('resize', () => this.updateFlexDirection());
+	}
 
     /**
      * Checks if the editor is currently editing a journal.
@@ -173,61 +234,6 @@ class JournalEditor extends HTMLElement {
         journals.set(journalArray);
 
         savingStatus.innerHTML = `<p>Saved At: ${formatDate(new Date(entry.modifiedAt))}</p>`;
-    }
-
-    connectedCallback() {
-        const shadow = this.shadowRoot;
-
-        // Side View Button functionality
-        //const button = shadow.getElementById('journal-side-view');
-        //const textarea = shadow.getElementById('text-editor');
-        //button.addEventListener('click', () => {
-        //    const editor = shadow.getElementById('markdown-editor');
-        //    if (this.sideBySide) {
-        //        textarea.hidden = true;
-        //        editor.style.width = "100%";
-        //    } else {
-        //        textarea.hidden = false;
-        //        editor.style.width = "50%";
-        //    }
-        //    this.sideBySide = !this.sideBySide;
-        //});
-
-        // Keep markdown editor in sync with textarea
-        //textarea.addEventListener('input', () => {
-        //    this.wysimark.setMarkdown(textarea.value);
-        //});
-        
-        function debounce(func, timeout = 1000) {
-            let timer;
-            return (...args) => {
-                clearTimeout(timer);
-                timer = setTimeout(() => { func.apply(this, args); }, timeout);
-            };
-        }
-        
-        const inputElements = [
-            shadow.getElementById('text-editor'),
-            shadow.getElementById('journal-title'),
-            shadow.getElementById('journal-tags'),
-            shadow.getElementById("tasks")
-        ];
-        
-        const processChange = debounce(() => this.save());
-        for (let element of inputElements) {
-            element.addEventListener('input', processChange);
-        }
-        // Add event listener for live preview button
-        const showPreviewButton = shadow.getElementById('show-preview');
-        showPreviewButton.addEventListener('click', () => {
-            this.togglePreview();
-        });
-
-        // Add event listener for live preview
-        const textarea = shadow.getElementById('text-editor');
-        textarea.addEventListener('input', () => {
-            this.updatePreview(textarea.value);
-        });
     }
 
     /**
@@ -283,6 +289,18 @@ class JournalEditor extends HTMLElement {
             }
         }
     }
+
+	/**
+	 * Update the flex direction of journal content
+	 */
+	updateFlexDirection() {
+		const content = this.shadowRoot.getElementById('journal-content');
+		if (window.innerWidth < 800) {
+			content.style.flexDirection = 'column';
+		} else {
+			content.style.flexDirection = 'row';
+		}
+	}
 
     /**
      * Sets data from journal
@@ -346,11 +364,9 @@ class JournalEditor extends HTMLElement {
         const textarea = this.shadowRoot.getElementById('text-editor');
         if (preview.hidden) {
             preview.hidden = false;
-            textarea.style.width = "50%";
             this.shadowRoot.getElementById('show-preview').value = "Hide live preview";
         } else {
             preview.hidden = true;
-            textarea.style.width = "100%";
             this.shadowRoot.getElementById('show-preview').value = "Show live preview";
         }
     }
