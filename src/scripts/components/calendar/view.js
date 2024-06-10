@@ -201,8 +201,10 @@ export function addTasksToDay(dayDiv, year, month, day, allTasks) {
         });
 
         dayDiv.addEventListener('mouseleave', () => {
-            const hoveredDay = document.querySelector('.hovered-day');
-            if (hoveredDay) hoveredDay.remove();
+            const hoveredDays = document.querySelectorAll('.hovered-day');
+            for (let i = 0; i < hoveredDays.length; i++) {
+                hoveredDays[i].remove();
+            }
         });
     }
 
