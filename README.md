@@ -22,7 +22,7 @@ A live deployment of the JSDocs associated with production deployment is located
 * Hover / click on each cell for a more informative view of the tasks on that day
 
 ### Kanban / Task List
-* 3 built-in columns (`TODO`, `IN PROGRESS`, `DONE`) with capability to remove / add custom columns
+* 4 built-in columns (`PLANNED`, `ONGOING`, `COMPLETED`, `ABANDONED`) with capability to remove / add custom columns
 * Users can drag-and-drop tasks around columns to quickly change their statuses
 * Users can add task under a column to create a task and quickly assign its status
 
